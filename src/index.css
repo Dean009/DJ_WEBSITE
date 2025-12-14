@@ -1,0 +1,13 @@
+:root { --hero-height: 100vh; }
+html, body, #root { height: 100%; }
+html { scroll-behavior: smooth; }
+body { padding-top: 56px; }
+.hero { min-height: var(--hero-height); display: flex; align-items: center; justify-content: center; text-align: center; }
+.hero .lead { max-width: 720px; margin: 0 auto 1.5rem; }
+.logo-main { max-width: 300px; height: auto; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); }
+section { padding-top: 4rem; padding-bottom: 4rem; }
+@media (max-width: 576px) {
+  .hero { padding: 3rem 1rem; }
+  .display-4 { font-size: 2rem; }
+  .logo-main { max-width: 200px; }
+}
