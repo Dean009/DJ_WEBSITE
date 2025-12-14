@@ -7,7 +7,7 @@ export default function App() {
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
           <div className="container">
             <a className="navbar-brand" href="#hero">
-              <img src="/logo.jpeg" alt="DJ Logo" height="40" className="d-inline-block align-text-top me-2" />
+              <img src={import.meta.env.BASE_URL + 'logo.jpeg'} alt="DJ Logo" height="40" className="d-inline-block align-text-top me-2" />
               DJ Demo
             </a>
             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,8 +27,8 @@ export default function App() {
 
       <main>
         <section id="hero" className="hero d-flex align-items-center text-light bg-primary">
-          <div className="container text-center">
-            <img src="/logo.jpeg" alt="DJ Logo" className="logo-main mb-4" />
+            <div className="container text-center">
+            <img src={import.meta.env.BASE_URL + 'logo.jpeg'} alt="DJ Logo" className="logo-main mb-4" />
             <h1 className="display-4">Lorem ipsum dolor sit amet</h1>
             <p className="lead">Consectetur adipiscing elit — sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
             <p>
