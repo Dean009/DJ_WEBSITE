@@ -1,13 +1,216 @@
-:root { --hero-height: 100vh; }
-html, body, #root { height: 100%; }
+:root {
+  --hero-height: 100vh;
+  --accent: #ef6c00;
+  --accent-dark: #d45500;
+  --muted: #6c757d;
+}
+.html, body, #root { height: 100%; }
 html { scroll-behavior: smooth; }
-body { padding-top: 56px; }
-.hero { min-height: var(--hero-height); display: flex; align-items: center; justify-content: center; text-align: center; }
-.hero .lead { max-width: 720px; margin: 0 auto 1.5rem; }
-.logo-main { max-width: 300px; height: auto; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); }
-section { padding-top: 4rem; padding-bottom: 4rem; }
-@media (max-width: 576px) {
-  .hero { padding: 3rem 1rem; }
-  .display-4 { font-size: 2rem; }
-  .logo-main { max-width: 200px; }
+body {
+  padding-top: 6rem;
+  background: linear-gradient(135deg, rgba(239,108,0,0.06) 0%, rgba(255,255,255,1) 40%);
+  background-color: #ffffff;
+}
+.hero-container {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  background: #ffffff;
+  padding: 1.5rem 2rem;
+  box-shadow: 0 30px 60px rgba(15,15,15,0.08);
+  color: #fff;
+  position: relative;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+
+/* Top nav panel styled as a white rounded box */
+.nav-panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 0;
+  padding: 0.6rem 0.5rem;
+  z-index: 9999;
+}
+.nav-panel .navbar {
+  width: 100%;
+  max-width: 1200px;
+  background: #fff;
+  border-radius: 18px;
+  padding: 0.4rem 0.75rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.nav-panel .navbar > .container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 0;
+}
+.nav-panel .navbar-brand {
+  color: #111827;
+  font-weight: 700;
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+}
+.nav-panel .navbar-nav {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.75rem;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.nav-panel .navbar-nav .nav-item { display: flex; flex-wrap: nowrap; }
+.nav-panel .nav-link { color: rgba(17,24,39,0.95) !important; display: block; white-space: nowrap; font-size: 0.9rem; padding: 0.25rem 0.5rem; }
+
+/* ensure nav items stay in one line and don't wrap */
+.nav-panel .navbar, .nav-panel .navbar > .container { min-width: 0; }
+@media (max-width: 480px) {
+  .nav-panel .navbar { padding-left: 0.5rem; padding-right: 0.5rem; }
+}
+
+.hero-container {
+background: transparent;
+padding: 0;
+width: 100%;
+margin: 0;
+position: relative;
+z-index: 20;
+}
+.hero-container > .row {
+max-width: 1200px;
+margin: 0 auto;
+background: #fff;
+border-radius: 24px;
+padding: 2rem clamp(1rem, 4vw, 4rem) 2.5rem 2rem;
+box-shadow: 0 20px 40px rgba(15,15,15,0.08);
+}
+.hero-container .col-lg-6 {
+padding: 0 1.5rem;
+}
+.hero-logo { padding: 0 1.5rem; margin-bottom: 1rem; }
+.hero-logo-img { width: 100%; height: auto; max-width: 450px; }
+.hero-left .display-4 { font-weight: 700; font-size: 2rem; line-height: 1.05; color: #111827; }
+.hero-left .lead { max-width: 520px; margin-bottom: 1.5rem; color: var(--muted); font-size: 0.95rem; }
+.cta-btn { background: var(--accent); border: none; }
+.cta-btn:hover { background: var(--accent-dark); }
+
+/* testimonials section - white background */
+.panel-up {
+background: transparent;
+width: 100%;
+margin-top: 0;
+margin-bottom: 0;
+padding: 0;
+border-radius: 0;
+box-shadow: none;
+color: #111827;
+position: relative;
+z-index: 10;
+}
+.panel-up > .row {
+max-width: 1200px;
+margin: 0 auto;
+}
+
+/* Testimonial box (white card) */
+.testimonial-box {
+  background: #fff;
+  border-radius: 16px;
+  padding: 1.5rem 2rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+  color: #111827;
+}
+.testimonial-box .text-muted { color: var(--muted); }
+
+@media (max-width: 1200px) {
+.hero-container { padding: 1.5rem 2rem; }
+.panel-up { padding: 1.5rem 2rem; }
+}
+
+@media (max-width: 992px) {
+.hero-container { border-radius: 16px; }
+}
+
+@media (max-width: 768px) {
+.hero-container, .panel-up { padding: 1rem; }
+.hero-container { border-radius: 12px; }
+}
+
+/* Services, About, Portfolio sections - orange background with white text */
+#services, #about, #portfolio {
+background: var(--accent) !important;
+color: #fff;
+}
+#services h2, #about h2, #portfolio h2 { color: #fff; }
+#services .card, #about .card, #portfolio .card { background: rgba(255,255,255,0.15); border: none; color: #fff; }
+#services .card-title, #services .card-text, #about .card-title, #about .card-text, #portfolio .card-title, #portfolio .card-text { color: #fff; }
+
+/* Testimonials */
+.testimonial-card { border: none; border-radius: 10px; box-shadow: 0 10px 30px rgba(15,15,15,0.06); }
+.testimonial-card .card-body { background: #fff; }
+.testimonial-card .card-text { color: #333; font-style: italic; }
+
+/* Stronger orange theme for navbar and buttons */
+.navbar { background: transparent !important; }
+.navbar-brand { color: #fff; font-weight: 700; }
+.nav-link { color: rgba(255,255,255,0.95) !important; }
+.nav-link:hover { color: #ffa600 !important; }
+.btn-primary { background: var(--accent); border-color: var(--accent); }
+.btn-primary:hover { background: var(--accent-dark); border-color: var(--accent-dark); }
+
+/* FORCE NAVBAR TO BE INLINE + CENTERED */
+.nav-panel {
+  display: flex;
+  justify-content: center;
+}
+
+.nav-panel .navbar {
+  display: flex;
+  justify-content: center;
+}
+
+.nav-panel .navbar > .container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Brand + nav links inline */
+.nav-panel .navbar-brand {
+  margin: 0;
+  padding: 0;
+}
+
+/* Nav list inline + centered */
+.nav-panel .navbar-nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Prevent wrapping */
+.nav-panel .nav-item {
+  white-space: nowrap;
 }
