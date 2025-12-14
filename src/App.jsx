@@ -48,7 +48,7 @@ export default function App() {
                     <div className="stat-label text-muted">Projects Delivered</div>
                   </div>
                   <div className="stat text-end">
-                    <div className="stat-value">98%</div>
+                    <div className="stat-value">1%</div>
                     <div className="stat-label text-muted">Client's Satisfaction</div>
                   </div>
                 </div>
