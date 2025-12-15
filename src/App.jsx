@@ -39,7 +39,7 @@ export default function App() {
               </div>
 
               <div className="col-lg-8">
-                <h1 className="hero-title">GWx Consultancy Services</h1>
+                <h1 className="hero-title">GWx Consultancy Services Ltd</h1>
                 <p className="hero-lead">
                   Independent technical and compliance support for complex, high-risk projects.
                   <span className="hero-lead-strong"> We’ve got you covered.</span>
@@ -210,7 +210,7 @@ export default function App() {
           <div className="container">
             <div className="section-head">
               <h2 className="section-title">Contact</h2>
-              <p className="section-sub">Simple, direct, no gimmicks.</p>
+              <p className="section-sub">Direct communication to our team</p>
             </div>
 
             <div className="row g-4">
@@ -227,10 +227,6 @@ export default function App() {
                     </div>
                   </div>
 
-                  <div className="contact-line">
-                    <div className="contact-k">Notes</div>
-                    <div className="contact-v">No sales language. No gimmicks. Direct contact only.</div>
-                  </div>
                 </div>
               </div>
 
