@@ -58,7 +58,7 @@ export default function App() {
                   </div>
                   <div className="hero-side-line">
                     <span className="hero-side-k">Pressure</span>
-                    <span className="hero-side-v">Audit scrutiny • programme risk • compliance gaps</span>
+                    <span className="hero-side-v">Audit scrutiny • Programme risk • Compliance gaps</span>
                   </div>
 
                   <a href="#contact" className="btn btn-outline-light btn-sm hero-contact">
