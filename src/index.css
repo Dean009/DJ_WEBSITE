@@ -13,11 +13,12 @@
 }
 
 /* Base */
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
 html, body, #root { height: 100%; background: var(--bg); }
+body { overflow-x: hidden; }
 
 body{
-  padding-top: 6rem; /* space for fixed navbar */
+  padding-top: 0; /* space for fixed navbar */
   background: var(--bg);
   color: var(--muted);
   font-family: 'IBM Plex Sans', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif;
@@ -38,30 +39,38 @@ a:hover{ color: var(--text); }
 /* ===== NAVBAR (fixed, restrained, technical) ===== */
 /* (UNCHANGED from your working version) */
 .nav-panel{
-  position: fixed;
-  top: 0; left: 0; right: 0;
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+
   display: flex;
   justify-content: center;
   width: 100%;
+
   margin: 0;
-  padding: 0.75rem 0.75rem;
-  z-index: 9999;
-  background: rgba(15,17,21,0.86);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--border2);
+  padding: 0.5rem 0.75rem;
+
+  z-index: 100;
+  background: var(--bg);              /* same as page */
+  border-bottom: 1px solid rgba(177,180,187,0.08);
 }
+
 
 .nav-panel .navbar{
   width: 100%;
   max-width: 1200px;
-  background: rgba(28,31,38,0.55);
-  border: 1px solid var(--border2);
-  border-radius: 18px;
-  padding: 0.5rem 0.85rem;
+
+  background: transparent;            /* remove panel feel */
+  border: none;                        /* no outline */
+  border-radius: 0;                    /* remove rounding */
+
+  padding: 0.25rem 0;
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 
 .nav-panel .navbar > .container{
   width: 100%;
@@ -124,8 +133,13 @@ a:hover{ color: var(--text); }
   color: var(--muted) !important;
 }
 
+.nav-panel *{
+  border-radius: 0 !important;
+}
+
+
 @media (max-width: 900px){
-  body{ padding-top: 7.25rem; }
+  body{ padding-top: 0; }
   .nav-panel .navbar > .container{
     justify-content: center;
     flex-direction: column;
@@ -155,6 +169,11 @@ a:hover{ color: var(--text); }
   z-index: 20;
   box-sizing: border-box;
 }
+.hero-container{
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
 
 .hero-card{
   position: relative;
@@ -181,7 +200,7 @@ a:hover{ color: var(--text); }
 
 .hero-title{
   font-weight: 680;
-  font-size: clamp(34px, 4.2vw, 50px);
+  font-size: clamp(34px, 4.2vw, 46px);
   line-height: 1.05;
   color: var(--text);
   margin-bottom: 14px;
@@ -197,6 +216,7 @@ a:hover{ color: var(--text); }
 
 .hero-lead-strong{
   color: var(--text);
+  font-weight: 680;
 }
 
 .hero-side{
@@ -268,7 +288,28 @@ a:hover{ color: var(--text); }
   margin-top: 10px;
 }
 
-/* keep existing .hero-contact styling */
+/* ===== HERO LOGO ===== */
+
+.hero-header{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.hero-logo{
+  display: flex;
+  align-items: center;
+}
+
+.hero-logo img{
+  height: 54px;          /* ↑ subtle increase */
+  width: auto;
+  opacity: 0.96;         /* still restrained */
+  filter: brightness(1.05) contrast(1.05);
+}
+
+
 
 
 /* ===== SECTIONS ===== */
@@ -386,6 +427,42 @@ a:hover{ color: var(--text); }
 }
 
 .support-list li:first-child{ border-top: 0; }
+
+/* ================= SUPPORT LEDGER ================= */
+
+.support-ledger{
+  max-width: 900px;
+  border-top: 1px solid var(--border2);
+}
+
+.support-row{
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 18px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border2);
+}
+
+.support-row h5{
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 650;
+  margin: 0;
+}
+
+.support-row p{
+  color: var(--muted);
+  font-size: 14px;
+  margin: 0;
+}
+
+@media (max-width: 768px){
+  .support-row{
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+}
+
 
 /* Chips */
 .sector-chips{
@@ -552,13 +629,6 @@ footer{
 
 .footer-sep{ color: rgba(177,180,187,0.22); }
 
-/* HERO: subtle machined edge */
-.hero-card{
-  box-shadow:
-    0 0 0 1px rgba(177,180,187,0.22),
-    0 14px 34px rgba(0,0,0,0.40);
-}
-
 /* ================= FULL-PAGE DOCUMENT LAYOUT ================= */
 
 .doc-page{
@@ -635,3 +705,20 @@ footer{
 
 .bio-text p{ margin-bottom: 12px; }
 .bio-text p:last-child{ margin-bottom: 0; }
+
+/* Tighten hero vertical whitespace but keep card centered horizontally */
+.hero{
+  min-height: auto !important;
+  align-items: flex-start !important;   /* vertical control */
+  justify-content: center !important;   /* horizontal centering */
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+}
+
+section { scroll-margin-top: 90px; }
+
+@media (max-width: 480px){
+  .hero-title{ font-size: 34px; }
+  .hero-approach p{ font-size: 13px; }
+  .hero-logo img{ height: 46px; }
+}
