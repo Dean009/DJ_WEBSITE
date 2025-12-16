@@ -20,9 +20,10 @@ body{
   padding-top: 6rem; /* space for fixed navbar */
   background: var(--bg);
   color: var(--muted);
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+  font-family: 'IBM Plex Sans', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif;
   letter-spacing: 0.2px;
   line-height: 1.55;
+  margin: 0;
 }
 
 a{ color: var(--muted); text-decoration: none; }
@@ -35,6 +36,7 @@ a:hover{ color: var(--text); }
 }
 
 /* ===== NAVBAR (fixed, restrained, technical) ===== */
+/* (UNCHANGED from your working version) */
 .nav-panel{
   position: fixed;
   top: 0; left: 0; right: 0;
@@ -155,12 +157,18 @@ a:hover{ color: var(--text); }
 }
 
 .hero-card{
+  position: relative;
   max-width: 1200px;
   margin: 0 auto;
   border-radius: 22px;
   padding: 2.25rem clamp(1rem, 3vw, 2.75rem);
   background: rgba(28,31,38,0.55);
   border: 1px solid var(--border2);
+
+  /* ✅ FAINT METALLIC EDGE + DEPTH (ON HERO ONLY) */
+  box-shadow:
+    0 0 0 0.5px rgba(177,180,187,0.180), /* silver hairline edge */
+    0 10px 26px rgba(0,0,0,0.140);       /* depth, not glow */
 }
 
 .hero-meta{
@@ -240,19 +248,27 @@ a:hover{ color: var(--text); }
   padding-top: 16px;
   border-top: 1px solid var(--border2);
   width: 100%;
-  max-width: none;   /* IMPORTANT: remove constraint */
+  max-width: none;
 }
 
 .hero-approach p{
   margin-bottom: 10px;
   color: var(--muted);
   font-size: 14px;
-  max-width: none;   /* IMPORTANT: remove constraint */
+  max-width: none;
 }
 
 .hero-approach p:last-child{
   margin-bottom: 0;
 }
+.hero-actions{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+/* keep existing .hero-contact styling */
 
 
 /* ===== SECTIONS ===== */
@@ -300,6 +316,60 @@ a:hover{ color: var(--text); }
   font-size: 13px;
   margin-bottom: 0;
 }
+/* ================= SUPPORT / OUTCOME CARDS ================= */
+
+.support-card{
+  height: 100%;
+  padding: 18px;
+  border-radius: var(--radius);
+  background: rgba(15,17,21,0.25);
+  border: 1px solid var(--border2);
+}
+
+.support-kicker{
+  color: var(--subtle);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  margin-bottom: 10px;
+}
+
+.support-card h5{
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 650;
+  margin-bottom: 8px;
+}
+
+.support-card p{
+  color: var(--muted);
+  font-size: 13px;
+  margin: 0;
+}
+
+/* ================= SECTOR CARDS ================= */
+
+.sector-card{
+  height: 100%;
+  padding: 18px;
+  border-radius: var(--radius);
+  background: rgba(15,17,21,0.25);
+  border: 1px solid var(--border2);
+}
+
+.sector-card h5{
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 650;
+  margin-bottom: 8px;
+}
+
+.sector-card p{
+  color: var(--muted);
+  font-size: 13px;
+  margin: 0;
+}
+
 
 /* Support list */
 .support-list{
@@ -481,3 +551,87 @@ footer{
 .footer-right a:hover{ color: var(--text); }
 
 .footer-sep{ color: rgba(177,180,187,0.22); }
+
+/* HERO: subtle machined edge */
+.hero-card{
+  box-shadow:
+    0 0 0 1px rgba(177,180,187,0.22),
+    0 14px 34px rgba(0,0,0,0.40);
+}
+
+/* ================= FULL-PAGE DOCUMENT LAYOUT ================= */
+
+.doc-page{
+  min-height: calc(100vh - 6rem);
+}
+
+.doc-hero{
+  padding: clamp(3rem, 6vw, 5rem) 0;
+  background: rgba(28,31,38,0.55);
+  border-top: 1px solid var(--border2);
+  border-bottom: 1px solid var(--border2);
+}
+
+.doc-meta{
+  color: var(--subtle);
+  font-size: 12px;
+  letter-spacing: 2.4px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.doc-title{
+  color: var(--text);
+  font-weight: 680;
+  font-size: clamp(44px, 5vw, 64px);
+  line-height: 1.05;
+  margin-bottom: 18px;
+}
+
+.doc-lead{
+  max-width: 90ch;
+  font-size: 18px;
+  color: var(--muted);
+}
+
+.doc-lead p{ margin-bottom: 14px; }
+.doc-lead p:last-child{ margin-bottom: 0; }
+
+.doc-body{
+  padding: clamp(2.5rem, 5vw, 4rem) 0;
+}
+
+.bio-grid{
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+
+@media (min-width: 992px){
+  .bio-grid{
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.bio-block{
+  border-radius: 18px;
+  background: rgba(15,17,21,0.25);
+  border: 1px solid var(--border2);
+  padding: 22px;
+}
+
+.bio-name{
+  color: var(--text);
+  font-weight: 650;
+  font-size: 22px;
+  margin: 0 0 12px 0;
+}
+
+.bio-text{
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.bio-text p{ margin-bottom: 12px; }
+.bio-text p:last-child{ margin-bottom: 0; }
