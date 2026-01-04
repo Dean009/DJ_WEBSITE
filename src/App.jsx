@@ -1,109 +1,169 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import About from "./About";
 
+/* =========================
+   HOME
+========================= */
 function Home() {
+  const [titleReady, setTitleReady] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setTitleReady(true), 650);
+    return () => clearTimeout(t);
+  }, []);
+
+  /* Reveal Overview on scroll */
+  useEffect(() => {
+    const el = document.getElementById("intro-content");
+    if (!el) return;
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) el.classList.add("in-view");
+      },
+      { threshold: 0.18 }
+    );
+
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  const HERO_BG = import.meta.env.BASE_URL + "hero-bg.png";
+
   return (
     <>
-      {/* HERO */}
-      <section id="hero" className="hero">
-        <div className="container hero-container">
-          <div className="row hero-card">
-            <div className="col-12">
-              <div className="hero-header">
-                <div className="hero-logo">
-                  <img
-                    src={import.meta.env.BASE_URL + "logo.svg"}
-                    alt="GWx logo"
-                  />
-                </div>
-                <div className="hero-meta">
-                  TECHNICAL | TEMPORARY WORKS | COMPLIANCE
-                </div>
-              </div>
-            </div>
-
-            {/* LEFT COLUMN */}
-            <div className="col-lg-8">
-              <h1 className="hero-title">GWx Consultancy Services Ltd</h1>
-
-              <p className="hero-lead">
-                Independent technical and compliance support for complex,
-                high-risk projects.
-                <br />
-                <span className="hero-lead-strong">We’ve got you covered.</span>
-              </p>
-
-              <div className="hero-approach hero-approach-balanced">
-                <p>
-                  GWx works alongside client teams as an extension of their
-                  technical leadership.
-                </p>
-                <p>
-                  We provide oversight, structure, and assurance where
-                  governance, capability or capacity is stretched — without
-                  taking ownership away from the client.
-                </p>
-                <p>
-                  Our focus is proportionate, defensible governance that
-                  supports safe delivery while remaining practical,
-                  commercially aware and aligned with programme pressures.
-                </p>
-              </div>
-            </div>
-
-            {/* RIGHT COLUMN */}
-            <div className="col-lg-4">
-              <div className="hero-side">
-                <div className="hero-side-line">
-                  <span className="hero-side-k">Operating level</span>
-                  <span className="hero-side-v">
-                    Tier 1 / Tier 2 delivery environments
-                  </span>
-                </div>
-
-                <div className="hero-side-line">
-                  <span className="hero-side-k">Focus</span>
-                  <span className="hero-side-v">
-                    Governance • Assurance • Practical Delivery
-                  </span>
-                </div>
-
-                <div className="hero-side-line">
-                  <span className="hero-side-k">Pressure</span>
-                  <span className="hero-side-v">
-                    Audit Scrutiny • Programme Risk • Compliance Gaps
-                  </span>
-                </div>
-
-                <div className="hero-actions">
-                  <a
-                    href="#contact"
-                    className="btn btn-outline-light btn-sm hero-contact"
-                  >
-                    Contact
-                  </a>
-                  <a
-                    href="#/about"
-                    className="btn btn-outline-light btn-sm hero-contact"
-                  >
-                    About
-                  </a>
-                </div>
-              </div>
+      {/* ================= HERO ================= */}
+      <section
+        id="hero"
+        className="hero hero-bg"
+        style={{ "--hero-bg": `url("${HERO_BG}")` }}
+      >
+        <div className={`hero-title-screen ${titleReady ? "show" : ""}`}>
+          <div className="hero-title-inner">
+            <div className="hero-kicker delayed">GWx Consultancy Services Ltd</div>
+            <h1 className="hero-title-big">GWx</h1>
+            <div className="hero-kicker delayed">
+              TECHNICAL • TEMPORARY WORKS • COMPLIANCE
             </div>
           </div>
         </div>
       </section>
 
-      {/* WHAT WE DO */}
+      {/* ================= OVERVIEW ================= */}
+      <section id="intro-content" className="section-panel overview overview-scene">
+        <div className="container">
+          <div className="overview-grid">
+            {/* LEFT */}
+            <div className="overview-left">
+              <div className="overview-kicker">Overview</div>
+
+              <h2 className="overview-title">
+                Practical governance and assurance for high-risk delivery.
+              </h2>
+
+              <p className="overview-lead">
+                GWx supports Tier 1 and Tier 2 contractors with proportionate Temporary Works
+                governance, technical coordination, and compliance assurance — designed to stand
+                up to audit, scrutiny, and real site pressures.
+              </p>
+
+              {/* ✅ Checklist-style points (staggered + ticks) */}
+              <div className="overview-checklist">
+                {/* Group 1 */}
+                <div className="check-group">
+                  <div className="check-title" style={{ "--d": "0ms" }}>
+                    What you get
+                  </div>
+                  <ul className="check-list">
+                    <li className="check-item" style={{ "--d": "250ms" }}>
+                      Clear oversight
+                    </li>
+                    <li className="check-item" style={{ "--d": "500ms" }}>
+                      Defensible systems
+                    </li>
+                    <li className="check-item" style={{ "--d": "750ms" }}>
+                      Confident delivery support
+                    </li>
+                  </ul>
+                </div>
+
+                {/* Group 2 */}
+                <div className="check-group">
+                  <div className="check-title" style={{ "--d": "1050ms" }}>
+                    How we work
+                  </div>
+                  <ul className="check-list">
+                    <li className="check-item" style={{ "--d": "1300ms" }}>
+                      Embedded alongside your team
+                    </li>
+                    <li className="check-item" style={{ "--d": "1550ms" }}>
+                      Value first, process second
+                    </li>
+                  </ul>
+                </div>
+
+                {/* Group 3 */}
+                <div className="check-group">
+                  <div className="check-title" style={{ "--d": "1850ms" }}>
+                    Where it matters
+                  </div>
+                  <ul className="check-list">
+                    <li className="check-item" style={{ "--d": "2100ms" }}>
+                      Regulated sites
+                    </li>
+                    <li className="check-item" style={{ "--d": "2350ms" }}>
+                      Complex interfaces
+                    </li>
+                    <li className="check-item" style={{ "--d": "2600ms" }}>
+                      Programme pressure
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            {/* RIGHT */}
+            <aside className="overview-right">
+              <div className="overview-card">
+                <div className="fact">
+                  <div className="fact-k">Operating level</div>
+                  <div className="fact-v">Tier 1 / Tier 2 delivery environments</div>
+                </div>
+
+                <div className="fact">
+                  <div className="fact-k">Focus</div>
+                  <div className="fact-v">Temporary Works • Assurance • Compliance</div>
+                </div>
+
+                <div className="fact">
+                  <div className="fact-k">Outputs</div>
+                  <div className="fact-v">
+                    Audit-ready evidence • Clear actions • Governance clarity
+                  </div>
+                </div>
+
+                <div className="overview-actions">
+                  <a href="#contact" className="btn btn-outline-light btn-sm">
+                    Make an enquiry
+                  </a>
+                  <a href="#/about" className="btn btn-outline-light btn-sm">
+                    About GWx
+                  </a>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      {/* ================= WHAT WE DO ================= */}
       <section id="what" className="py-5 section-panel">
         <div className="container">
           <div className="section-head">
             <h2 className="section-title">What we do</h2>
             <p className="section-sub">
-              Clear capability support — structured, defensible, aligned to real
-              delivery and regulatory scrutiny.
+              Clear, proportionate support aligned to delivery and regulatory scrutiny.
             </p>
           </div>
 
@@ -111,39 +171,27 @@ function Home() {
             {[
               [
                 "Temporary Works governance & coordination",
-                "Proportionate systems and coordination support aligned with recognised standards and PC expectations.",
+                "Proportionate systems aligned with recognised standards and PC expectations.",
               ],
               [
-                "Scaffold design management coordination & design brief support",
-                "Structured brief development, interface control, and assurance across scaffold design and delivery.",
+                "Scaffold design management",
+                "Brief development, interface control and assurance across scaffold delivery.",
               ],
               [
-                "Scheduling & sequencing for programme preparation",
-                "Sequencing logic, constructability input, and Temporary Works integration into programme planning.",
+                "Scheduling & sequencing",
+                "Constructability input and Temporary Works integration into programmes.",
               ],
               [
-                "RAMS and Integrated Management Systems",
-                "Development, review, and assurance of RAMS/IMS that withstand audit and site reality.",
+                "RAMS & Integrated Management Systems",
+                "Audit-ready documentation reflecting site reality.",
               ],
               [
-                "Tender quotations",
-                "Technical input to tender submissions: scope clarity, governance alignment, and risk visibility.",
+                "Tender & technical submissions",
+                "Scope clarity, governance alignment and risk visibility.",
               ],
               [
-                "Project support",
-                "Embedded support where capability or capacity is stretched — planning through delivery and assurance.",
-              ],
-              [
-                "Risk analysis",
-                "Identification, assessment, and mitigation of technical, compliance, and programme risk.",
-              ],
-              [
-                "Audit readiness, compliance, and assurance",
-                "Preparation for internal, client, and regulatory scrutiny with clear, auditable evidence trails.",
-              ],
-              [
-                "GAP analysis",
-                "Targeted reviews to identify governance gaps and prioritised actions to close them.",
+                "Embedded project support",
+                "Capability uplift where delivery teams are stretched.",
               ],
             ].map(([title, text]) => (
               <div className="col-md-6 col-lg-4" key={title}>
@@ -157,141 +205,32 @@ function Home() {
         </div>
       </section>
 
-      {/* SUPPORT */}
-      <section id="support" className="py-5 section-panel">
-        <div className="container">
-          <div className="section-head">
-            <h2 className="section-title">How we support clients</h2>
-            <p className="section-sub">
-              Outcome-focused support — value first, process second.
-            </p>
-          </div>
-
-          <div className="support-ledger">
-            {[
-              [
-                "Reduced risk exposure",
-                "Control of technical and Temporary Works risk before it drives disruption, rework or programme impact.",
-              ],
-              [
-                "Stronger governance",
-                "Clear ownership, escalation routes and assurance points without unnecessary bureaucracy or duplication.",
-              ],
-              [
-                "Closed compliance gaps",
-                "Targeted gap closure before issues become audit findings or regulatory challenge.",
-              ],
-              [
-                "Contractor and client alignment",
-                "Alignment between Tier 1 / Tier 2 delivery expectations and practical site implementation.",
-              ],
-              [
-                "Defensible assurance",
-                "Evidence-led governance that stands up to audits, scrutiny and independent review.",
-              ],
-            ].map(([title, text]) => (
-              <div className="support-row" key={title}>
-                <h5>{title}</h5>
-                <p>{text}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* SECTORS */}
-      <section id="sectors" className="py-5 section-panel">
-        <div className="container">
-          <div className="section-head">
-            <h2 className="section-title">Sectors & experience</h2>
-            <p className="section-sub">
-              Operating experience across regulated, high-risk and complex
-              delivery environments.
-            </p>
-          </div>
-
-          <div className="row g-3">
-            {[
-              ["Nuclear", "Highly regulated sites with intense assurance, audit and compliance scrutiny."],
-              ["Infrastructure", "Major civil and infrastructure works with complex interfaces and programme pressure."],
-              ["Industrial & process environments", "Live operational environments requiring tight control of Temporary Works and access."],
-              ["Complex construction projects", "Multi-discipline projects where sequencing, coordination and governance are critical."],
-            ].map(([title, text]) => (
-              <div className="col-md-6 col-lg-3" key={title}>
-                <div className="sector-card">
-                  <h5>{title}</h5>
-                  <p>{text}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CONTACT */}
+      {/* ================= CONTACT ================= */}
       <section id="contact" className="py-5">
         <div className="container">
           <div className="section-head">
-            <h2 className="section-title">Contact Us</h2>
+            <h2 className="section-title">Contact</h2>
           </div>
 
           <div className="row g-4">
             <div className="col-lg-5">
-<div className="contact-card">
-  <p>
-    For enquiries relating to technical support, Temporary Works
-    governance, or compliance assurance:
-  </p>
-
-  <div className="contact-line">
-    <div className="contact-k">Email</div>
-    <div className="contact-v">
-      <a href="mailto:info@gwxconsultancy.co.uk">
-        info@gwxconsultancy.co.uk
-      </a>
-    </div>
-  </div>
-
-  <div className="mt-3">
-    <a
-      href="#/about"
-      className="btn btn-outline-light btn-sm"
-    >
-      About us
-    </a>
-  </div>
-</div>
-
+              <div className="contact-card">
+                <div className="contact-line">
+                  <div className="contact-k">Email</div>
+                  <div className="contact-v">
+                    <a href="mailto:info@gwxconsultancy.co.uk">
+                      info@gwxconsultancy.co.uk
+                    </a>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div className="col-lg-7">
               <form className="form-card" onSubmit={(e) => e.preventDefault()}>
-                <div className="row g-3">
-                  <div className="col-md-6">
-                    <label className="form-label">Name</label>
-                    <input className="form-control form-control-dark" />
-                  </div>
-                  <div className="col-md-6">
-                    <label className="form-label">Organisation</label>
-                    <input className="form-control form-control-dark" />
-                  </div>
-                  <div className="col-md-6">
-                    <label className="form-label">Email</label>
-                    <input className="form-control form-control-dark" />
-                  </div>
-                  <div className="col-12">
-                    <label className="form-label">Message</label>
-                    <textarea
-                      className="form-control form-control-dark"
-                      rows="5"
-                    />
-                  </div>
-                  <div className="col-12">
-                    <button className="btn btn-outline-light btn-sm">
-                      Send
-                    </button>
-                  </div>
-                </div>
+                <label className="form-label">Message</label>
+                <textarea className="form-control form-control-dark" rows="4" />
+                <button className="btn btn-outline-light btn-sm mt-3">Send</button>
               </form>
             </div>
           </div>
@@ -301,72 +240,45 @@ function Home() {
   );
 }
 
+/* =========================
+   APP SHELL
+========================= */
 function AppShell() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const goHomeAndScroll = (id) => {
-    if (location.pathname !== "/") {
-      navigate("/");
-      setTimeout(() => {
-        const el = document.getElementById(id);
-        if (el) el.scrollIntoView({ behavior: "smooth" });
-      }, 50);
-    } else {
-      const el = document.getElementById(id);
-      if (el) el.scrollIntoView({ behavior: "smooth" });
-    }
-  };
+  useEffect(() => {
+    const hero = document.getElementById("hero");
+    const nav = document.querySelector(".nav-panel");
+    if (!hero || !nav) return;
+
+    const onScroll = () => {
+      if (hero.getBoundingClientRect().bottom <= 0) {
+        nav.classList.add("is-visible");
+      } else {
+        nav.classList.remove("is-visible");
+      }
+    };
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [location.pathname]);
 
   return (
     <div className="site-card">
       <header>
         <div className="nav-panel">
           <nav className="navbar">
-            <div className="container">
-              <a
-                className="navbar-brand"
-                href="#/"
-                onClick={(e) => {
-                  e.preventDefault();
-                  navigate("/");
-                }}
-              >
-                <img
-                  src={import.meta.env.BASE_URL + "logo.svg"}
-                  alt="GWx Logo"
-                  height="28"
-                  className="me-2 logo-swap"
-                />
-                GWx Consultancy Services Ltd
+            <div className="nav-inline">
+              <a className="navbar-brand" onClick={() => navigate("/")}>
+                GWx
               </a>
 
               <ul className="navbar-nav">
-                <li className="nav-item">
-                  <a className="nav-link" href="#what" onClick={(e) => { e.preventDefault(); goHomeAndScroll("what"); }}>
-                    What we do
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link" href="#support" onClick={(e) => { e.preventDefault(); goHomeAndScroll("support"); }}>
-                    Support
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link" href="#sectors" onClick={(e) => { e.preventDefault(); goHomeAndScroll("sectors"); }}>
-                    Sectors
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link" href="#/about" onClick={(e) => { e.preventDefault(); navigate("/about"); }}>
-                    About
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link nav-link-cta" href="#contact" onClick={(e) => { e.preventDefault(); goHomeAndScroll("contact"); }}>
-                    Contact
-                  </a>
-                </li>
+                <li><a onClick={() => navigate("/")}>Home</a></li>
+                <li><a onClick={() => navigate("/about")}>About</a></li>
+                <li><a href="#contact">Contact</a></li>
               </ul>
             </div>
           </nav>
