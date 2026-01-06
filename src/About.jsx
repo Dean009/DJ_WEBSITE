@@ -1,6 +1,24 @@
+// src/About.jsx
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function About() {
+  const navigate = useNavigate();
+
+  const goHome = () => {
+    navigate("/");
+    // home route mounts immediately; small delay lets DOM paint
+    setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 50);
+  };
+
+  const goContact = () => {
+    navigate("/");
+    setTimeout(() => {
+      const el = document.getElementById("contact");
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+    }, 120);
+  };
+
   return (
     <main className="doc-page">
       <section className="doc-hero">
@@ -14,9 +32,23 @@ export default function About() {
               extensive hands-on delivery experience in high-risk and heavily regulated environments.
             </p>
             <p>
-              Our focus is on proportionate, defensible governance that supports safe delivery while remaining practical,
+              We focus on proportionate, defensible governance that supports safe delivery while remaining practical,
               commercially aware and aligned with programme pressures.
             </p>
+          </div>
+
+          <div style={{ marginTop: 14 }}>
+            <button type="button" className="btn btn-outline-light btn-sm" onClick={goHome}>
+              Back to home
+            </button>
+            <button
+              type="button"
+              className="btn btn-outline-light btn-sm"
+              style={{ marginLeft: 10 }}
+              onClick={goContact}
+            >
+              Contact
+            </button>
           </div>
         </div>
       </section>
@@ -38,12 +70,11 @@ export default function About() {
                 <p>
                   He has operated within Tier 1 contractor environments and heavily regulated sites, with direct responsibility
                   for Project Management functions, Temporary Works coordination, interface management, and the development of
-                  robust, auditable systems. Jamie brings a practical, delivery-focused approach shaped by real project pressures,
-                  regulatory scrutiny, and the need to balance safety, programme and commercial realities.
+                  robust, auditable systems.
                 </p>
                 <p>
-                  His work focuses on building proportionate, defensible governance that supports safe delivery without unnecessary
-                  complication.
+                  Jamie brings a practical, delivery-focused approach shaped by real project pressures, regulatory scrutiny, and
+                  the need to balance safety, programme and commercial realities.
                 </p>
               </div>
             </article>

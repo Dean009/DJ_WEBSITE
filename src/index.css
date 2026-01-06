@@ -1,3 +1,5 @@
+/* src/index.css */
+
 :root{
   --bg:#0F1115;
   --text:#FFFFFF;
@@ -12,14 +14,37 @@
 
   /* 0 = full hero, 1 = collapsed */
   --hero-progress: 0;
+
+  /* =========================================================
+     TYPE SCALE (unifies sizing without breaking Capabilities)
+     ========================================================= */
+  --type-body: clamp(16px, 1.15vw + 12px, 18px);
+  --type-small: clamp(14px, 0.85vw + 11px, 15px);
+  --type-kicker: 13px;
 }
 
-html,body,#root{
+/* ✅ CRITICAL: allow scroll */
+html, body{
+  height: auto !important;
+  min-height: 100% !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
   margin:0;
   background:var(--bg);
   color:var(--muted);
   font-family:'IBM Plex Sans',system-ui,-apple-system,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif;
   scroll-behavior:smooth;
+
+  /* ✅ unified default text size */
+  font-size: var(--type-body);
+}
+
+/* ✅ CRITICAL: allow page to extend beyond viewport */
+#root{
+  min-height: 100vh !important;
+  height: auto !important;
+  overflow-x: hidden !important;
+  overflow-y: visible !important;
 }
 
 a{ color:inherit; text-decoration:none; }
@@ -31,6 +56,13 @@ a{ color:inherit; text-decoration:none; }
 }
 
 .row{ --bs-gutter-x: 1rem; }
+
+/* ✅ CRITICAL: do not trap scroll */
+.site-card{
+  min-height: 100vh;
+  height: auto;
+  overflow: visible !important;
+}
 
 /* ================= NAVBAR (hidden until past hero) ================= */
 .nav-panel{
@@ -100,7 +132,10 @@ a{ color:inherit; text-decoration:none; }
   display:flex;
   align-items:center;
   justify-content:center;
-  overflow:hidden;
+  position: relative;
+
+  /* ✅ FIX: do NOT trap scroll */
+  overflow: visible;
 }
 
 .hero-bg{ position:relative; }
@@ -162,21 +197,12 @@ a{ color:inherit; text-decoration:none; }
   color:var(--subtle);
 }
 
-/* taglines fade away as we scroll */
-.hero-kicker.delayed{
-  opacity: calc(1 - var(--hero-progress));
-  transform: translateY(calc(6px + (var(--hero-progress) * -10px)));
-  transition: opacity 1200ms cubic-bezier(.2,.9,.2,1), transform 1200ms cubic-bezier(.2,.9,.2,1);
-  transition-delay:500ms;
-}
-
 /* ================= SECTIONS ================= */
 .section-panel{
   border-top:1px solid var(--border2);
   border-bottom:1px solid var(--border2);
 }
 
-/* About intro */
 .about-intro{
   min-height:auto;
   display:block;
@@ -188,7 +214,7 @@ a{ color:inherit; text-decoration:none; }
 /* shared type */
 .overview-kicker{
   color:var(--subtle);
-  font-size:13px;
+  font-size:var(--type-kicker);
   text-transform:uppercase;
   letter-spacing:3px;
   margin-bottom:8px;
@@ -203,7 +229,7 @@ a{ color:inherit; text-decoration:none; }
 }
 .overview-lead{
   color:var(--muted);
-  font-size:clamp(17px,1.9vw,22px);
+  font-size:var(--type-body);
   line-height:1.5;
   margin:0 0 12px 0;
   max-width:78ch;
@@ -255,28 +281,25 @@ a{ color:inherit; text-decoration:none; }
 
 .overview-grid{ display:grid; grid-template-columns:1fr; gap:12px; }
 
-/* ✅ FIXED SPACING + STRUCTURE */
 .overview-checklist{
   border-top:1px solid var(--border2);
-  margin-top:12px;
-  padding-top:12px;
+  margin-top:10px;
+  padding-top:10px;
   display:grid;
-  gap:16px;
+  gap:12px;
 }
 
 .overview-split{
   display:grid;
   grid-template-columns: 1.15fr 0.85fr;
-  gap: 18px;
+  gap: 16px;
   align-items:start;
 }
 
-/* facts column — no “card”, match checklist rhythm */
 .overview-facts{
   background:transparent;
   border:none;
   padding:0;
-  margin:0;
   opacity:0;
   transform:translateY(10px);
 }
@@ -287,31 +310,29 @@ a{ color:inherit; text-decoration:none; }
   transition-delay: 520ms;
 }
 
-.overview-facts .fact{ margin:0 0 14px 0; }
+.overview-facts .fact{ margin:0 0 10px 0; }
 .overview-facts .fact:last-child{ margin-bottom:0; }
 .overview-facts .fact-k{
   color:var(--subtle);
-  font-size:13px;
+  font-size:var(--type-kicker);
   text-transform:uppercase;
   letter-spacing:1.3px;
-  margin:0 0 5px 0;
+  margin:0 0 4px 0;
 }
 .overview-facts .fact-v{
   color:var(--muted);
-  font-size:18px;
+  font-size:var(--type-body);
   line-height:1.45;
   margin:0;
 }
 
 /* ticks */
-.check-group{ margin:0; }
-
 .check-title{
   color:var(--subtle);
-  font-size:13px;
+  font-size:var(--type-kicker);
   text-transform:uppercase;
   letter-spacing:1.3px;
-  margin:0 0 10px 0;
+  margin-bottom:7px;
   opacity:0;
   transform:translateY(7px);
 }
@@ -321,20 +342,18 @@ a{ color:inherit; text-decoration:none; }
   transition: opacity 650ms ease, transform 650ms cubic-bezier(.2,.9,.2,1);
   transition-delay: var(--d, 0ms);
 }
-
 .check-list{
   list-style:none;
   margin:0;
   padding:0;
   display:grid;
-  gap:9px;
+  gap:7px;
 }
-
 .check-item{
   position:relative;
   padding-left:30px;
   color:var(--muted);
-  font-size:18px;
+  font-size:var(--type-body);
   line-height:1.45;
   opacity:0;
   transform:translateY(9px);
@@ -345,12 +364,11 @@ a{ color:inherit; text-decoration:none; }
   transition: opacity 650ms ease, transform 650ms cubic-bezier(.2,.9,.2,1);
   transition-delay: var(--d, 0ms);
 }
-
 .check-item::before{
   content:"✓";
   position:absolute;
   left:0;
-  top:1px;
+  top:0;
   width:20px;
   height:20px;
   display:grid;
@@ -375,8 +393,8 @@ a{ color:inherit; text-decoration:none; }
   display:flex;
   gap:10px;
   flex-wrap:wrap;
-  padding-top:12px;
-  margin-top:6px;
+  padding-top:10px;
+  margin-top:2px;
   border-top:1px solid var(--border2);
   opacity:0;
   transform:translateY(7px);
@@ -398,36 +416,185 @@ a{ color:inherit; text-decoration:none; }
   padding:14px;
 }
 
-/* useful section bits (if present) */
-.section-head{ margin-bottom: 12px; }
-.section-title{
+/* Accordion styling (for your Capabilities component) */
+.cap-accordion{ display:grid; gap:10px; }
+.cap-acc-item{ border:1px solid var(--border2); border-radius: var(--radius); overflow:hidden; }
+.cap-acc-btn{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  padding:12px 14px;
+  background: rgba(15,17,21,.25);
+  border:0;
   color: var(--text);
-  font-weight: 650;
+  font-weight: 600;
   letter-spacing: 0.2px;
-  margin: 0 0 8px 0;
+  cursor:pointer;
 }
-.section-sub{
-  color: var(--subtle);
-  margin: 0;
-  max-width: 78ch;
+.cap-acc-btn:hover{ background: rgba(177,180,187,0.06); }
+.cap-acc-icon{ color: var(--subtle); font-size: 18px; line-height: 1; }
+.cap-acc-panel{
+  max-height:0;
+  overflow:hidden;
+  transition: max-height 260ms ease;
+}
+.cap-acc-panel.open{ max-height: 700px; }
+.cap-card-lite{
+  background: rgba(15,17,21,.18);
+  border: 0;
+  padding: 14px;
+}
+.cap-card-lite li{
+  color: var(--muted);
+  font-size: var(--type-body);
+  line-height: 1.45;
 }
 
-/* ================= CONTACT FORM (optional) ================= */
-/* If you want grey later, this is correct — but you said leave white, so no forcing here. */
-/* Keep this block empty intentionally to avoid fighting Bootstrap. */
+/* Contact */
+.contact-line{
+  display:grid;
+  grid-template-columns: 90px 1fr;
+  gap:10px;
+  padding: 10px 0;
+  border-top: 1px solid var(--border2);
+}
+.contact-line:first-child{ border-top:0; padding-top:0; }
+.contact-k{
+  color: var(--subtle);
+  font-size: var(--type-kicker);
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+}
+.contact-v{
+  color: var(--muted);
+  font-size: var(--type-small);
+}
+
+/* ===== About page styles (your About.jsx uses these classes) ===== */
+.doc-page{ padding-top: 0; }
+.doc-hero{ padding: calc(var(--section-pad) * 1.6) 0 var(--section-pad); }
+.doc-meta{
+  color: var(--subtle);
+  font-size: var(--type-kicker);
+  letter-spacing: 2.8px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.doc-title{
+  color: var(--text);
+  font-weight: 700;
+  letter-spacing: .2px;
+  margin: 0 0 12px 0;
+  font-size: clamp(40px, 5vw, 64px);
+  line-height: 1.05;
+}
+.doc-lead p{
+  color: var(--muted);
+  font-size: var(--type-body);
+  line-height: 1.55;
+  margin: 0 0 10px 0;
+  max-width: 80ch;
+}
+.doc-body{ padding: var(--section-pad) 0 calc(var(--section-pad) * 1.2); }
+.bio-grid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.bio-block{
+  background: rgba(15,17,21,.25);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  padding: 14px;
+}
+.bio-name{
+  color: var(--text);
+  margin: 0 0 8px 0;
+  font-weight: 650;
+  letter-spacing: .2px;
+  font-size: var(--type-body);
+}
+.bio-text p{
+  margin: 0 0 10px 0;
+  color: var(--muted);
+  line-height: 1.55;
+  font-size: var(--type-small);
+}
+.bio-text p:last-child{ margin-bottom: 0; }
 
 /* responsive */
 @media(max-width:992px){
   .overview-split{ grid-template-columns:1fr; }
-  .overview-facts{ padding-top: 6px; }
+  .bio-grid{ grid-template-columns: 1fr; }
 }
-
 @media(max-width:480px){
   .hero-kicker{ font-size:14px; letter-spacing:2.6px; }
   .hero-title-big{ font-size:clamp(64px,16vw,120px); }
   .navbar-nav{ gap:10px; }
-  .check-item{ font-size:16px; }
-  .overview-facts .fact-v{ font-size:16px; }
+  .check-item{ font-size: var(--type-body); }
+  .overview-facts .fact-v{ font-size: var(--type-body); }
   .container{ padding-left:10px !important; padding-right:10px !important; }
   .wordflow .wf-word{ filter:none; }
+}
+
+/* =========================================================
+   OVERVIEW FACTS – MATCH TICKS + SIT QUIETLY TO THE SIDE
+   (append-only; keeps your current layout working)
+   ========================================================= */
+
+/* give the split more breathing room so it feels intentional */
+.overview-split{
+  gap: 22px;
+}
+
+/* make facts feel like a "supporting" column */
+.overview-facts{
+  border-left: 1px solid rgba(177,180,187,0.12);
+  padding-left: 14px;
+}
+
+/* unify text sizing with ticks */
+.overview-facts .fact-v{
+  font-size: var(--type-body) !important;
+  line-height: 1.45 !important;
+  margin: 0;
+}
+
+/* tighten label spacing + reduce visual weight */
+.overview-facts .fact-k{
+  font-size: var(--type-kicker) !important;
+  letter-spacing: 1.2px !important;
+  margin: 0 0 2px 0 !important;
+  opacity: 0.9;
+}
+
+/* make each fact block tighter so it reads like a checklist companion */
+.overview-facts .fact{
+  margin: 0 0 12px 0 !important;
+}
+.overview-facts .fact:last-child{
+  margin-bottom: 0 !important;
+}
+
+/* responsive: on mobile, it drops under ticks nicely */
+@media (max-width: 992px){
+  .overview-facts{
+    border-left: 0;
+    padding-left: 0;
+    border-top: 1px solid rgba(177,180,187,0.10);
+    padding-top: 12px;
+  }
+}
+
+/* make About intro section itself rise/fade like overview */
+#about-intro{
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 650ms ease, transform 650ms cubic-bezier(.2,.9,.2,1);
+}
+#about-intro.in-view{
+  opacity: 1;
+  transform: translateY(0);
 }
