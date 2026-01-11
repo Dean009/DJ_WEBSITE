@@ -544,25 +544,21 @@ a{ color:inherit; text-decoration:none; }
    (append-only; keeps your current layout working)
    ========================================================= */
 
-/* give the split more breathing room so it feels intentional */
 .overview-split{
   gap: 22px;
 }
 
-/* make facts feel like a "supporting" column */
 .overview-facts{
   border-left: 1px solid rgba(177,180,187,0.12);
   padding-left: 14px;
 }
 
-/* unify text sizing with ticks */
 .overview-facts .fact-v{
   font-size: var(--type-body) !important;
   line-height: 1.45 !important;
   margin: 0;
 }
 
-/* tighten label spacing + reduce visual weight */
 .overview-facts .fact-k{
   font-size: var(--type-kicker) !important;
   letter-spacing: 1.2px !important;
@@ -570,7 +566,6 @@ a{ color:inherit; text-decoration:none; }
   opacity: 0.9;
 }
 
-/* make each fact block tighter so it reads like a checklist companion */
 .overview-facts .fact{
   margin: 0 0 12px 0 !important;
 }
@@ -578,7 +573,6 @@ a{ color:inherit; text-decoration:none; }
   margin-bottom: 0 !important;
 }
 
-/* responsive: on mobile, it drops under ticks nicely */
 @media (max-width: 992px){
   .overview-facts{
     border-left: 0;
@@ -588,13 +582,21 @@ a{ color:inherit; text-decoration:none; }
   }
 }
 
-/* make About intro section itself rise/fade like overview */
+/* =========================================================
+   FIX: the "gap" is your #about-intro being hidden (opacity:0)
+   If the observer doesn’t add .in-view, it becomes invisible
+   but still occupies height. Keep it visible.
+   ========================================================= */
 #about-intro{
-  opacity: 0;
-  transform: translateY(22px);
-  transition: opacity 650ms ease, transform 650ms cubic-bezier(.2,.9,.2,1);
+  opacity: 1 !important;
+  transform: none !important;
 }
-#about-intro.in-view{
-  opacity: 1;
-  transform: translateY(0);
+
+/* your gap tweaks can stay (they’re harmless) */
+.hero + .section-panel{
+  padding-top: calc(var(--section-pad) * 0.45);
+  border-top: none;
+}
+#hero + #about-intro{
+  padding-top: calc(var(--section-pad) * 0.25) !important;
 }

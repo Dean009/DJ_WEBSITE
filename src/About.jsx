@@ -1,24 +1,7 @@
 // src/About.jsx
 import React from "react";
-import { useNavigate } from "react-router-dom";
 
 export default function About() {
-  const navigate = useNavigate();
-
-  const goHome = () => {
-    navigate("/");
-    // home route mounts immediately; small delay lets DOM paint
-    setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 50);
-  };
-
-  const goContact = () => {
-    navigate("/");
-    setTimeout(() => {
-      const el = document.getElementById("contact");
-      if (el) el.scrollIntoView({ behavior: "smooth" });
-    }, 120);
-  };
-
   return (
     <main className="doc-page">
       <section className="doc-hero">
@@ -38,17 +21,12 @@ export default function About() {
           </div>
 
           <div style={{ marginTop: 14 }}>
-            <button type="button" className="btn btn-outline-light btn-sm" onClick={goHome}>
+            <a href="#/" className="btn btn-outline-light btn-sm">
               Back to home
-            </button>
-            <button
-              type="button"
-              className="btn btn-outline-light btn-sm"
-              style={{ marginLeft: 10 }}
-              onClick={goContact}
-            >
+            </a>
+            <a href="#/?#contact" className="btn btn-outline-light btn-sm" style={{ marginLeft: 10 }}>
               Contact
-            </button>
+            </a>
           </div>
         </div>
       </section>

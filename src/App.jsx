@@ -2,6 +2,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import About from "./About";
+import Services from "./Services";
 import { wrapGWx } from "./utils/animateGWx";
 
 /* =========================
@@ -32,173 +33,14 @@ function AnimatedText({ text, trigger, baseDelay = 0, step = 70 }) {
 }
 
 /* =========================
-   CAPABILITIES (NO BOOTSTRAP JS REQUIRED)
-========================= */
-function Capabilities() {
-  const groups = [
-    {
-      id: "pm",
-      title: "Project Management & Governance",
-      items: [
-        "Project management support",
-        "Project governance frameworks and role clarity",
-        "Stakeholder and interface management",
-        "Change management and controlled decision-making",
-        "Assurance of planning, sequencing, and execution strategies",
-        "Support to duty holders and senior management",
-      ],
-    },
-    {
-      id: "tender",
-      title: "Tendering & Pre-Construction Support",
-      items: [
-        "Tender strategy and technical input",
-        "Scope, assumptions, and exclusions review",
-        "Risk identification and mitigation at tender stage",
-        "Input to methodologies, programmes, and sequencing",
-        "Technical clarifications and bid support",
-      ],
-    },
-    {
-      id: "risk",
-      title: "Risk Management & Risk Analysis",
-      items: [
-        "Project risk identification and analysis",
-        "Risk registers and mitigation strategies",
-        "Temporary Works and access risk reviews",
-        "Early-stage risk workshops and reviews",
-        "Alignment of risk controls with RAMS and delivery strategy",
-      ],
-    },
-    {
-      id: "planning",
-      title: "Planning, Scheduling & Programming Support",
-      items: [
-        "Review and challenge of construction programmes",
-        "Sequencing and constructability input",
-        "Interface planning between trades and work fronts",
-        "Integration of Temporary Works and access into programmes",
-        "Support to planners and project teams",
-      ],
-    },
-    {
-      id: "tw",
-      title: "Temporary Works Management & Governance",
-      items: [
-        "Temporary Works management frameworks",
-        "Acting as Temporary Works Coordinator (TWC)",
-        "TWC support and advisory roles",
-        "Temporary Works Design Brief preparation and coordination",
-        "Design route selection (TG20 / standard systems / bespoke design)",
-        "Design review, acceptance, and change control",
-        "Technical query management",
-        "Permit to load / modify / dismantle coordination",
-      ],
-    },
-    {
-      id: "scaffold",
-      title: "Scaffolding & Access Consultancy",
-      items: [
-        "Scaffold and access planning strategies",
-        "TG20 compliance assessments and design route decisions",
-        "System scaffold compliance reviews (manufacturer-based)",
-        "Scaffold design coordination and technical review",
-        "Access feasibility and constraint assessments",
-        "Interface management with permanent works and other trades",
-      ],
-    },
-    {
-      id: "rams",
-      title: "Construction Planning, RAMS & Work Packs",
-      items: [
-        "Risk Assessments and Method Statements (RAMS)",
-        "Review and assurance of RAMS prepared by others",
-        "Development and review of work packs",
-        "Integration of Temporary Works controls into work packs",
-        "Support with permits and control documentation",
-      ],
-    },
-    {
-      id: "surveys",
-      title: "Site Surveys & Scope Definition",
-      items: [
-        "Site surveys and walkdowns",
-        "Scope definition and clarification",
-        "Identification of constraints and interfaces",
-        "Access and logistics planning",
-        "Early feasibility and constructability reviews",
-      ],
-    },
-    {
-      id: "assurance",
-      title: "Technical Assurance & Independent Review",
-      items: [
-        "Independent review of designs, calculations, and proposals",
-        "Constructability and buildability reviews",
-        "Risk-based assurance of Temporary Works arrangements",
-        "Compliance checks against standards, guidance, and client requirements",
-        "Second-line assurance for clients lacking in-house capability",
-      ],
-    },
-    {
-      id: "ims",
-      title: "IMS, Compliance & Governance Systems",
-      items: [
-        "Integrated Management System (IMS) development",
-        "Policies, procedures, forms, and registers",
-        "Temporary Works procedures and form suites",
-        "Audit-ready governance frameworks",
-        "Support with PQQs, audits, and assurance requirements",
-      ],
-    },
-  ];
-
-  const [openId, setOpenId] = useState(groups[0].id);
-
-  return (
-    <div className="cap-accordion">
-      {groups.map((g) => {
-        const isOpen = openId === g.id;
-        return (
-          <div className="cap-acc-item" key={g.id}>
-            <button
-              type="button"
-              className={`cap-acc-btn ${isOpen ? "open" : ""}`}
-              onClick={() => setOpenId(isOpen ? "" : g.id)}
-              aria-expanded={isOpen ? "true" : "false"}
-            >
-              <span>{g.title}</span>
-              <span className="cap-acc-icon">{isOpen ? "–" : "+"}</span>
-            </button>
-
-            <div className={`cap-acc-panel ${isOpen ? "open" : ""}`}>
-              <div className="cap-card cap-card-lite">
-                <ul className="mb-0" style={{ paddingLeft: 18 }}>
-                  {g.items.map((it) => (
-                    <li key={it} style={{ marginBottom: 6 }}>
-                      {it}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
-/* =========================
    HOME
 ========================= */
 function Home() {
   const [heroTitleReady, setHeroTitleReady] = useState(false);
   const [heroTagsReady, setHeroTagsReady] = useState(false);
   const [aboutInView, setAboutInView] = useState(false);
-  const [overviewInView, setOverviewInView] = useState(false);
 
-  // ✅ HashRouter-safe scroll helper (works in dev + GH Pages)
+  // HashRouter-safe scroll helper
   const safeScroll = (id) => {
     if (!window.location.hash.startsWith("#/")) window.location.hash = "#/";
     setTimeout(() => {
@@ -216,7 +58,6 @@ function Home() {
     };
   }, []);
 
-  // About intro trigger (word-by-word)
   useEffect(() => {
     const el = document.getElementById("about-intro");
     if (!el) return;
@@ -235,34 +76,22 @@ function Home() {
     return () => io.disconnect();
   }, []);
 
-  // ✅ One observer to add "in-view" on key sections + set overview trigger
   useEffect(() => {
-    const ids = ["about-intro", "overview", "what", "contact"];
+    const el = document.getElementById("overview");
+    if (!el) return;
 
     const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("in-view");
-            if (entry.target.id === "overview") setOverviewInView(true);
-          }
-        });
+      ([entry]) => {
+        if (entry.isIntersecting) el.classList.add("in-view");
       },
-      {
-        threshold: 0.14,
-        rootMargin: "0px 0px -10% 0px",
-      }
+      { threshold: 0.18 }
     );
 
-    ids.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) io.observe(el);
-    });
-
+    io.observe(el);
     return () => io.disconnect();
   }, []);
 
-  // Scroll-driven hero collapse: writes --hero-progress (0..1)
+  // Scroll-driven hero collapse
   useEffect(() => {
     let raf = 0;
 
@@ -364,6 +193,24 @@ function Home() {
             <p className="overview-lead about-intro-lead2">
               <AnimatedText text={aboutPara3} trigger={aboutInView} baseDelay={1220} step={42} />
             </p>
+
+            {/* optional CTA kept lightweight */}
+            <div className="overview-ctas" style={{ borderTop: "none", paddingTop: 0, marginTop: 10, opacity: 1, transform: "none" }}>
+              <button
+                type="button"
+                className="btn btn-outline-light btn-sm"
+                onClick={() => (window.location.hash = "#/services")}
+              >
+                View services
+              </button>
+              <button
+                type="button"
+                className="btn btn-outline-light btn-sm"
+                onClick={() => safeScroll("contact")}
+              >
+                Make an enquiry
+              </button>
+            </div>
           </div>
         </div>
       </section>
@@ -375,24 +222,19 @@ function Home() {
             <div className="overview-left">
               <div className="overview-kicker">Overview</div>
 
-              {/* ✅ GWx pops in the title */}
               <h2 className="overview-title">
-                <AnimatedText
-                  text="GWx delivers clarity, control and defensible decision-making — without bureaucracy."
-                  trigger={overviewInView}
-                  baseDelay={0}
-                  step={55}
-                />
+                Clarity, control and defensible decision-making — without bureaucracy.
               </h2>
 
-              {/* ✅ GWx pops in THIS paragraph too */}
               <p className="overview-lead">
                 <AnimatedText
-                  text="GWx provides independent project management, Temporary Works and governance-led assurance support across construction, industrial, infrastructure and regulated environments. Our work is grounded in real site delivery and stakeholder-level experience — aligned to audit, scrutiny and programme pressure."
-                  trigger={overviewInView}
-                  baseDelay={320}
-                  step={30}
-                />
+                  text="GWx provides independent project management, Temporary Works and governance-led assurance support across construction, industrial, infrastructure and regulated environments."
+                  trigger={true}
+                  baseDelay={0}
+                  step={0}
+                />{" "}
+                Our work is grounded in real site delivery and stakeholder-level experience — aligned to audit,
+                scrutiny and programme pressure.
               </p>
 
               <div className="overview-checklist">
@@ -468,35 +310,25 @@ function Home() {
                   </ul>
                 </div>
 
-               <div className="overview-ctas">
-  <button
-    type="button"
-    className="btn btn-outline-light btn-sm"
-    onClick={() => safeScroll("contact")}
-  >
-    Make an enquiry
-  </button>
-</div>
-
+                <div className="overview-ctas">
+                  <button
+                    type="button"
+                    className="btn btn-outline-light btn-sm"
+                    onClick={() => (window.location.hash = "#/services")}
+                  >
+                    View services
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-outline-light btn-sm"
+                    onClick={() => safeScroll("contact")}
+                  >
+                    Make an enquiry
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* CAPABILITIES */}
-      <section id="what" className="py-5 section-panel">
-        <div className="container">
-          <div className="mb-3">
-            <div className="overview-kicker">Core capability overview</div>
-            <h2 className="overview-title">Capabilities</h2>
-            <p className="overview-lead">
-              Governance-led support across delivery, Temporary Works, assurance and documentation —
-              aligned to regulated environments and high-risk projects.
-            </p>
-          </div>
-
-          <Capabilities />
         </div>
       </section>
 
@@ -557,7 +389,7 @@ function AppShell() {
     wrapGWx(rootRef.current);
   }, [location.pathname]);
 
-  // ✅ nav: hidden on hero only (home), always visible on /about
+  // nav: hidden on hero only (home), always visible on other pages
   useEffect(() => {
     const nav = document.querySelector(".nav-panel");
     if (!nav) return;
@@ -609,10 +441,18 @@ function AppShell() {
               </span>
 
               <ul className="navbar-nav">
-                <li><a onClick={() => goHomeAndScroll("overview")}>Overview</a></li>
-                <li><a onClick={() => goHomeAndScroll("what")}>Capabilities</a></li>
-                <li><a onClick={() => goHomeAndScroll("contact")}>Contact</a></li>
-                <li><a onClick={() => navigate("/about")}>About</a></li>
+                <li>
+                  <a onClick={() => goHomeAndScroll("overview")}>Overview</a>
+                </li>
+                <li>
+                  <a onClick={() => navigate("/services")}>Services</a>
+                </li>
+                <li>
+                  <a onClick={() => goHomeAndScroll("contact")}>Contact</a>
+                </li>
+                <li>
+                  <a onClick={() => navigate("/about")}>About</a>
+                </li>
               </ul>
             </div>
           </nav>
@@ -621,6 +461,7 @@ function AppShell() {
 
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/services" element={<Services />} />
         <Route path="/about" element={<About />} />
       </Routes>
     </div>
