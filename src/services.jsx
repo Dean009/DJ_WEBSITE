@@ -1,33 +1,108 @@
-// src/Services.jsx
-import React from "react";
-import { useNavigate } from "react-router-dom";
+// src/services.jsx
+import React, { useEffect, useMemo, useState } from "react";
+
+function AnimatedText({ text, trigger, baseDelay = 0, step = 55 }) {
+  const tokens = useMemo(() => text.split(/(\s+)/g).filter(Boolean), [text]);
+
+  return (
+    <span className={`wordflow ${trigger ? "play" : ""}`}>
+      {tokens.map((tok, i) => {
+        const isSpace = /^\s+$/.test(tok);
+        const isGWx = tok === "GWx";
+        if (isSpace) return <span key={i}>{tok}</span>;
+
+        return (
+          <span
+            key={i}
+            className={`wf-word ${isGWx ? "gwx-pop" : ""}`}
+            style={{ "--d": `${baseDelay + i * step}ms` }}
+          >
+            {tok}
+          </span>
+        );
+      })}
+    </span>
+  );
+}
 
 export default function Services() {
-  const navigate = useNavigate();
+  const [play, setPlay] = useState(false);
 
-  // HashRouter-safe: go Home, then scroll to #contact once DOM exists
-  const scrollToContact = () => {
-    // 1) ensure we are on the Home route
-    navigate("/");
+  // Trigger animations + make svc-cards visible (your CSS expects .in-view)
+  useEffect(() => {
+    const t = setTimeout(() => setPlay(true), 120);
+    return () => clearTimeout(t);
+  }, []);
 
-    // 2) wait a tick for Home to render, then scroll
-    setTimeout(() => {
-      const el = document.getElementById("contact");
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth", block: "start" });
-      } else {
-        // fallback: if for any reason the element isn't there yet, try again shortly
-        setTimeout(() => {
-          const el2 = document.getElementById("contact");
-          if (el2) el2.scrollIntoView({ behavior: "smooth", block: "start" });
-        }, 120);
-      }
-    }, 80);
+  // Assets (GH Pages safe)
+  const IMG_1 = import.meta.env.BASE_URL + "GWx2.png";
+  const IMG_2 = import.meta.env.BASE_URL + "GWx3.png";
+  const LOGO = import.meta.env.BASE_URL + "logo.png";
+
+  // ✅ swapped: show GWx3 first, then GWx2
+  const TOP_IMAGE = IMG_2;
+  const SECOND_IMAGE = IMG_1;
+
+  const services = [
+    {
+      title: "Project Management",
+      desc:
+        "GWx provides experienced project management support across complex construction and industrial environments. We work client-side or alongside delivery teams to manage scope, programme, cost, risk, and interfaces, ensuring delivery is controlled, compliant and well governed.",
+    },
+    {
+      title: "Temporary Works Management & Coordination",
+      desc:
+        "Provision of Temporary Works Coordinator (TWC) and Temporary Works Supervisor (TWS) support in line with BS 5975. This includes planning, classification, design brief preparation, design management, coordination, and control from concept through to dismantle.",
+    },
+    {
+      title: "Temporary Works Governance & Assurance",
+      desc:
+        "Independent governance and assurance of Temporary Works systems, including reviews of processes, documentation, roles, and compliance. The aim is to ensure risks are properly controlled and assurance arrangements are robust, auditable, and defensible.",
+    },
+    {
+      title: "Scaffolding & Access Strategy",
+      desc:
+        "Strategic support for scaffolding and access solutions, focusing on buildability, efficiency, sequencing, and compliance. This includes early engagement, access planning, constructability input, and delivery support.",
+    },
+    {
+      title: "Risk, Methodology & Buildability Reviews",
+      desc:
+        "Structured reviews of risk assessments, method statements and construction methodologies to identify gaps, challenge assumptions and improve buildability, with a strong focus on practical site delivery.",
+    },
+    {
+      title: "Construction Assurance & Compliance Support",
+      desc:
+        "Support to help clients demonstrate compliance with internal standards, contractual requirements and regulatory expectations through audits, inspections, and assurance reviews.",
+    },
+    {
+      title: "Interface & Stakeholder Management",
+      desc:
+        "Support with managing technical, organisational and contractor interfaces so responsibilities are clear, information flows correctly and risks don’t fall between parties.",
+    },
+    {
+      title: "Integrated Management System (IMS) Development & Support",
+      desc:
+        "Development and improvement of Integrated Management Systems aligned to ISO standards, including policies, procedures, document control, and governance structures that work in live construction environments.",
+    },
+    {
+      title: "Independent Technical & Delivery Reviews",
+      desc:
+        "Independent, senior-level reviews of projects, Temporary Works arrangements and delivery strategies to provide clarity, challenge, and confidence on complex or high-risk scopes.",
+    },
+    {
+      title: "Tendering Support & Pricing / Commercial Structuring",
+      desc:
+        "Support with tender responses, pricing structures, and commercial pack development to present a clear, professional offer. This includes scope clarification, pricing breakdown, assumptions/exclusions, and helping shape a tender submission so it’s easy for clients to evaluate and award.",
+    },
+  ];
+
+  const goToContact = () => {
+    // HashRouter-safe: go home and jump to the contact form section
+    window.location.hash = "#/?#contact";
   };
 
   return (
-    <main className="doc-page">
-      {/* HERO */}
+    <main className="doc-page services-page">
       <section className="doc-hero">
         <div className="container">
           <div className="doc-meta">SERVICES</div>
@@ -35,132 +110,136 @@ export default function Services() {
 
           <div className="doc-lead">
             <p>
-              GWx provides governance-led project, Temporary Works and assurance
-              support across complex construction, industrial and regulated
-              environments.
+              <AnimatedText
+                text="GWx provides governance-led support across project delivery, Temporary Works, assurance and documentation — aligned to regulated environments and high-risk scopes."
+                trigger={play}
+                baseDelay={0}
+                step={35}
+              />
             </p>
+          </div>
+
+          <div style={{ marginTop: 14 }}>
+            <a href="#/" className="btn btn-outline-light btn-sm">
+              Back to home
+            </a>
           </div>
         </div>
       </section>
 
-      {/* BODY */}
       <section className="doc-body">
         <div className="container">
-          <div className="cap-card cap-card-lite mb-3">
-            <h3 className="bio-name">Project Management</h3>
-            <p>
-              GWx provides experienced project management support across complex
-              construction and industrial environments. We work client-side or
-              alongside delivery teams to manage scope, programme, cost, risk,
-              and interfaces, ensuring delivery is controlled, compliant and
-              well governed.
-            </p>
+          {/* IMAGE BAND 1 */}
+          <div className="image-band" style={{ marginBottom: 14 }}>
+            <img src={TOP_IMAGE} alt="GWx technical image band" />
           </div>
 
-          <div className="cap-card cap-card-lite mb-3">
-            <h3 className="bio-name">Temporary Works Management &amp; Coordination</h3>
-            <p>
-              Provision of Temporary Works Coordinator (TWC) and Temporary Works
-              Supervisor (TWS) support in line with BS 5975. This includes
-              planning, classification, design brief preparation, design
-              management, coordination, and control from concept through to
-              dismantle.
-            </p>
-          </div>
+          {/* SERVICES GRID */}
+          <div className="svc-groups">
+            <div className="svc-group">
+              <div className="svc-group-head">
+                <div className="overview-kicker">Service areas</div>
+                <h2 className="overview-title svc-h2">What we provide</h2>
+              </div>
 
-          <div className="cap-card cap-card-lite mb-3">
-            <h3 className="bio-name">Temporary Works Governance &amp; Assurance</h3>
-            <p>
-              Independent governance and assurance of Temporary Works systems,
-              including reviews of processes, documentation, roles, and
-              compliance. The aim is to ensure risks are properly controlled and
-              assurance arrangements are robust, auditable, and defensible.
-            </p>
-          </div>
+              <div className="svc-grid">
+                {services.map((s, idx) => {
+                  // Original behaviour: last tile spans full width when odd count
+                  const isLastOdd = idx === services.length - 1 && services.length % 2 === 1;
 
-          <div className="cap-card cap-card-lite mb-3">
-            <h3 className="bio-name">Scaffolding &amp; Access Strategy</h3>
-            <p>
-              Strategic support for scaffolding and access solutions, focusing on
-              buildability, efficiency, sequencing, and compliance. This
-              includes early engagement, access planning, constructability
-              input, and delivery support.
-            </p>
-          </div>
+                  // ✅ NEW: force Tendering tile to span full width (even if list changes later)
+                  const isTendering =
+                    s.title === "Tendering Support & Pricing / Commercial Structuring";
 
-          <div className="cap-card cap-card-lite mb-3">
-            <h3 className="bio-name">Risk, Methodology &amp; Buildability Reviews</h3>
-            <p>
-              Structured reviews of risk assessments, method statements and
-              construction methodologies to identify gaps, challenge assumptions
-              and improve buildability, with a strong focus on practical site
-              delivery.
-            </p>
-          </div>
+                  const spanFull = isTendering || isLastOdd;
 
-          <div className="cap-card cap-card-lite mb-3">
-            <h3 className="bio-name">Construction Assurance &amp; Compliance Support</h3>
-            <p>
-              Support to help clients demonstrate compliance with internal
-              standards, contractual requirements and regulatory expectations
-              through audits, inspections, and assurance reviews.
-            </p>
-          </div>
+                  return (
+                    <div
+                      key={s.title}
+                      className={[
+                        "svc-card",
+                        play ? "in-view" : "",
+                        spanFull ? "svc-span-full" : "",
+                      ].join(" ")}
+                    >
+                      <h3 className="svc-title">
+                        <AnimatedText
+                          text={s.title}
+                          trigger={play}
+                          baseDelay={180 + idx * 80}
+                          step={24}
+                        />
+                      </h3>
 
-          <div className="cap-card cap-card-lite mb-3">
-            <h3 className="bio-name">Interface &amp; Stakeholder Management</h3>
-            <p>
-              Support with managing technical, organisational and contractor
-              interfaces so responsibilities are clear, information flows
-              correctly and risks don’t fall between parties.
-            </p>
-          </div>
+                      <p className="svc-desc">
+                        <AnimatedText
+                          text={s.desc}
+                          trigger={play}
+                          baseDelay={260 + idx * 80}
+                          step={18}
+                        />
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
 
-          <div className="cap-card cap-card-lite mb-3">
-            <h3 className="bio-name">Integrated Management System (IMS) Development &amp; Support</h3>
-            <p>
-              Development and improvement of Integrated Management Systems aligned
-              to ISO standards, including policies, procedures, document control,
-              and governance structures that work in live construction
-              environments.
-            </p>
-          </div>
+            {/* IMAGE BAND 2 */}
+            <div className="image-band" style={{ marginTop: 18 }}>
+              <img src={SECOND_IMAGE} alt="GWx technical image band 2" />
+            </div>
 
-          <div className="cap-card cap-card-lite mb-4">
-            <h3 className="bio-name">Independent Technical &amp; Delivery Reviews</h3>
-            <p>
-              Independent, senior-level reviews of projects, Temporary Works
-              arrangements and delivery strategies to provide clarity,
-              challenge, and confidence on complex or high-risk scopes.
-            </p>
-          </div>
-
-          <div className="cap-card cap-card-lite mb-4">
-            <h3 className="bio-name">Tendering Support &amp; Pricing / Commercial Structuring</h3>
-            <p>
-              Support with tender responses, pricing structures, and commercial
-              pack development to present a clear, professional offer. This
-              includes scope clarification, pricing breakdown,
-              assumptions/exclusions, and helping shape a tender submission so it’s
-              easy for clients to evaluate and award.
-            </p>
-          </div>
-
-          {/* ENGAGEMENT */}
-          <div>
-            <div className="overview-kicker">Engagement</div>
-            <p className="overview-lead" style={{ marginBottom: 10 }}>
-              We operate proportionately and risk-based, embedded alongside
-              delivery teams or as independent assurance.
-            </p>
-
-            <button
-              type="button"
-              className="btn btn-outline-light btn-sm"
-              onClick={scrollToContact}
+            {/* ENGAGEMENT (FULL WIDTH) */}
+            <div
+              className="svc-engage-card svc-watermark"
+              style={{
+                "--wm": `url("${LOGO}")`,
+                marginTop: 18,
+              }}
             >
-              Get in touch
-            </button>
+              <div className="overview-kicker">Engagement</div>
+
+              <p className="overview-lead" style={{ marginBottom: 0 }}>
+                <AnimatedText
+                  text="We operate proportionately and risk-based, embedded alongside delivery teams or as independent assurance."
+                  trigger={play}
+                  baseDelay={180}
+                  step={22}
+                />
+              </p>
+
+              <div style={{ marginTop: 12, display: "flex", gap: 10, flexWrap: "wrap" }}>
+                <button
+                  type="button"
+                  className="btn btn-outline-light btn-sm"
+                  onClick={goToContact}
+                >
+                  Get in touch
+                </button>
+              </div>
+            </div>
+
+            {/* LOGO UNDER ENGAGEMENT (BRIGHTER) */}
+            <div
+              className="svc-image-card"
+              style={{
+                marginTop: 14,
+                padding: 14,
+              }}
+            >
+              <img
+                src={LOGO}
+                alt="GWx logo"
+                style={{
+                  width: "100%",
+                  height: "auto",
+                  display: "block",
+                  opacity: 0.38,
+                  filter: "grayscale(0.95) contrast(1.05)",
+                }}
+              />
+            </div>
           </div>
         </div>
       </section>

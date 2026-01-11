@@ -693,3 +693,472 @@ a{ color:inherit; text-decoration:none; }
   .services-band-head{ padding: 12px; }
   .services-list{ padding: 10px 12px 12px; }
 }
+/* =========================================================
+   SERVICES PAGE – IMAGE BREAKUP + QUIET WATERMARK (v2-safe)
+   Append-only (won’t affect Home/About layout)
+   ========================================================= */
+
+.svc-banner{
+  margin-top: 14px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border2);
+  position: relative;
+  background: rgba(15,17,21,.22);
+}
+.svc-banner img{
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: grayscale(1) contrast(1.05);
+  opacity: 0.92;
+}
+.svc-banner::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background: radial-gradient(circle at 30% 10%, rgba(15,17,21,.15), rgba(15,17,21,.75));
+  pointer-events:none;
+}
+
+.svc-groups{
+  display: grid;
+  gap: 18px;
+}
+
+.svc-group{
+  padding-top: 2px;
+}
+
+.svc-group-head{
+  margin-bottom: 10px;
+}
+
+.svc-h2{
+  margin-bottom: 6px !important;
+}
+
+/* Card grid */
+.svc-grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.svc-card{
+  background: rgba(15,17,21,.25);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  padding: 14px;
+}
+
+.svc-title{
+  color: var(--text);
+  font-weight: 650;
+  letter-spacing: .2px;
+  margin: 0 0 8px 0;
+  font-size: var(--type-body);
+  line-height: 1.2;
+}
+
+.svc-desc{
+  margin: 0;
+  color: var(--muted);
+  font-size: var(--type-small);
+  line-height: 1.55;
+}
+
+/* Engagement block */
+.svc-engagement{
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 14px;
+  margin-top: 18px;
+  align-items: stretch;
+}
+
+.svc-engage-card{
+  background: rgba(15,17,21,.25);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  padding: 14px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle logo watermark */
+.svc-watermark::before{
+  content:"";
+  position:absolute;
+  inset: -20px;
+  background-image: var(--wm);
+  background-repeat: no-repeat;
+  background-position: 92% 78%;
+  background-size: clamp(260px, 36vw, 520px);
+  opacity: 0.055;
+  filter: grayscale(1) contrast(1.05);
+  pointer-events:none;
+}
+
+.svc-image-card{
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border2);
+  background: rgba(15,17,21,.22);
+  position: relative;
+}
+.svc-image-card img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: grayscale(1) contrast(1.05);
+  opacity: 0.92;
+}
+.svc-image-card::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background: radial-gradient(circle at 20% 10%, rgba(15,17,21,.10), rgba(15,17,21,.78));
+  pointer-events:none;
+}
+
+/* Responsive */
+@media (max-width: 992px){
+  .svc-grid{
+    grid-template-columns: 1fr;
+  }
+  .svc-engagement{
+    grid-template-columns: 1fr;
+  }
+  .svc-watermark::before{
+    background-position: 90% 90%;
+    background-size: clamp(240px, 56vw, 520px);
+  }
+}
+/* =========================================================
+   SERVICES – PREVENT ORPHAN CARDS (FULL-WIDTH LAST ITEM)
+   ========================================================= */
+
+/* keep your existing 2-column grid */
+.svc-grid{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+/* if the last card is alone on a row, make it span both columns */
+.svc-grid > .svc-card:last-child:nth-child(odd){
+  grid-column: 1 / -1;
+}
+/* =========================================================
+   SERVICES – POP-IN + GWx WORD POP (append-only)
+   ========================================================= */
+
+.svc-band{
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: rgba(15,17,21,.18);
+}
+.svc-band-img{
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: grayscale(1) contrast(1.02);
+  opacity: 0.9;
+}
+
+/* Cards: rise/fade in like homepage sections */
+.svc-card{
+  background: rgba(15,17,21,.25);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  padding: 14px;
+
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 650ms ease, transform 650ms cubic-bezier(.2,.9,.2,1);
+}
+.svc-card.in-view{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Title */
+.svc-title{
+  color: var(--text);
+  font-weight: 650;
+  letter-spacing: .2px;
+  margin: 0 0 8px 0;
+  font-size: clamp(18px, 1.4vw + 14px, 22px);
+  line-height: 1.15;
+}
+
+/* Description */
+.svc-desc{
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.55;
+  font-size: var(--type-body);
+}
+
+/* IMPORTANT:
+   Your AnimatedText renders .wordflow/.wf-word but needs a "play" trigger.
+   We keep JS simple by toggling play via CSS when card becomes in-view.
+*/
+.svc-card.in-view .svc-title-anim.wordflow,
+.svc-card.in-view .svc-desc-anim.wordflow{
+  /* add the "play" behaviour without changing markup */
+}
+.svc-card.in-view .svc-title-anim.wordflow .wf-word,
+.svc-card.in-view .svc-desc-anim.wordflow .wf-word{
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+  transition:
+    opacity 700ms ease,
+    transform 700ms cubic-bezier(.2,.9,.2,1),
+    filter 700ms ease;
+  transition-delay: var(--d, 0ms);
+}
+.svc-card .svc-title-anim.wordflow .wf-word,
+.svc-card .svc-desc-anim.wordflow .wf-word{
+  opacity: 0;
+  transform: translateY(10px);
+  filter: blur(1px);
+}
+
+/* keep your orphan fix (full-width last card when odd) */
+.svc-grid{
+  display:grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.svc-grid > .svc-card:last-child:nth-child(odd){
+  grid-column: 1 / -1;
+}
+
+/* mobile */
+@media (max-width: 992px){
+  .svc-grid{ grid-template-columns: 1fr; }
+  .svc-grid > .svc-card:last-child:nth-child(odd){ grid-column: auto; }
+}
+/* =========================================================
+   IMAGE MOTION – LOAD + HOVER (SERVICES / BANDS / LOGO)
+   Subtle, technical, confidence-led
+   ========================================================= */
+
+/* Base image behaviour */
+.svc-band,
+.image-band,
+.logo-mark{
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 700ms ease,
+    transform 700ms cubic-bezier(.2,.9,.2,1);
+}
+
+/* When section enters view */
+.in-view .svc-band,
+.in-view .image-band,
+.in-view .logo-mark{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Image itself */
+.svc-band-img,
+.image-band img,
+.logo-mark img{
+  display: block;
+  width: 100%;
+  height: auto;
+
+  /* slightly muted by default */
+  filter: grayscale(1) contrast(1.05);
+  opacity: 0.88;
+
+  transition:
+    transform 420ms cubic-bezier(.2,.9,.2,1),
+    filter 420ms ease,
+    opacity 420ms ease;
+}
+
+/* Hover interaction */
+.svc-band:hover .svc-band-img,
+.image-band:hover img{
+  transform: scale(1.015);
+  filter: grayscale(0.6) contrast(1.08);
+  opacity: 1;
+}
+
+/* Logo specific – extra subtle */
+.logo-mark img{
+  filter: grayscale(1) contrast(1);
+  opacity: 0.12;
+}
+.logo-mark:hover img{
+  filter: grayscale(0.9) contrast(1.05);
+  opacity: 0.18;
+  transform: scale(1.01);
+}
+
+/* Prevent hover weirdness on touch devices */
+@media (hover: none){
+  .svc-band:hover .svc-band-img,
+  .image-band:hover img,
+  .logo-mark:hover img{
+    transform: none;
+    filter: inherit;
+    opacity: inherit;
+  }
+}
+/* =========================================================
+   IMAGE MOTION – SAFE LOAD + HOVER (NO in-view DEPENDENCY)
+   Will never block image rendering.
+   ========================================================= */
+
+/* Always show wrappers (never hide content by default) */
+.svc-band,
+.image-band,
+.logo-mark{
+  opacity: 1;
+  transform: none;
+}
+
+/* Image base */
+.svc-band-img,
+.image-band img,
+.logo-mark img{
+  display:block;
+  width:100%;
+  height:auto;
+
+  /* Start slightly "muted" but VISIBLE */
+  filter: grayscale(1) contrast(1.05);
+  opacity: 0.88;
+
+  /* Smooth interaction */
+  transition:
+    transform 420ms cubic-bezier(.2,.9,.2,1),
+    filter 420ms ease,
+    opacity 420ms ease;
+}
+
+/* Subtle hover (desktop) */
+.svc-band:hover .svc-band-img,
+.image-band:hover img{
+  transform: scale(1.015);
+  filter: grayscale(0.6) contrast(1.08);
+  opacity: 1;
+}
+
+/* Logo specific – extra subtle */
+.logo-mark img{
+  filter: grayscale(1) contrast(1);
+  opacity: 0.12;
+  transition:
+    transform 420ms cubic-bezier(.2,.9,.2,1),
+    filter 420ms ease,
+    opacity 420ms ease;
+}
+.logo-mark:hover img{
+  filter: grayscale(0.9) contrast(1.05);
+  opacity: 0.18;
+  transform: scale(1.01);
+}
+
+/* Don’t do hover transforms on touch devices */
+@media (hover: none){
+  .svc-band:hover .svc-band-img,
+  .image-band:hover img,
+  .logo-mark:hover img{
+    transform: none;
+    filter: inherit;
+    opacity: inherit;
+  }
+}
+/* Optional: safe load animation (only activates after the image loads) */
+.img-react{
+  transform: translateY(10px);
+  opacity: 0.01; /* still technically visible; avoids “never appears” traps */
+}
+.img-react.is-loaded{
+  transform: translateY(0);
+  opacity: 0.88;
+  transition:
+    transform 700ms cubic-bezier(.2,.9,.2,1),
+    opacity 700ms ease;
+}
+
+/* =========================================================
+   SERVICES PAGE — FIX VISIBILITY + TILE GRID (append-only)
+   ========================================================= */
+
+.services-page .svc-grid{
+  display:grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.services-page .svc-card{
+  background: rgba(15,17,21,.25);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  padding: 14px;
+}
+
+.services-page .svc-title{
+  color: var(--text);
+  font-weight: 650;
+  letter-spacing: .2px;
+  margin: 0 0 8px 0;
+  font-size: var(--type-body);
+  line-height: 1.25;
+}
+
+.services-page .svc-desc{
+  color: var(--muted);
+  margin: 0;
+  font-size: var(--type-small);
+  line-height: 1.55;
+}
+
+/* last tile spans full width when you end up with 3/2/1 */
+.services-page .svc-span-full{
+  grid-column: 1 / -1;
+}
+
+/* image bands behave nicely */
+.services-page .image-band img,
+.services-page .svc-band-img{
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--radius);
+  border: 1px solid var(--border2);
+}
+
+/* ✅ IMPORTANT: your ticks are normally hidden until .overview-scene.in-view.
+   On Services we want them visible without changing home behaviour. */
+.services-page .check-item{
+  opacity: 1 !important;
+  transform: none !important;
+}
+.services-page .check-item::before{
+  opacity: 1 !important;
+  transform: scale(1) !important;
+}
+
+/* responsive */
+@media (max-width: 992px){
+  .services-page .svc-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .services-page .svc-span-full{ grid-column: 1 / -1; }
+}
+@media (max-width: 560px){
+  .services-page .svc-grid{ grid-template-columns: 1fr; }
+  .services-page .svc-span-full{ grid-column: auto; }
+}
+

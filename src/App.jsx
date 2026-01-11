@@ -2,8 +2,43 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import About from "./About";
-import Services from "./Services";
+import Services from "./services"; // matches services.jsx
 import { wrapGWx } from "./utils/animateGWx";
+
+/* =========================
+   ERROR BOUNDARY (so you never get a silent blank page)
+========================= */
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+  componentDidCatch(error, info) {
+    console.error("Render error:", error, info);
+  }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div style={{ padding: 18 }}>
+          <div style={{ color: "#fff", fontWeight: 700, marginBottom: 8 }}>
+            Page crashed
+          </div>
+          <div style={{ opacity: 0.85, marginBottom: 10 }}>
+            This is usually a bad import / filename case, or an error inside a
+            page component.
+          </div>
+          <pre style={{ whiteSpace: "pre-wrap", opacity: 0.85 }}>
+            {String(this.state.error)}
+          </pre>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 
 /* =========================
    WORD-BY-WORD TEXT (GWx POPS)
@@ -40,7 +75,6 @@ function Home() {
   const [heroTagsReady, setHeroTagsReady] = useState(false);
   const [aboutInView, setAboutInView] = useState(false);
 
-  // HashRouter-safe scroll helper
   const safeScroll = (id) => {
     if (!window.location.hash.startsWith("#/")) window.location.hash = "#/";
     setTimeout(() => {
@@ -48,6 +82,13 @@ function Home() {
       if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
     }, 60);
   };
+    const goServicesTop = () => {
+    // HashRouter-safe: ensures URL becomes "#/services" (not just "#services")
+    window.location.hash = "#/services";
+    // and force top after route swap
+    setTimeout(() => window.scrollTo({ top: 0, left: 0, behavior: "auto" }), 0);
+  };
+
 
   useEffect(() => {
     const t1 = setTimeout(() => setHeroTitleReady(true), 450);
@@ -58,6 +99,7 @@ function Home() {
     };
   }, []);
 
+  // About intro wordflow trigger
   useEffect(() => {
     const el = document.getElementById("about-intro");
     if (!el) return;
@@ -76,6 +118,7 @@ function Home() {
     return () => io.disconnect();
   }, []);
 
+  // Overview reveal trigger
   useEffect(() => {
     const el = document.getElementById("overview");
     if (!el) return;
@@ -85,6 +128,22 @@ function Home() {
         if (entry.isIntersecting) el.classList.add("in-view");
       },
       { threshold: 0.18 }
+    );
+
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  // About-intro rise/fade trigger (uses your CSS #about-intro.in-view)
+  useEffect(() => {
+    const el = document.getElementById("about-intro");
+    if (!el) return;
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) el.classList.add("in-view");
+      },
+      { threshold: 0.14, rootMargin: "0px 0px -10% 0px" }
     );
 
     io.observe(el);
@@ -183,34 +242,31 @@ function Home() {
             </h2>
 
             <p className="overview-lead">
-              <AnimatedText text={aboutPara1} trigger={aboutInView} baseDelay={380} step={42} />
+              <AnimatedText
+                text={aboutPara1}
+                trigger={aboutInView}
+                baseDelay={380}
+                step={42}
+              />
             </p>
 
             <p className="overview-lead about-intro-lead2">
-              <AnimatedText text={aboutPara2} trigger={aboutInView} baseDelay={820} step={42} />
+              <AnimatedText
+                text={aboutPara2}
+                trigger={aboutInView}
+                baseDelay={820}
+                step={42}
+              />
             </p>
 
             <p className="overview-lead about-intro-lead2">
-              <AnimatedText text={aboutPara3} trigger={aboutInView} baseDelay={1220} step={42} />
+              <AnimatedText
+                text={aboutPara3}
+                trigger={aboutInView}
+                baseDelay={1220}
+                step={42}
+              />
             </p>
-
-            {/* optional CTA kept lightweight */}
-            <div className="overview-ctas" style={{ borderTop: "none", paddingTop: 0, marginTop: 10, opacity: 1, transform: "none" }}>
-              <button
-                type="button"
-                className="btn btn-outline-light btn-sm"
-                onClick={() => (window.location.hash = "#/services")}
-              >
-                View services
-              </button>
-              <button
-                type="button"
-                className="btn btn-outline-light btn-sm"
-                onClick={() => safeScroll("contact")}
-              >
-                Make an enquiry
-              </button>
-            </div>
           </div>
         </div>
       </section>
@@ -223,18 +279,17 @@ function Home() {
               <div className="overview-kicker">Overview</div>
 
               <h2 className="overview-title">
-                Clarity, control and defensible decision-making — without bureaucracy.
+                Clarity, control and defensible decision-making — without
+                bureaucracy.
               </h2>
 
               <p className="overview-lead">
                 <AnimatedText
-                  text="GWx provides independent project management, Temporary Works and governance-led assurance support across construction, industrial, infrastructure and regulated environments."
+                  text="GWx provides independent project management, Temporary Works and governance-led assurance support across construction, industrial, infrastructure and regulated environments. Our work is grounded in real site delivery and stakeholder-level experience — aligned to audit, scrutiny and programme pressure."
                   trigger={true}
                   baseDelay={0}
-                  step={0}
-                />{" "}
-                Our work is grounded in real site delivery and stakeholder-level experience — aligned to audit,
-                scrutiny and programme pressure.
+                  step={22}
+                />
               </p>
 
               <div className="overview-checklist">
@@ -259,12 +314,16 @@ function Home() {
                   <div className="overview-facts">
                     <div className="fact">
                       <div className="fact-k">Operating level</div>
-                      <div className="fact-v">Tier 1 / Tier 2 delivery environments</div>
+                      <div className="fact-v">
+                        Tier 1 / Tier 2 delivery environments
+                      </div>
                     </div>
 
                     <div className="fact">
                       <div className="fact-k">Focus</div>
-                      <div className="fact-v">Temporary Works • Governance • Assurance</div>
+                      <div className="fact-v">
+                        Temporary Works • Governance • Assurance
+                      </div>
                     </div>
 
                     <div className="fact">
@@ -276,56 +335,24 @@ function Home() {
                   </div>
                 </div>
 
-                <div className="check-group">
-                  <div className="check-title" style={{ "--d": "1050ms" }}>
-                    How we work
-                  </div>
-                  <ul className="check-list">
-                    <li className="check-item" style={{ "--d": "1300ms" }}>
-                      Embedded alongside your team
-                    </li>
-                    <li className="check-item" style={{ "--d": "1550ms" }}>
-                      Risk-based, proportionate controls
-                    </li>
-                    <li className="check-item" style={{ "--d": "1800ms" }}>
-                      Value first, process second
-                    </li>
-                  </ul>
-                </div>
-
-                <div className="check-group">
-                  <div className="check-title" style={{ "--d": "2050ms" }}>
-                    Where it matters
-                  </div>
-                  <ul className="check-list">
-                    <li className="check-item" style={{ "--d": "2300ms" }}>
-                      Regulated sites
-                    </li>
-                    <li className="check-item" style={{ "--d": "2550ms" }}>
-                      Complex interfaces
-                    </li>
-                    <li className="check-item" style={{ "--d": "2800ms" }}>
-                      Programme pressure
-                    </li>
-                  </ul>
-                </div>
-
                 <div className="overview-ctas">
-                  <button
-                    type="button"
-                    className="btn btn-outline-light btn-sm"
-                    onClick={() => (window.location.hash = "#/services")}
-                  >
-                    View services
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-outline-light btn-sm"
-                    onClick={() => safeScroll("contact")}
-                  >
-                    Make an enquiry
-                  </button>
-                </div>
+  <button
+    type="button"
+    className="btn btn-outline-light btn-sm"
+    onClick={goServicesTop}
+  >
+    View services
+  </button>
+
+  <button
+    type="button"
+    className="btn btn-outline-light btn-sm"
+    onClick={() => safeScroll("contact")}
+  >
+    Make an enquiry
+  </button>
+</div>
+
               </div>
             </div>
           </div>
@@ -339,8 +366,9 @@ function Home() {
             <div className="overview-kicker">Contact</div>
             <h2 className="overview-title">Make an enquiry</h2>
             <p className="overview-lead">
-              For enquiries relating to project management support, Temporary Works governance, tendering,
-              assurance or documentation — use the form below.
+              For enquiries relating to project management support, Temporary
+              Works governance, tendering, assurance or documentation — use the
+              form below.
             </p>
           </div>
 
@@ -350,13 +378,17 @@ function Home() {
                 <div className="contact-line">
                   <div className="contact-k">Email</div>
                   <div className="contact-v">
-                    <a href="mailto:info@gwxconsultants.co.uk">info@gwxconsultants.co.uk</a>
+                    <a href="mailto:info@gwxconsultants.co.uk">
+                      info@gwxconsultants.co.uk
+                    </a>
                   </div>
                 </div>
 
                 <div className="contact-line">
                   <div className="contact-k">Operating</div>
-                  <div className="contact-v">Construction • Industrial • Infrastructure • Regulated</div>
+                  <div className="contact-v">
+                    Construction • Industrial • Infrastructure • Regulated
+                  </div>
                 </div>
               </div>
             </div>
@@ -365,9 +397,15 @@ function Home() {
               <form className="form-card" onSubmit={(e) => e.preventDefault()}>
                 <div className="mb-2">
                   <label className="form-label">Message</label>
-                  <textarea className="form-control" rows="6" placeholder="Write a message..." />
+                  <textarea
+                    className="form-control"
+                    rows="6"
+                    placeholder="Write a message..."
+                  />
                 </div>
-                <button className="btn btn-outline-light btn-sm mt-2">Send</button>
+                <button className="btn btn-outline-light btn-sm mt-2">
+                  Send
+                </button>
               </form>
             </div>
           </div>
@@ -389,7 +427,12 @@ function AppShell() {
     wrapGWx(rootRef.current);
   }, [location.pathname]);
 
-  // nav: hidden on hero only (home), always visible on other pages
+  // ✅ FIX: always go to top when changing route (HashRouter-safe)
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  }, [location.pathname]);
+
+  // nav: hidden on hero only (home), always visible on non-home pages
   useEffect(() => {
     const nav = document.querySelector(".nav-panel");
     if (!nav) return;
@@ -423,7 +466,7 @@ function AppShell() {
       setTimeout(() => {
         const el = document.getElementById(id);
         if (el) el.scrollIntoView({ behavior: "smooth" });
-      }, 80);
+      }, 90);
     } else {
       const el = document.getElementById(id);
       if (el) el.scrollIntoView({ behavior: "smooth" });
@@ -445,10 +488,10 @@ function AppShell() {
                   <a onClick={() => goHomeAndScroll("overview")}>Overview</a>
                 </li>
                 <li>
-                  <a onClick={() => navigate("/services")}>Services</a>
+                  <a onClick={() => goHomeAndScroll("contact")}>Contact</a>
                 </li>
                 <li>
-                  <a onClick={() => goHomeAndScroll("contact")}>Contact</a>
+                  <a onClick={() => navigate("/services")}>Services</a>
                 </li>
                 <li>
                   <a onClick={() => navigate("/about")}>About</a>
@@ -459,11 +502,13 @@ function AppShell() {
         </div>
       </header>
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/services" element={<Services />} />
-        <Route path="/about" element={<About />} />
-      </Routes>
+      <ErrorBoundary>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/about" element={<About />} />
+        </Routes>
+      </ErrorBoundary>
     </div>
   );
 }
