@@ -4,6 +4,7 @@ import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import About from "./About";
 import Services from "./services"; // matches services.jsx
 import { wrapGWx } from "./utils/animateGWx";
+import logo from "/GWXLOGO/logo-02-png.png";
 
 /* =========================
    WORD-BY-WORD TEXT (GWx POPS)
@@ -164,26 +165,74 @@ function Home() {
         style={{ "--hero-bg": `url("${HERO_BG}")` }}
       >
         <div className={`hero-title-screen ${heroTitleReady ? "show" : ""}`}>
-          <div
-            className="hero-kicker"
-            style={{
-              opacity: heroTagsReady ? 1 : 0,
-              transition: "opacity 900ms ease",
-            }}
-          >
-            GWx Consultancy Services Ltd
-          </div>
-
-          <h1 className="hero-title-big">GWx</h1>
+          <h1 className="hero-title-big">
+            <img 
+              src={logo} 
+              alt="GWx Logo" 
+              style={{ width: "100%", height: "auto", maxWidth: "500px", cursor: "pointer" }}
+              onClick={() => window.location.reload()}
+            />
+          </h1>
 
           <div
             className="hero-kicker"
             style={{
               opacity: heroTagsReady ? 1 : 0,
               transition: "opacity 1200ms ease",
+              marginTop: "3rem",
             }}
           >
             PROJECT MANAGEMENT • TEMPORARY WORKS • GOVERNANCE &amp; ASSURANCE
+          </div>
+
+          <div
+            className="hero-nav-links"
+            style={{
+              opacity: heroTagsReady ? 1 : 0,
+              transition: "opacity 1200ms ease",
+              marginTop: "2rem",
+              display: "flex",
+              gap: "1.5rem",
+              justifyContent: "center",
+              flexWrap: "wrap",
+            }}
+          >
+            <a
+              onClick={() => {
+                const el = document.getElementById("overview");
+                if (el) el.scrollIntoView({ behavior: "smooth" });
+              }}
+              style={{ cursor: "pointer", fontSize: "14px", textDecoration: "none", color: "inherit" }}
+            >
+              Overview
+            </a>
+            <a
+              onClick={() => {
+                window.location.hash = "#/services";
+                setTimeout(() => window.scrollTo(0, 0), 50);
+              }}
+              style={{ cursor: "pointer", fontSize: "14px", textDecoration: "none", color: "inherit" }}
+            >
+              Services
+            </a>
+            <a
+              onClick={() => {
+                const el = document.getElementById("contact");
+                if (el) el.scrollIntoView({ behavior: "smooth" });
+              }}
+              style={{ cursor: "pointer", fontSize: "14px", textDecoration: "none", color: "inherit" }}
+            >
+              Contact
+            </a>
+            <a
+              onClick={() => {
+                window.location.hash = "#/about";
+                setTimeout(() => window.scrollTo(0, 0), 50);
+              }}
+              style={{ cursor: "pointer", fontSize: "14px", textDecoration: "none", color: "inherit" }}
+            >
+              About
+            </a>
           </div>
         </div>
       </section>
@@ -195,12 +244,7 @@ function Home() {
             <div className="overview-kicker">About GWx</div>
 
             <h2 className="overview-title">
-              <AnimatedText
-                text="Independent governance-led consultancy for complex, high-risk delivery."
-                trigger={aboutInView}
-                baseDelay={0}
-                step={55}
-              />
+              Independent governance-led consultancy for complex, high-risk delivery.
             </h2>
 
             <p className="overview-lead">
@@ -279,14 +323,13 @@ function Home() {
                   <button
                     type="button"
                     className="btn btn-outline-light btn-sm"
-                    onClick={() => safeScroll("contact")}
+                    onClick={() => {
+                      window.location.hash = "#/services";
+                      setTimeout(() => window.scrollTo(0, 0), 50);
+                    }}
                   >
-                    Make an enquiry
+                    Offered Services
                   </button>
-
-                  {/* OPTIONAL: if you currently have "View services" on home, keep it here if you want:
-                      <a className="btn btn-outline-light btn-sm" href="#/services">View services</a>
-                  */}
                 </div>
               </div>
             </div>
@@ -306,39 +349,38 @@ function Home() {
             </p>
           </div>
 
-          {/* ✅ NEW: 3-col layout on desktop (Contact details | Form | Small image) */}
+          {/* ✅ NEW: 2-col layout on desktop (Contact details + image | Form) */}
           <div className="row g-4 align-items-stretch">
             <div className="col-lg-4">
-              <div className="contact-card">
-                <div className="contact-line">
-                  <div className="contact-k">Email</div>
-                  <div className="contact-v">
-                    <a href="mailto:info@gwxconsultants.co.uk">info@gwxconsultants.co.uk</a>
+              <div className="d-flex flex-column gap-3 h-100">
+                <div className="contact-card">
+                  <div className="contact-line">
+                    <div className="contact-k">Email</div>
+                    <div className="contact-v">
+                      <a href="mailto:info@gwxconsultants.co.uk">info@gwxconsultants.co.uk</a>
+                    </div>
+                  </div>
+
+                  <div className="contact-line">
+                    <div className="contact-k">Operating</div>
+                    <div className="contact-v">Construction • Industrial • Infrastructure • Regulated</div>
                   </div>
                 </div>
 
-                <div className="contact-line">
-                  <div className="contact-k">Operating</div>
-                  <div className="contact-v">Construction • Industrial • Infrastructure • Regulated</div>
+                <div className="contact-sideimg flex-grow-1">
+                  <img src={GWX2} alt="Technical drawing detail" />
                 </div>
               </div>
             </div>
 
-            <div className="col-lg-5">
-              <form className="form-card" onSubmit={(e) => e.preventDefault()}>
-                <div className="mb-2">
+            <div className="col-lg-8">
+              <form className="form-card h-100" onSubmit={(e) => e.preventDefault()}>
+                <div className="mb-2 h-100 d-flex flex-column">
                   <label className="form-label">Message</label>
-                  <textarea className="form-control" rows="6" placeholder="Write a message..." />
+                  <textarea className="form-control flex-grow-1" placeholder="Write a message..." />
                 </div>
                 <button className="btn btn-outline-light btn-sm mt-2">Send</button>
               </form>
-            </div>
-
-            <div className="col-lg-3">
-              {/* Small supporting image (subtle) */}
-              <div className="contact-sideimg">
-                <img src={GWX2} alt="Technical drawing detail" />
-              </div>
             </div>
           </div>
         </div>
@@ -359,32 +401,11 @@ function AppShell() {
     wrapGWx(rootRef.current);
   }, [location.pathname]);
 
-  // nav: hidden on hero only (home), always visible on non-home pages
+  // nav: always visible
   useEffect(() => {
     const nav = document.querySelector(".nav-panel");
     if (!nav) return;
-
-    if (location.pathname !== "/") {
-      nav.classList.add("is-visible");
-      return;
-    }
-
-    const hero = document.querySelector(".hero");
-    if (!hero) {
-      nav.classList.add("is-visible");
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) nav.classList.add("is-visible");
-        else nav.classList.remove("is-visible");
-      },
-      { threshold: 0.15 }
-    );
-
-    observer.observe(hero);
-    return () => observer.disconnect();
+    nav.classList.add("is-visible");
   }, [location.pathname]);
 
   const goHomeAndScroll = (id) => {
@@ -406,14 +427,20 @@ function AppShell() {
         <div className="nav-panel">
           <nav className="navbar">
             <div className="nav-inline">
-              <span className="navbar-brand" onClick={() => navigate("/")}>
+              <span className="navbar-brand" onClick={() => {
+                navigate("/");
+                setTimeout(() => window.scrollTo(0, 0), 50);
+              }}>
                 GWx
               </span>
 
               <ul className="navbar-nav">
                 <li><a onClick={() => goHomeAndScroll("overview")}>Overview</a></li>
+                <li><a onClick={() => {
+                  window.location.hash = "#/services";
+                  setTimeout(() => window.scrollTo(0, 0), 50);
+                }}>Services</a></li>
                 <li><a onClick={() => goHomeAndScroll("contact")}>Contact</a></li>
-                <li><a onClick={() => navigate("/services")}>Services</a></li>
                 <li><a onClick={() => navigate("/about")}>About</a></li>
               </ul>
             </div>
@@ -426,6 +453,16 @@ function AppShell() {
         <Route path="/services" element={<Services />} />
         <Route path="/about" element={<About />} />
       </Routes>
+
+      <footer>
+        <div className="footer-panel">
+          <div className="footer-inline">
+            <div className="footer-copyright">
+              &copy; {new Date().getFullYear()} GWx Consultancy Services Ltd. All rights reserved.
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

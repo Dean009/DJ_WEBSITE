@@ -64,6 +64,32 @@ a{ color:inherit; text-decoration:none; }
   overflow: visible !important;
 }
 
+/* ================= FOOTER ================= */
+.footer-panel{
+  position:relative;
+  z-index:100;
+
+  background:rgba(15,17,21,0.55);
+  backdrop-filter:blur(6px);
+  border-top:1px solid rgba(177,180,187,0.08);
+}
+.footer-inline{
+  max-width:1040px;
+  margin:0 auto;
+  padding:3px 8px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+}
+.footer-copyright{
+  font-size:11px !important;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  color:var(--subtle) !important;
+  line-height:1;
+}
+
 /* ================= NAVBAR (hidden until past hero) ================= */
 .nav-panel{
   position:fixed;
@@ -96,7 +122,7 @@ a{ color:inherit; text-decoration:none; }
   gap:10px;
 }
 .navbar-brand{
-  font-size:12px !important;
+  font-size:15px !important;
   font-weight:600;
   letter-spacing:0.4px;
   color:var(--text) !important;
@@ -117,14 +143,30 @@ a{ color:inherit; text-decoration:none; }
 .navbar-nav li{ display:inline-flex !important; margin:0 !important; padding:0 !important; }
 .navbar-nav a{
   display:inline-block !important;
-  font-size:11px !important;
+  font-size:14px !important;
   text-transform:uppercase;
   letter-spacing:1px;
   color:var(--subtle) !important;
   line-height:1;
   cursor:pointer;
+  position: relative;
 }
-.navbar-nav a:hover{ color:var(--text) !important; }
+.navbar-nav a::after{
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background-color: currentColor;
+  transition: width 600ms ease;
+}
+.navbar-nav a:hover{
+  color:var(--text) !important;
+}
+.navbar-nav a:hover::after{
+  width: 100%;
+}
 
 /* ================= HERO ================= */
 .hero{
@@ -197,6 +239,26 @@ a{ color:inherit; text-decoration:none; }
   color:var(--subtle);
 }
 
+.hero-nav-links a{
+  position: relative;
+  display: inline-block;
+}
+
+.hero-nav-links a::after{
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background-color: currentColor;
+  transition: width 600ms ease;
+}
+
+.hero-nav-links a:hover::after{
+  width: 100%;
+}
+
 /* ================= SECTIONS ================= */
 .section-panel{
   border-top:1px solid var(--border2);
@@ -210,6 +272,71 @@ a{ color:inherit; text-decoration:none; }
 }
 .about-intro-inner{ max-width: 920px; }
 .about-intro-lead2{ margin-top:-6px; }
+
+/* About intro text animations */
+.about-intro .overview-lead{
+  opacity: 0;
+  transform: translateY(10px);
+}
+.about-intro.in-view .overview-lead{
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 325ms ease, transform 325ms cubic-bezier(.2,.9,.2,1);
+}
+.about-intro.in-view .overview-lead:nth-of-type(1){
+  transition-delay: 0ms;
+}
+.about-intro.in-view .overview-lead:nth-of-type(2){
+  transition-delay: 130ms;
+}
+.about-intro.in-view .overview-lead:nth-of-type(3){
+  transition-delay: 260ms;
+}
+
+/* Keep most word animations disabled for about-intro */
+.about-intro .wordflow .wf-word{
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+}
+.about-intro .wordflow.play .wf-word{
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+  transition: none !important;
+}
+
+/* But allow GWx to pop in about-intro */
+.about-intro .wordflow.play .wf-word.gwx-pop{
+  opacity: 1;
+  transform: translateY(10px) scale(1);
+  animation: gwxPop 520ms cubic-bezier(.2,.9,.2,1) both;
+  animation-delay: var(--d, 0ms);
+  color: var(--text);
+}
+
+/* Overview section text animations */
+#overview .overview-lead{
+  opacity: 0;
+  transform: translateY(10px);
+}
+#overview.in-view .overview-lead{
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 325ms ease, transform 325ms cubic-bezier(.2,.9,.2,1);
+  transition-delay: 0ms;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
 /* shared type */
 .overview-kicker{
@@ -247,13 +374,13 @@ a{ color:inherit; text-decoration:none; }
   transform:translateY(0);
   filter:blur(0);
   transition:
-    opacity 700ms ease,
-    transform 700ms cubic-bezier(.2,.9,.2,1),
-    filter 700ms ease;
+    opacity 350ms ease,
+    transform 350ms cubic-bezier(.2,.9,.2,1),
+    filter 350ms ease;
   transition-delay: var(--d, 0ms);
 }
 .wordflow.play .wf-word.gwx-pop{
-  animation: gwxPop 1040ms cubic-bezier(.2,.9,.2,1) both;
+  animation: gwxPop 520ms cubic-bezier(.2,.9,.2,1) both;
   animation-delay: var(--d, 0ms);
   color: var(--text);
 }
@@ -272,7 +399,7 @@ a{ color:inherit; text-decoration:none; }
 
   opacity:0;
   transform:translateY(28px);
-  transition: opacity 750ms ease, transform 750ms cubic-bezier(.2,.9,.2,1);
+  transition: opacity 375ms ease, transform 375ms cubic-bezier(.2,.9,.2,1);
 }
 .overview-scene.in-view{
   opacity:1;
@@ -306,8 +433,8 @@ a{ color:inherit; text-decoration:none; }
 .overview-scene.in-view .overview-facts{
   opacity:1;
   transform:translateY(0);
-  transition: opacity 650ms ease, transform 650ms cubic-bezier(.2,.9,.2,1);
-  transition-delay: 520ms;
+  transition: opacity 325ms ease, transform 325ms cubic-bezier(.2,.9,.2,1);
+  transition-delay: 260ms;
 }
 
 .overview-facts .fact{ margin:0 0 10px 0; }
@@ -339,7 +466,7 @@ a{ color:inherit; text-decoration:none; }
 .overview-scene.in-view .check-title{
   opacity:1;
   transform:translateY(0);
-  transition: opacity 650ms ease, transform 650ms cubic-bezier(.2,.9,.2,1);
+  transition: opacity 325ms ease, transform 325ms cubic-bezier(.2,.9,.2,1);
   transition-delay: var(--d, 0ms);
 }
 .check-list{
@@ -361,7 +488,7 @@ a{ color:inherit; text-decoration:none; }
 .overview-scene.in-view .check-item{
   opacity:1;
   transform:translateY(0);
-  transition: opacity 650ms ease, transform 650ms cubic-bezier(.2,.9,.2,1);
+  transition: opacity 325ms ease, transform 325ms cubic-bezier(.2,.9,.2,1);
   transition-delay: var(--d, 0ms);
 }
 .check-item::before{
@@ -385,7 +512,7 @@ a{ color:inherit; text-decoration:none; }
 .overview-scene.in-view .check-item::before{
   opacity:1;
   transform:scale(1);
-  transition: opacity 460ms ease, transform 460ms cubic-bezier(.2,.9,.2,1);
+  transition: opacity 230ms ease, transform 230ms cubic-bezier(.2,.9,.2,1);
   transition-delay: var(--d, 0ms);
 }
 
@@ -402,8 +529,8 @@ a{ color:inherit; text-decoration:none; }
 .overview-scene.in-view .overview-ctas{
   opacity:1;
   transform:translateY(0);
-  transition: opacity 650ms ease, transform 650ms cubic-bezier(.2,.9,.2,1);
-  transition-delay: 2500ms;
+  transition: opacity 325ms ease, transform 325ms cubic-bezier(.2,.9,.2,1);
+  transition-delay: 1250ms;
 }
 
 /* cards */
@@ -414,6 +541,29 @@ a{ color:inherit; text-decoration:none; }
   border:1px solid var(--border2);
   border-radius:var(--radius);
   padding:14px;
+}
+
+/* Form inputs */
+.form-control,
+.form-label {
+  color: var(--text) !important;
+}
+
+.form-control {
+  background: rgba(177, 180, 187, 0.08) !important;
+  border: 1px solid var(--border2) !important;
+  color: var(--text) !important;
+}
+
+.form-control::placeholder {
+  color: var(--subtle) !important;
+}
+
+.form-control:focus {
+  background: rgba(177, 180, 187, 0.12) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+  box-shadow: none !important;
 }
 
 /* Accordion styling (for your Capabilities component) */
@@ -681,7 +831,7 @@ a{ color:inherit; text-decoration:none; }
 #services{
   opacity: 0;
   transform: translateY(22px);
-  transition: opacity 650ms ease, transform 650ms cubic-bezier(.2,.9,.2,1);
+  transition: opacity 325ms ease, transform 325ms cubic-bezier(.2,.9,.2,1);
 }
 #services.in-view{
   opacity: 1;
@@ -750,6 +900,19 @@ a{ color:inherit; text-decoration:none; }
   border: 1px solid var(--border2);
   border-radius: var(--radius);
   padding: 14px;
+  transition: transform 300ms ease, background 300ms ease;
+  cursor: pointer;
+}
+
+.svc-card:hover{
+  transform: scale(1.04);
+  background: rgba(15,17,21,.35);
+}
+
+.svc-card:hover .svc-title,
+.svc-card:hover .svc-desc{
+  transform: scale(1.05);
+  transform-origin: left;
 }
 
 .svc-title{
@@ -759,6 +922,7 @@ a{ color:inherit; text-decoration:none; }
   margin: 0 0 8px 0;
   font-size: var(--type-body);
   line-height: 1.2;
+  transition: transform 300ms ease;
 }
 
 .svc-desc{
@@ -766,6 +930,7 @@ a{ color:inherit; text-decoration:none; }
   color: var(--muted);
   font-size: var(--type-small);
   line-height: 1.55;
+  transition: transform 300ms ease;
 }
 
 /* Engagement block */

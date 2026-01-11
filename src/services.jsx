@@ -37,7 +37,7 @@ export default function Services() {
   // Assets (GH Pages safe)
   const IMG_1 = import.meta.env.BASE_URL + "GWx2.png";
   const IMG_2 = import.meta.env.BASE_URL + "GWx3.png";
-  const LOGO = import.meta.env.BASE_URL + "logo.png";
+  const LOGO = import.meta.env.BASE_URL + "GWXLOGO/logo-02-png.png";
 
   // ✅ swapped: show GWx3 first, then GWx2
   const TOP_IMAGE = IMG_2;
@@ -98,7 +98,11 @@ export default function Services() {
 
   const goToContact = () => {
     // HashRouter-safe: go home and jump to the contact form section
-    window.location.hash = "#/?#contact";
+    window.location.hash = "#/";
+    setTimeout(() => {
+      const el = document.getElementById("contact");
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+    }, 100);
   };
 
   return (
@@ -106,7 +110,7 @@ export default function Services() {
       <section className="doc-hero">
         <div className="container">
           <div className="doc-meta">SERVICES</div>
-          <h1 className="doc-title">Services</h1>
+          <h1 className="doc-title">GWx Services</h1>
 
           <div className="doc-lead">
             <p>
@@ -185,16 +189,10 @@ export default function Services() {
               </div>
             </div>
 
-            {/* IMAGE BAND 2 */}
-            <div className="image-band" style={{ marginTop: 18 }}>
-              <img src={SECOND_IMAGE} alt="GWx technical image band 2" />
-            </div>
-
             {/* ENGAGEMENT (FULL WIDTH) */}
             <div
-              className="svc-engage-card svc-watermark"
+              className="svc-engage-card"
               style={{
-                "--wm": `url("${LOGO}")`,
                 marginTop: 18,
               }}
             >
@@ -222,7 +220,6 @@ export default function Services() {
 
             {/* LOGO UNDER ENGAGEMENT (BRIGHTER) */}
             <div
-              className="svc-image-card"
               style={{
                 marginTop: 14,
                 padding: 14,

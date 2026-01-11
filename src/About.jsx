@@ -1,5 +1,6 @@
 // src/About.jsx
 import React from "react";
+import logo from "/GWXLOGO/logo-02-png.png";
 
 export default function About() {
   return (
@@ -78,6 +79,13 @@ export default function About() {
                 </p>
               </div>
             </article>
+
+            <div className="bio-logo" style={{ gridColumn: "1 / -1", textAlign: "center", marginTop: "2rem" }}>
+              <img src={logo} alt="GWx Logo" style={{ maxWidth: "100%", maxHeight: "300px", height: "auto" }} />
+            </div>
+          </div>
+
+          <div style={{ marginTop: "3rem" }}>
           </div>
         </div>
       </section>
