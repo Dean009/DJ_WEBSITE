@@ -6,41 +6,6 @@ import Services from "./services"; // matches services.jsx
 import { wrapGWx } from "./utils/animateGWx";
 
 /* =========================
-   ERROR BOUNDARY (so you never get a silent blank page)
-========================= */
-class ErrorBoundary extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false, error: null };
-  }
-  static getDerivedStateFromError(error) {
-    return { hasError: true, error };
-  }
-  componentDidCatch(error, info) {
-    console.error("Render error:", error, info);
-  }
-  render() {
-    if (this.state.hasError) {
-      return (
-        <div style={{ padding: 18 }}>
-          <div style={{ color: "#fff", fontWeight: 700, marginBottom: 8 }}>
-            Page crashed
-          </div>
-          <div style={{ opacity: 0.85, marginBottom: 10 }}>
-            This is usually a bad import / filename case, or an error inside a
-            page component.
-          </div>
-          <pre style={{ whiteSpace: "pre-wrap", opacity: 0.85 }}>
-            {String(this.state.error)}
-          </pre>
-        </div>
-      );
-    }
-    return this.props.children;
-  }
-}
-
-/* =========================
    WORD-BY-WORD TEXT (GWx POPS)
 ========================= */
 function AnimatedText({ text, trigger, baseDelay = 0, step = 70 }) {
@@ -75,6 +40,7 @@ function Home() {
   const [heroTagsReady, setHeroTagsReady] = useState(false);
   const [aboutInView, setAboutInView] = useState(false);
 
+  // HashRouter-safe scroll helper
   const safeScroll = (id) => {
     if (!window.location.hash.startsWith("#/")) window.location.hash = "#/";
     setTimeout(() => {
@@ -82,13 +48,6 @@ function Home() {
       if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
     }, 60);
   };
-    const goServicesTop = () => {
-    // HashRouter-safe: ensures URL becomes "#/services" (not just "#services")
-    window.location.hash = "#/services";
-    // and force top after route swap
-    setTimeout(() => window.scrollTo({ top: 0, left: 0, behavior: "auto" }), 0);
-  };
-
 
   useEffect(() => {
     const t1 = setTimeout(() => setHeroTitleReady(true), 450);
@@ -184,6 +143,9 @@ function Home() {
 
   const HERO_BG = import.meta.env.BASE_URL + "hero-bg.png";
 
+  // ✅ GWx2 image for subtle use near contact
+  const GWX2 = import.meta.env.BASE_URL + "GWx2.png";
+
   const aboutPara1 =
     "GWx is an independent consultancy formed by experienced construction and Temporary Works professionals with extensive hands-on delivery experience in high-risk and heavily regulated environments.";
 
@@ -242,30 +204,15 @@ function Home() {
             </h2>
 
             <p className="overview-lead">
-              <AnimatedText
-                text={aboutPara1}
-                trigger={aboutInView}
-                baseDelay={380}
-                step={42}
-              />
+              <AnimatedText text={aboutPara1} trigger={aboutInView} baseDelay={380} step={42} />
             </p>
 
             <p className="overview-lead about-intro-lead2">
-              <AnimatedText
-                text={aboutPara2}
-                trigger={aboutInView}
-                baseDelay={820}
-                step={42}
-              />
+              <AnimatedText text={aboutPara2} trigger={aboutInView} baseDelay={820} step={42} />
             </p>
 
             <p className="overview-lead about-intro-lead2">
-              <AnimatedText
-                text={aboutPara3}
-                trigger={aboutInView}
-                baseDelay={1220}
-                step={42}
-              />
+              <AnimatedText text={aboutPara3} trigger={aboutInView} baseDelay={1220} step={42} />
             </p>
           </div>
         </div>
@@ -279,8 +226,7 @@ function Home() {
               <div className="overview-kicker">Overview</div>
 
               <h2 className="overview-title">
-                Clarity, control and defensible decision-making — without
-                bureaucracy.
+                Clarity, control and defensible decision-making — without bureaucracy.
               </h2>
 
               <p className="overview-lead">
@@ -314,45 +260,34 @@ function Home() {
                   <div className="overview-facts">
                     <div className="fact">
                       <div className="fact-k">Operating level</div>
-                      <div className="fact-v">
-                        Tier 1 / Tier 2 delivery environments
-                      </div>
+                      <div className="fact-v">Tier 1 / Tier 2 delivery environments</div>
                     </div>
 
                     <div className="fact">
                       <div className="fact-k">Focus</div>
-                      <div className="fact-v">
-                        Temporary Works • Governance • Assurance
-                      </div>
+                      <div className="fact-v">Temporary Works • Governance • Assurance</div>
                     </div>
 
                     <div className="fact">
                       <div className="fact-k">Outputs</div>
-                      <div className="fact-v">
-                        Audit-ready evidence • Clear actions • Governance clarity
-                      </div>
+                      <div className="fact-v">Audit-ready evidence • Clear actions • Governance clarity</div>
                     </div>
                   </div>
                 </div>
 
                 <div className="overview-ctas">
-  <button
-    type="button"
-    className="btn btn-outline-light btn-sm"
-    onClick={goServicesTop}
-  >
-    View services
-  </button>
+                  <button
+                    type="button"
+                    className="btn btn-outline-light btn-sm"
+                    onClick={() => safeScroll("contact")}
+                  >
+                    Make an enquiry
+                  </button>
 
-  <button
-    type="button"
-    className="btn btn-outline-light btn-sm"
-    onClick={() => safeScroll("contact")}
-  >
-    Make an enquiry
-  </button>
-</div>
-
+                  {/* OPTIONAL: if you currently have "View services" on home, keep it here if you want:
+                      <a className="btn btn-outline-light btn-sm" href="#/services">View services</a>
+                  */}
+                </div>
               </div>
             </div>
           </div>
@@ -366,47 +301,44 @@ function Home() {
             <div className="overview-kicker">Contact</div>
             <h2 className="overview-title">Make an enquiry</h2>
             <p className="overview-lead">
-              For enquiries relating to project management support, Temporary
-              Works governance, tendering, assurance or documentation — use the
-              form below.
+              For enquiries relating to project management support, Temporary Works governance, tendering,
+              assurance or documentation — use the form below.
             </p>
           </div>
 
-          <div className="row g-4">
-            <div className="col-lg-5">
+          {/* ✅ NEW: 3-col layout on desktop (Contact details | Form | Small image) */}
+          <div className="row g-4 align-items-stretch">
+            <div className="col-lg-4">
               <div className="contact-card">
                 <div className="contact-line">
                   <div className="contact-k">Email</div>
                   <div className="contact-v">
-                    <a href="mailto:info@gwxconsultants.co.uk">
-                      info@gwxconsultants.co.uk
-                    </a>
+                    <a href="mailto:info@gwxconsultants.co.uk">info@gwxconsultants.co.uk</a>
                   </div>
                 </div>
 
                 <div className="contact-line">
                   <div className="contact-k">Operating</div>
-                  <div className="contact-v">
-                    Construction • Industrial • Infrastructure • Regulated
-                  </div>
+                  <div className="contact-v">Construction • Industrial • Infrastructure • Regulated</div>
                 </div>
               </div>
             </div>
 
-            <div className="col-lg-7">
+            <div className="col-lg-5">
               <form className="form-card" onSubmit={(e) => e.preventDefault()}>
                 <div className="mb-2">
                   <label className="form-label">Message</label>
-                  <textarea
-                    className="form-control"
-                    rows="6"
-                    placeholder="Write a message..."
-                  />
+                  <textarea className="form-control" rows="6" placeholder="Write a message..." />
                 </div>
-                <button className="btn btn-outline-light btn-sm mt-2">
-                  Send
-                </button>
+                <button className="btn btn-outline-light btn-sm mt-2">Send</button>
               </form>
+            </div>
+
+            <div className="col-lg-3">
+              {/* Small supporting image (subtle) */}
+              <div className="contact-sideimg">
+                <img src={GWX2} alt="Technical drawing detail" />
+              </div>
             </div>
           </div>
         </div>
@@ -425,11 +357,6 @@ function AppShell() {
 
   useEffect(() => {
     wrapGWx(rootRef.current);
-  }, [location.pathname]);
-
-  // ✅ FIX: always go to top when changing route (HashRouter-safe)
-  useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
   }, [location.pathname]);
 
   // nav: hidden on hero only (home), always visible on non-home pages
@@ -484,31 +411,21 @@ function AppShell() {
               </span>
 
               <ul className="navbar-nav">
-                <li>
-                  <a onClick={() => goHomeAndScroll("overview")}>Overview</a>
-                </li>
-                <li>
-                  <a onClick={() => goHomeAndScroll("contact")}>Contact</a>
-                </li>
-                <li>
-                  <a onClick={() => navigate("/services")}>Services</a>
-                </li>
-                <li>
-                  <a onClick={() => navigate("/about")}>About</a>
-                </li>
+                <li><a onClick={() => goHomeAndScroll("overview")}>Overview</a></li>
+                <li><a onClick={() => goHomeAndScroll("contact")}>Contact</a></li>
+                <li><a onClick={() => navigate("/services")}>Services</a></li>
+                <li><a onClick={() => navigate("/about")}>About</a></li>
               </ul>
             </div>
           </nav>
         </div>
       </header>
 
-      <ErrorBoundary>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/about" element={<About />} />
-        </Routes>
-      </ErrorBoundary>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/services" element={<Services />} />
+        <Route path="/about" element={<About />} />
+      </Routes>
     </div>
   );
 }
