@@ -600,3 +600,96 @@ a{ color:inherit; text-decoration:none; }
 #hero + #about-intro{
   padding-top: calc(var(--section-pad) * 0.25) !important;
 }
+/* src/index.css  (APPEND THESE AT THE VERY END — do not delete existing CSS) */
+
+/* =========================================================
+   SERVICES PAGE – grouped bands (append-only, safe)
+   ========================================================= */
+
+.services-page{
+  /* uses your existing doc-body spacing */
+}
+
+.services-grid{
+  display: grid;
+  gap: 14px;
+}
+
+/* each group is a “band” to reduce overwhelm */
+.services-band{
+  background: rgba(15,17,21,.18);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.services-band-head{
+  padding: 14px;
+  border-bottom: 1px solid rgba(177,180,187,0.10);
+}
+
+/* keep titles feeling strong but not huge */
+.services-band-title{
+  font-size: clamp(24px, 2.4vw, 34px);
+  margin-bottom: 8px;
+}
+
+.services-band-lead{
+  margin-bottom: 0;
+}
+
+/* services inside the band */
+.services-list{
+  padding: 12px 14px 14px;
+  display: grid;
+  gap: 10px;
+}
+
+.service-item{
+  padding-top: 10px;
+  border-top: 1px solid rgba(177,180,187,0.10);
+}
+
+.service-item:first-child{
+  padding-top: 0;
+  border-top: 0;
+}
+
+.service-title{
+  color: var(--text);
+  font-weight: 650;
+  letter-spacing: .2px;
+  margin: 0 0 6px 0;
+  font-size: var(--type-body);
+}
+
+.service-desc{
+  margin: 0;
+  color: var(--muted);
+  font-size: var(--type-small);
+  line-height: 1.55;
+}
+
+/* subtle end cap */
+.services-close{
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(177,180,187,0.10);
+}
+
+/* reveal like your overview sections */
+#services{
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 650ms ease, transform 650ms cubic-bezier(.2,.9,.2,1);
+}
+#services.in-view{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* responsive */
+@media (max-width: 480px){
+  .services-band-head{ padding: 12px; }
+  .services-list{ padding: 10px 12px 12px; }
+}
