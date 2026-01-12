@@ -232,8 +232,6 @@ export default function Services() {
                   width: "100%",
                   height: "auto",
                   display: "block",
-                  opacity: 0.38,
-                  filter: "grayscale(0.95) contrast(1.05)",
                 }}
               />
             </div>

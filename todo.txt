@@ -1,0 +1,13 @@
+send button on contact form put beside 'Message' and same look 
+logo images on pages seem to be different colours
+change favicon
+an about button in the engagement section of services page
+on about page be able to go back to services without using navbar
+jamie wright/dg have the same pop/mag effect as the services
+no mention of area of operation - good for seo 
+"we have you covered" somewhere on the main hero page? 
+the logo/nav on hero page is covering the back graphic, think of a workaround
+remove the aboutgwx area on the main page as its repeating info on the about page, think of filling the gap 
+--- overview section can be expanded, a bit low on info. more pictures too?
+
+
