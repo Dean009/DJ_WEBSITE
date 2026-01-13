@@ -1,6 +1,7 @@
 // src/App.jsx
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
+import emailjs from "@emailjs/browser";
 import About from "./About";
 import Services from "./services"; // matches services.jsx
 import { wrapGWx } from "./utils/animateGWx";
@@ -40,6 +41,43 @@ function Home() {
   const [heroTitleReady, setHeroTitleReady] = useState(false);
   const [heroTagsReady, setHeroTagsReady] = useState(false);
   const [aboutInView, setAboutInView] = useState(false);
+  const [message, setMessage] = useState("");
+  const [isSending, setIsSending] = useState(false);
+
+  // Initialize EmailJS
+  useEffect(() => {
+    emailjs.init("YOUR_PUBLIC_KEY_HERE");
+  }, []);
+
+  const handleSendEmail = async (e) => {
+    e.preventDefault();
+    
+    if (!message.trim()) {
+      alert("Please write a message");
+      return;
+    }
+
+    setIsSending(true);
+
+    try {
+      await emailjs.send(
+        "YOUR_SERVICE_ID_HERE", // Replace with your service ID
+        "YOUR_TEMPLATE_ID_HERE", // Replace with your template ID
+        {
+          to_email: "info@gwxconsultants.co.uk",
+          from_name: "GWx Website",
+          message: message,
+        }
+      );
+      alert("Message sent successfully!");
+      setMessage("");
+    } catch (error) {
+      console.error("Email error:", error);
+      alert("Failed to send message. Please try again.");
+    } finally {
+      setIsSending(false);
+    }
+  };
 
   // HashRouter-safe scroll helper
   const safeScroll = (id) => {
@@ -146,6 +184,7 @@ function Home() {
 
   // ✅ GWx2 image for subtle use near contact
   const GWX2 = import.meta.env.BASE_URL + "GWx2.png";
+  const LOGOANI = import.meta.env.BASE_URL + "logoani.webm";
 
   const aboutPara1 =
     "GWx is an independent consultancy formed by experienced construction and Temporary Works professionals with extensive hands-on delivery experience in high-risk and heavily regulated environments.";
@@ -182,6 +221,17 @@ function Home() {
               marginTop: "3rem",
             }}
           >
+            WE HAVE YOU COVERED
+          </div>
+
+          <div
+            className="hero-kicker"
+            style={{
+              opacity: heroTagsReady ? 1 : 0,
+              transition: "opacity 1200ms ease",
+              marginTop: "0.75rem",
+            }}
+          >
             PROJECT MANAGEMENT • TEMPORARY WORKS • GOVERNANCE &amp; ASSURANCE
           </div>
 
@@ -202,7 +252,7 @@ function Home() {
                 const el = document.getElementById("overview");
                 if (el) el.scrollIntoView({ behavior: "smooth" });
               }}
-              style={{ cursor: "pointer", fontSize: "14px", textDecoration: "none", color: "inherit" }}
+              style={{ cursor: "pointer", fontSize: "14px", textDecoration: "none", color: "inherit", textTransform: "uppercase" }}
             >
               Overview
             </a>
@@ -211,7 +261,7 @@ function Home() {
                 window.location.hash = "#/services";
                 setTimeout(() => window.scrollTo(0, 0), 50);
               }}
-              style={{ cursor: "pointer", fontSize: "14px", textDecoration: "none", color: "inherit" }}
+              style={{ cursor: "pointer", fontSize: "14px", textDecoration: "none", color: "inherit", textTransform: "uppercase" }}
             >
               Services
             </a>
@@ -220,7 +270,7 @@ function Home() {
                 const el = document.getElementById("contact");
                 if (el) el.scrollIntoView({ behavior: "smooth" });
               }}
-              style={{ cursor: "pointer", fontSize: "14px", textDecoration: "none", color: "inherit" }}
+              style={{ cursor: "pointer", fontSize: "14px", textDecoration: "none", color: "inherit", textTransform: "uppercase" }}
             >
               Contact
             </a>
@@ -229,7 +279,7 @@ function Home() {
                 window.location.hash = "#/about";
                 setTimeout(() => window.scrollTo(0, 0), 50);
               }}
-              style={{ cursor: "pointer", fontSize: "14px", textDecoration: "none", color: "inherit" }}
+              style={{ cursor: "pointer", fontSize: "14px", textDecoration: "none", color: "inherit", textTransform: "uppercase" }}
             >
               About
             </a>
@@ -244,7 +294,13 @@ function Home() {
             <div className="overview-kicker">About GWx</div>
 
             <h2 className="overview-title">
-              Independent governance-led consultancy for complex, high-risk delivery.
+              Independent governance-led consultancy for
+              {" "}
+              <span className="stagger-words">
+                <span className="word seq1">complex,</span>{" "}
+                <span className="word seq2">high-risk</span>{" "}
+                <span className="word seq3">delivery.</span>
+              </span>
             </h2>
 
             <p className="overview-lead">
@@ -267,10 +323,9 @@ function Home() {
         <div className="container">
           <div className="overview-grid">
             <div className="overview-left">
-              <div className="overview-kicker">Overview</div>
 
               <h2 className="overview-title">
-                Clarity, control and defensible decision-making — without bureaucracy.
+                Clarity, control and defensible decision-making — <span className="underline-loop">without bureaucracy.</span>
               </h2>
 
               <p className="overview-lead">
@@ -328,7 +383,7 @@ function Home() {
                       setTimeout(() => window.scrollTo(0, 0), 50);
                     }}
                   >
-                    Offered Services
+                    Our services
                   </button>
                 </div>
               </div>
@@ -342,7 +397,9 @@ function Home() {
         <div className="container">
           <div className="mb-3">
             <div className="overview-kicker">Contact</div>
-            <h2 className="overview-title">Make an enquiry</h2>
+            <h2 className="overview-title">
+              Get in touch <span className="bang-bounce">!</span>
+            </h2>
             <p className="overview-lead">
               For enquiries relating to project management support, Temporary Works governance, tendering,
               assurance or documentation — use the form below.
@@ -368,18 +425,35 @@ function Home() {
                 </div>
 
                 <div className="contact-sideimg flex-grow-1">
-                  <img src={GWX2} alt="Technical drawing detail" />
+                  <video 
+                    src={LOGOANI}
+                    autoPlay 
+                    loop 
+                    muted 
+                    playsInline
+                    preload="auto"
+                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                  />
                 </div>
               </div>
             </div>
 
             <div className="col-lg-8">
-              <form className="form-card h-100" onSubmit={(e) => e.preventDefault()}>
+              <form className="form-card h-100" onSubmit={handleSendEmail}>
                 <div className="mb-2 h-100 d-flex flex-column">
-                  <label className="form-label">Message</label>
-                  <textarea className="form-control flex-grow-1" placeholder="Write a message..." />
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
+                    <label className="form-label" style={{ margin: 0 }}>Message</label>
+                    <button type="submit" className="btn btn-outline-light btn-sm" disabled={isSending}>
+                      {isSending ? "Sending..." : "Send"}
+                    </button>
+                  </div>
+                  <textarea 
+                    className="form-control flex-grow-1" 
+                    placeholder="Write a message to us here, remember to include contact details!" 
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                  />
                 </div>
-                <button className="btn btn-outline-light btn-sm mt-2">Send</button>
               </form>
             </div>
           </div>
@@ -408,6 +482,48 @@ function AppShell() {
     nav.classList.add("is-visible");
   }, [location.pathname]);
 
+  // Update nav text color based on section background
+  useEffect(() => {
+    const updateNavColor = () => {
+      const nav = document.querySelector(".nav-panel");
+      if (!nav) return;
+
+      const navRect = nav.getBoundingClientRect();
+      const checkPoint = navRect.bottom; // Check at navbar bottom
+      let isOverLightSection = false;
+
+      // Get all elements with light backgrounds
+      const allElements = document.querySelectorAll("#about-intro, #contact, .doc-hero, .bio-block, .svc-card, .svc-engage-card");
+      
+      allElements.forEach((el) => {
+        const rect = el.getBoundingClientRect();
+        const bgColor = window.getComputedStyle(el).backgroundColor;
+        
+        // Check if element is under navbar and has light background
+        if (rect.top < checkPoint && rect.bottom > navRect.top) {
+          // Check for light background color (#e4e4e4)
+          if (bgColor.includes("228") || bgColor.includes("e4e4e4")) {
+            isOverLightSection = true;
+          }
+        }
+      });
+
+      if (isOverLightSection) {
+        nav.classList.add("over-light-bg");
+      } else {
+        nav.classList.remove("over-light-bg");
+      }
+    };
+
+    updateNavColor();
+    window.addEventListener("scroll", updateNavColor, { passive: true });
+    window.addEventListener("resize", updateNavColor, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", updateNavColor);
+      window.removeEventListener("resize", updateNavColor);
+    };
+  }, [location.pathname]);
+
   const goHomeAndScroll = (id) => {
     if (location.pathname !== "/") {
       navigate("/");
@@ -427,12 +543,19 @@ function AppShell() {
         <div className="nav-panel">
           <nav className="navbar">
             <div className="nav-inline">
-              <span className="navbar-brand" onClick={() => {
-                navigate("/");
-                setTimeout(() => window.scrollTo(0, 0), 50);
-              }}>
-                GWx
-              </span>
+              <img 
+                src={logo}
+                alt="GWx Logo"
+                className="navbar-logo"
+                onClick={() => {
+                  navigate("/");
+                  setTimeout(() => window.scrollTo(0, 0), 50);
+                }}
+                style={{ 
+                  cursor: "pointer",
+                  opacity: location.pathname === "/" ? undefined : 1
+                }}
+              />
 
               <ul className="navbar-nav">
                 <li><a onClick={() => goHomeAndScroll("overview")}>Overview</a></li>

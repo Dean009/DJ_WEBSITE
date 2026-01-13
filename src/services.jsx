@@ -109,7 +109,6 @@ export default function Services() {
     <main className="doc-page services-page">
       <section className="doc-hero">
         <div className="container">
-          <div className="doc-meta">SERVICES</div>
           <h1 className="doc-title">GWx Services</h1>
 
           <div className="doc-lead">
@@ -121,12 +120,6 @@ export default function Services() {
                 step={35}
               />
             </p>
-          </div>
-
-          <div style={{ marginTop: 14 }}>
-            <a href="#/" className="btn btn-outline-light btn-sm">
-              Back to home
-            </a>
           </div>
         </div>
       </section>
@@ -196,8 +189,6 @@ export default function Services() {
                 marginTop: 18,
               }}
             >
-              <div className="overview-kicker">Engagement</div>
-
               <p className="overview-lead" style={{ marginBottom: 0 }}>
                 <AnimatedText
                   text="We operate proportionately and risk-based, embedded alongside delivery teams or as independent assurance."
@@ -214,6 +205,16 @@ export default function Services() {
                   onClick={goToContact}
                 >
                   Get in touch
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-outline-light btn-sm"
+                  onClick={() => {
+                    window.location.hash = "#/about";
+                    setTimeout(() => window.scrollTo(0, 0), 50);
+                  }}
+                >
+                  About us
                 </button>
               </div>
             </div>

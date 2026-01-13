@@ -2,28 +2,37 @@
 import React from "react";
 import logo from "/GWXLOGO/logo-02-png.png";
 
+const GWX2 = import.meta.env.BASE_URL + "GWx2.png";
+
 export default function About() {
   return (
     <main className="doc-page">
       <section className="doc-hero">
         <div className="container">
-          <div className="doc-meta">ABOUT</div>
           <h1 className="doc-title">About GWx</h1>
 
-          <div className="doc-lead">
-            <p>
-              GWx is an independent consultancy formed by experienced construction and Temporary Works professionals with
-              extensive hands-on delivery experience in high-risk and heavily regulated environments.
-            </p>
-            <p>
-              We focus on proportionate, defensible governance that supports safe delivery while remaining practical,
-              commercially aware and aligned with programme pressures.
-            </p>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem", alignItems: "center" }}>
+            <div className="doc-lead">
+              <p>
+                GWx is an independent consultancy formed by experienced construction and Temporary Works professionals with
+                extensive hands-on delivery experience in high-risk and heavily regulated environments.
+              </p>
+              <p>
+                We focus on proportionate, defensible governance that supports safe delivery while remaining practical,
+                commercially aware and aligned with programme pressures.
+              </p>
+            </div>
+            <div style={{ textAlign: "center" }}>
+              <img src={GWX2} alt="GWx Technical" style={{ maxWidth: "100%", height: "auto", borderRadius: "8px" }} />
+            </div>
           </div>
 
           <div style={{ marginTop: 14 }}>
             <a href="#/" className="btn btn-outline-light btn-sm">
               Back to home
+            </a>
+            <a href="#/services" className="btn btn-outline-light btn-sm" style={{ marginLeft: 10 }}>
+              Our services
             </a>
             <a href="#/?#contact" className="btn btn-outline-light btn-sm" style={{ marginLeft: 10 }}>
               Contact
@@ -80,8 +89,8 @@ export default function About() {
               </div>
             </article>
 
-            <div className="bio-logo" style={{ gridColumn: "1 / -1", textAlign: "center", marginTop: "2rem" }}>
-              <img src={logo} alt="GWx Logo" style={{ maxWidth: "100%", maxHeight: "300px", height: "auto" }} />
+            <div className="bio-logo" style={{ gridColumn: "1 / -1", marginTop: "2rem", textAlign: "center" }}>
+              <img src={logo} alt="GWx Logo" style={{ maxWidth: "100%", maxHeight: "250px", height: "auto" }} />
             </div>
           </div>
 
