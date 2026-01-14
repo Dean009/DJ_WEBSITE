@@ -291,8 +291,6 @@ function Home() {
       <section id="about-intro" className="section-panel about-intro">
         <div className="container">
           <div className="about-intro-inner">
-            <div className="overview-kicker">About GWx</div>
-
             <h2 className="overview-title">
               Independent governance-led consultancy for
               {" "}
@@ -393,10 +391,9 @@ function Home() {
       </section>
 
       {/* CONTACT */}
-      <section id="contact" className="py-5">
+      <section id="contact" className="section-panel">
         <div className="container">
           <div className="mb-3">
-            <div className="overview-kicker">Contact</div>
             <h2 className="overview-title">
               Get in touch <span className="bang-bounce">!</span>
             </h2>
@@ -564,7 +561,10 @@ function AppShell() {
                   setTimeout(() => window.scrollTo(0, 0), 50);
                 }}>Services</a></li>
                 <li><a onClick={() => goHomeAndScroll("contact")}>Contact</a></li>
-                <li><a onClick={() => navigate("/about")}>About</a></li>
+                <li><a onClick={() => {
+                  window.location.hash = "#/about";
+                  setTimeout(() => window.scrollTo(0, 0), 50);
+                }}>About</a></li>
               </ul>
             </div>
           </nav>

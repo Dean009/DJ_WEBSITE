@@ -186,6 +186,19 @@ a{ color:inherit; text-decoration:none; }
   width: 100%;
 }
 
+/* Mobile navbar font size */
+@media (max-width: 768px){
+  .navbar-nav a{
+    font-size: 12px !important;
+  }
+  .navbar-brand{
+    font-size: 13px !important;
+  }
+  .footer-copyright{
+    font-size: 8px !important;
+  }
+}
+
 /* ================= HERO ================= */
 .hero{
   min-height:100vh;
@@ -289,6 +302,7 @@ a{ color:inherit; text-decoration:none; }
 .section-panel{
   border-top:1px solid var(--border2);
   border-bottom:1px solid var(--border2);
+  padding: var(--section-pad) 0;
 }
 
 /* Alternating section backgrounds */
@@ -416,10 +430,13 @@ a{ color:inherit; text-decoration:none; }
 .about-intro{
   min-height:auto;
   display:block;
-  padding: var(--section-pad) 0;
   background: #e4e4e4;
+  padding-top: 0 !important;
 }
-.about-intro-inner{ max-width: 920px; }
+.about-intro-inner{ 
+  max-width: 920px;
+  padding-top: var(--section-pad);
+}
 .about-intro-lead2{ margin-top:-6px; }
 
 /* About intro text animations */
@@ -611,7 +628,6 @@ a{ color:inherit; text-decoration:none; }
 .overview-scene{
   min-height:auto;
   display:block;
-  padding: var(--section-pad) 0;
 
   opacity:0;
   transform:translateY(28px);
@@ -839,9 +855,9 @@ a{ color:inherit; text-decoration:none; }
 }
 
 /* ===== About page styles (your About.jsx uses these classes) ===== */
-.doc-page{ padding-top: 0; }
+.doc-page{ padding-top: 60px; }
 .doc-hero{ 
-  padding: calc(var(--section-pad) * 1.6) 0 var(--section-pad);
+  padding: calc(var(--section-pad) * 1.6) 0 0;
 }
 .doc-meta{
   color: var(--subtle);
@@ -866,7 +882,7 @@ a{ color:inherit; text-decoration:none; }
   max-width: 80ch;
 }
 .doc-body{ 
-  padding: var(--section-pad) 0 calc(var(--section-pad) * 1.2); 
+  padding: calc(var(--section-pad) * -0.8) 0 calc(var(--section-pad) * 1.2); 
 }
 .bio-grid{
   display:grid;
@@ -901,6 +917,36 @@ a{ color:inherit; text-decoration:none; }
 @media(max-width:992px){
   .overview-split{ grid-template-columns:1fr; }
   .bio-grid{ grid-template-columns: 1fr; }
+  
+  /* About page: reorder hero section on mobile */
+  .doc-hero .container > div:first-of-type{
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  
+  /* Paragraphs first */
+  .doc-hero .doc-lead{
+    order: 1;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Image second */
+  .doc-hero .doc-lead + div{
+    order: 2;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Links third */
+  .doc-hero .container > div:last-of-type{
+    order: 3;
+  }
+}
+
+/* Desktop only: Add more bottom margin to buttons on About page */
+@media(min-width:993px){
+  .about-buttons{
+    margin-bottom: 3rem !important;
+  }
 }
 @media(max-width:480px){
   .hero-kicker{ font-size:14px; letter-spacing:2.6px; }
@@ -1612,12 +1658,53 @@ a{ color:inherit; text-decoration:none; }
   opacity: 0.75;
 }
 
-/* On smaller screens, move image above (Bootstrap stacks columns) */
+/* On smaller screens, reorder so logoani appears below message box */
 @media (max-width: 992px){
-  .contact-sideimg{
-    max-height: 180px;
+  /* Increase gap between intro text and contact card */
+  #contact .overview-lead{
+    margin-bottom: 2rem !important;
   }
-  .contact-sideimg img{
+  
+  #contact .row{
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  
+  /* Unwrap the left column so its children become direct flex items */
+  #contact .col-lg-4{
+    display: contents !important;
+  }
+  
+  #contact .col-lg-4 > .d-flex{
+    display: contents !important;
+  }
+  
+  /* Contact card appears first - same width as form */
+  #contact .contact-card{
+    order: 1;
+    margin-bottom: 0.1rem;
+    width: 100%;
+  }
+  
+  /* Form appears second - same width as contact card */
+  #contact .col-lg-8{
+    order: 2;
+    margin-bottom: 1rem;
+    width: 100%;
+    max-width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  
+  /* Logoani appears third (below message box) */
+  #contact .contact-sideimg{
+    order: 3;
+    max-height: 180px;
+    width: 100%;
+  }
+  
+  #contact .contact-sideimg img,
+  #contact .contact-sideimg video{
     height: 180px;
   }
 }

@@ -1,5 +1,6 @@
 // src/services.jsx
 import React, { useEffect, useMemo, useState } from "react";
+import logo from "/GWXLOGO/logo-02-png.png";
 
 function AnimatedText({ text, trigger, baseDelay = 0, step = 55 }) {
   const tokens = useMemo(() => text.split(/(\s+)/g).filter(Boolean), [text]);
@@ -109,7 +110,9 @@ export default function Services() {
     <main className="doc-page services-page">
       <section className="doc-hero">
         <div className="container">
-          <h1 className="doc-title">GWx Services</h1>
+          <h1 className="doc-title">
+            <img src={logo} alt="GWx" style={{ height: '1.2em', verticalAlign: 'middle', marginTop: '-0.15em' }} /> Services
+          </h1>
 
           <div className="doc-lead">
             <p>
@@ -135,7 +138,6 @@ export default function Services() {
           <div className="svc-groups">
             <div className="svc-group">
               <div className="svc-group-head">
-                <div className="overview-kicker">Service areas</div>
                 <h2 className="overview-title svc-h2">What we provide</h2>
               </div>
 

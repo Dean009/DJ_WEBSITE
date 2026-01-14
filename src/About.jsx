@@ -1,25 +1,47 @@
 // src/About.jsx
-import React from "react";
+import React, { useMemo } from "react";
 import logo from "/GWXLOGO/logo-02-png.png";
 
 const GWX2 = import.meta.env.BASE_URL + "GWx2.png";
+
+function AnimatedText({ text, trigger = true, baseDelay = 0, step = 55 }) {
+  const tokens = useMemo(() => text.split(/(\s+)/g).filter(Boolean), [text]);
+
+  return (
+    <span className={`wordflow ${trigger ? "play" : ""}`}>
+      {tokens.map((tok, i) => {
+        const isSpace = /^\s+$/.test(tok);
+        const isGWx = tok === "GWx";
+        if (isSpace) return <span key={i}>{tok}</span>;
+
+        return (
+          <span
+            key={i}
+            className={`wf-word ${isGWx ? "gwx-pop" : ""}`}
+            style={{ "--d": `${baseDelay + i * step}ms` }}
+          >
+            {tok}
+          </span>
+        );
+      })}
+    </span>
+  );
+}
 
 export default function About() {
   return (
     <main className="doc-page">
       <section className="doc-hero">
         <div className="container">
-          <h1 className="doc-title">About GWx</h1>
+          <h1 className="doc-title">About <img src={logo} alt="GWx" style={{ height: '1.2em', verticalAlign: 'middle', marginTop: '-0.15em' }} /></h1>
 
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem", alignItems: "center" }}>
             <div className="doc-lead">
               <p>
-                GWx is an independent consultancy formed by experienced construction and Temporary Works professionals with
-                extensive hands-on delivery experience in high-risk and heavily regulated environments.
+                <AnimatedText text="GWx is an independent consultancy formed by experienced construction and Temporary Works professionals with extensive hands-on delivery experience in high-risk and heavily regulated environments." />
               </p>
               <p>
-                We focus on proportionate, defensible governance that supports safe delivery while remaining practical,
-                commercially aware and aligned with programme pressures.
+                <AnimatedText text="We focus on proportionate, defensible governance that supports safe delivery while remaining practical, commercially aware and aligned with programme pressures." baseDelay={800} />
               </p>
             </div>
             <div style={{ textAlign: "center" }}>
@@ -27,7 +49,7 @@ export default function About() {
             </div>
           </div>
 
-          <div style={{ marginTop: 14 }}>
+          <div className="about-buttons" style={{ marginTop: 14 }}>
             <a href="#/" className="btn btn-outline-light btn-sm">
               Back to home
             </a>
