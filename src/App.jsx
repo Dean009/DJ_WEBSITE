@@ -180,7 +180,7 @@ function Home() {
     };
   }, []);
 
-  const HERO_BG = import.meta.env.BASE_URL + "hero-bg.png";
+  const HERO_BG = import.meta.env.BASE_URL + "newhero.png";
 
   // ✅ GWx2 image for subtle use near contact
   const GWX2 = import.meta.env.BASE_URL + "GWx2.png";
