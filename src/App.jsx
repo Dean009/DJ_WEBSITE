@@ -8,6 +8,58 @@ import { wrapGWx } from "./utils/animateGWx";
 import logo from "/GWXLOGO/logo-02-png.png";
 
 /* =========================
+   COOKIE CONSENT BANNER
+========================= */
+function CookieConsent({ onAccept, onDecline }) {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const consent = localStorage.getItem('cookieConsent');
+    if (!consent) {
+      // Delay appearance slightly for better UX
+      const timer = setTimeout(() => setIsVisible(true), 800);
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
+  const handleAccept = () => {
+    localStorage.setItem('cookieConsent', 'accepted');
+    setIsVisible(false);
+    onAccept();
+  };
+
+  const handleDecline = () => {
+    localStorage.setItem('cookieConsent', 'declined');
+    setIsVisible(false);
+    onDecline();
+  };
+
+  if (!isVisible) return null;
+
+  return (
+    <div className="cookie-consent-overlay">
+      <div className="cookie-consent-banner">
+        <div className="cookie-content">
+          <h3 className="cookie-title">Cookie Notice</h3>
+          <p className="cookie-text">
+            We use essential cookies to enable our contact form functionality. By clicking "Accept", 
+            you consent to our use of cookies for this purpose. No tracking or analytics cookies are used.
+          </p>
+        </div>
+        <div className="cookie-actions">
+          <button onClick={handleDecline} className="cookie-btn cookie-btn-decline">
+            Decline
+          </button>
+          <button onClick={handleAccept} className="cookie-btn cookie-btn-accept">
+            Accept
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* =========================
    WORD-BY-WORD TEXT (GWx POPS)
 ========================= */
 function AnimatedText({ text, trigger, baseDelay = 0, step = 70 }) {
@@ -43,17 +95,36 @@ function Home() {
   const [aboutInView, setAboutInView] = useState(false);
   const [message, setMessage] = useState("");
   const [isSending, setIsSending] = useState(false);
+  const [emailJsReady, setEmailJsReady] = useState(false);
 
-  // Initialize EmailJS
+  // Initialize EmailJS only if user has consented
   useEffect(() => {
-    emailjs.init("YOUR_PUBLIC_KEY_HERE");
+    const consent = localStorage.getItem('cookieConsent');
+    if (consent === 'accepted') {
+      emailjs.init("YOUR_PUBLIC_KEY_HERE");
+      setEmailJsReady(true);
+    }
   }, []);
+
+  const handleCookieAccept = () => {
+    emailjs.init("YOUR_PUBLIC_KEY_HERE");
+    setEmailJsReady(true);
+  };
+
+  const handleCookieDecline = () => {
+    setEmailJsReady(false);
+  };
 
   const handleSendEmail = async (e) => {
     e.preventDefault();
     
     if (!message.trim()) {
       alert("Please write a message");
+      return;
+    }
+
+    if (!emailJsReady) {
+      alert("Please accept cookies to enable the contact form.");
       return;
     }
 
@@ -197,6 +268,8 @@ function Home() {
 
   return (
     <>
+      <CookieConsent onAccept={handleCookieAccept} onDecline={handleCookieDecline} />
+      
       {/* HERO */}
       <section
         id="hero"
