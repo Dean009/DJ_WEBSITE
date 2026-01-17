@@ -576,6 +576,13 @@ a{ color:inherit; text-decoration:none; }
   max-width:78ch;
 }
 
+/* Overview section: full width text on desktop */
+@media(min-width: 993px){
+  #overview .overview-lead{
+    max-width: none;
+  }
+}
+
 .underline-loop{
   position: relative;
   display: inline-block;
