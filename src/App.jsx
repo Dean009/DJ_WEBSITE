@@ -578,11 +578,11 @@ function Home() {
                   />
                 </div>
                 <div className="mb-2">
-                  <label className="form-label">Mobile <span style={{ color: "#e74c3c" }}>*</span></label>
+                  <label className="form-label">Contact number <span style={{ color: "#e74c3c" }}>*</span></label>
                   <input 
                     type="tel" 
                     className="form-control" 
-                    placeholder="Your mobile number" 
+                    placeholder="Your contact number" 
                     value={mobile}
                     onChange={(e) => setMobile(e.target.value)}
                   />
