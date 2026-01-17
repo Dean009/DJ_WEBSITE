@@ -53,13 +53,15 @@ a{ color:inherit; text-decoration:none; }
   padding-left: var(--container-pad) !important;
   padding-right: var(--container-pad) !important;
   max-width: 1400px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 
 /* Desktop: increase container padding slightly */
 @media(min-width: 769px){
   .container{
-    padding-left: 20px !important;
-    padding-right: 20px !important;
+    padding-left: 40px !important;
+    padding-right: 40px !important;
   }
 }
 
@@ -82,7 +84,7 @@ a{ color:inherit; text-decoration:none; }
   border-top:1px solid rgba(177,180,187,0.08);
 }
 .footer-inline{
-  max-width:1040px;
+  max-width:1400px;
   margin:0 auto;
   padding:3px 8px;
   display:flex;
@@ -121,7 +123,7 @@ a{ color:inherit; text-decoration:none; }
 }
 .navbar{ padding:0 !important; margin:0 !important; }
 .nav-inline{
-  max-width:1040px;
+  max-width:1400px;
   margin:0 auto;
   padding:3px 8px;
   display:flex;
@@ -473,10 +475,15 @@ a{ color:inherit; text-decoration:none; }
   padding-top: 0 !important;
 }
 .about-intro-inner{ 
-  max-width: 920px;
+  max-width: 1320px;
   padding-top: var(--section-pad);
 }
 .about-intro-lead2{ margin-top:-6px; }
+
+/* Override max-width for about-intro text to allow full width */
+.about-intro .overview-lead{
+  max-width: none;
+}
 
 /* About intro text animations */
 .about-intro .overview-lead{
@@ -513,11 +520,13 @@ a{ color:inherit; text-decoration:none; }
 
 /* But allow GWx to pop in about-intro */
 .about-intro .wordflow.play .wf-word.gwx-pop{
-  opacity: 1;
-  transform: translateY(10px) scale(1);
-  animation: gwxPop 520ms cubic-bezier(.2,.9,.2,1) both;
-  animation-delay: var(--d, 0ms);
-  color: var(--text);
+  animation: gwxPop 520ms cubic-bezier(.2,.9,.2,1) both !important;
+  animation-delay: var(--d, 0ms) !important;
+  color: #0F1115 !important;
+  transform: none !important;
+  transition: none !important;
+  opacity: 1 !important;
+  filter: none !important;
 }
 
 /* Overview section text animations */
@@ -920,6 +929,14 @@ a{ color:inherit; text-decoration:none; }
   margin: 0 0 10px 0;
   max-width: 80ch;
 }
+
+/* Services page: full width text on desktop */
+@media(min-width: 993px){
+  .services-page .doc-lead p{
+    max-width: none;
+  }
+}
+
 .doc-body{ 
   padding: calc(var(--section-pad) * -0.8) 0 calc(var(--section-pad) * 1.2); 
 }
@@ -1796,7 +1813,7 @@ a{ color:inherit; text-decoration:none; }
 }
 
 .cookie-consent-banner{
-  max-width: 1040px;
+  max-width: 1400px;
   margin: 0 auto;
   background: rgba(15, 17, 21, 0.95);
   backdrop-filter: blur(12px);
