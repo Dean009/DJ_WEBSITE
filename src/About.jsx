@@ -33,15 +33,18 @@ export default function About() {
     <main className="doc-page">
       <section className="doc-hero">
         <div className="container">
-          <h1 className="doc-title">About <img src={logo} alt="GWx" style={{ height: '1.2em', verticalAlign: 'middle', marginTop: '-0.15em' }} /></h1>
+          <h1 className="doc-title">About</h1>
 
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem", alignItems: "center" }}>
             <div className="doc-lead">
               <p>
-                <AnimatedText text="GWx is an independent consultancy formed by experienced construction and Temporary Works professionals with extensive hands-on delivery experience in high-risk and heavily regulated environments." />
+                <AnimatedText text="GWx Consultancy Services Ltd is an independent, governance‑led consultancy built on senior construction, Project Management and Temporary Works expertise, shaped by extensive hands‑on delivery across high‑risk and heavily regulated environments. Our background spans major infrastructure, industrial and complex access projects, giving us a clear understanding of how real‑world pressures, interfaces and regulatory demands influence project outcomes." />
               </p>
               <p>
-                <AnimatedText text="We focus on proportionate, defensible governance that supports safe delivery while remaining practical, commercially aware and aligned with programme pressures." baseDelay={800} />
+                <AnimatedText text="We operate at the points where Temporary Works, access, design intent, programme pressure and site reality converge. Our experience covers both permanent and temporary works, from early planning and design coordination through to live construction, modification, maintenance and dismantling activities across nuclear, petrochemical, offshore, heavy industrial, infrastructure and major new‑build environments." />
+              </p>
+              <p>
+                <AnimatedText text="GWx provides proportionate, defensible governance that strengthens project delivery while remaining practical, commercially aware and aligned with programme requirements. Our role is to strengthen systems, support decision‑making, and bring clarity to complex environments." />
               </p>
             </div>
             <div style={{ textAlign: "center" }}>
@@ -51,7 +54,7 @@ export default function About() {
 
           <div className="about-buttons" style={{ marginTop: 14 }}>
             <a href="#/" className="btn btn-outline-light btn-sm">
-              Back to home
+              Home
             </a>
             <a href="#/services" className="btn btn-outline-light btn-sm" style={{ marginLeft: 10 }}>
               Our services
@@ -96,24 +99,16 @@ export default function About() {
 
               <div className="bio-text">
                 <p>
-                  Dave Garside is an experienced Construction Manager, Project Manager, Temporary Works and Health &amp; Safety
-                  professional specialising in technical assurance, design coordination, and governance across complex construction
-                  environments.
+                  Dave Garside is an experienced Construction Manager, Temporary Works and Access professional with over 30 years' delivery experience across nuclear, oil and gas, heavy industry, marine, civils, and major stadium projects. He specialises in technical assurance, design coordination, and proportionate governance across complex, high‑risk construction environments.
                 </p>
                 <p>
-                  He has extensive experience supporting the development, review, and implementation of Temporary Works systems,
-                  ensuring alignment with recognised standards, principal contractor requirements, and client frameworks.
+                  He has extensive experience developing, reviewing, and implementing Temporary Works and access systems, ensuring alignment with recognised standards, principal contractor procedures, and client frameworks.
                 </p>
                 <p>
-                  Dave is a member of IOSH and is known for his methodical, detail-driven approach and his ability to provide calm,
-                  clear technical oversight where risk, complexity or scrutiny is high.
+                  Dave is a Certified Member of IOSH and is known for his methodical, detail‑driven approach and his ability to provide calm, clear technical oversight where risk, complexity, or scrutiny is high.
                 </p>
               </div>
             </article>
-
-            <div className="bio-logo" style={{ gridColumn: "1 / -1", marginTop: "2rem", textAlign: "center" }}>
-              <img src={logo} alt="GWx Logo" style={{ maxWidth: "100%", maxHeight: "250px", height: "auto" }} />
-            </div>
           </div>
 
           <div style={{ marginTop: "3rem" }}>

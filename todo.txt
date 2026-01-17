@@ -2,3 +2,5 @@ Email service setup using EmailJS  and the yahoo account. Get jamie to make a
 EmailJS account and a new email account, and give me passwords. he can change them
 at a later date
 
+localStorage.removeItem('cookieConsent')
+localStorage.getItem('cookieConsent')

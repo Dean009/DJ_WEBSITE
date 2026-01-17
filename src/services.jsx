@@ -93,7 +93,7 @@ export default function Services() {
     {
       title: "Tendering Support & Pricing / Commercial Structuring",
       desc:
-        "Support with tender responses, pricing structures, and commercial pack development to present a clear, professional offer. This includes scope clarification, pricing breakdown, assumptions/exclusions, and helping shape a tender submission so it’s easy for clients to evaluate and award.",
+        "Support with scaffolding tender responses, pricing structures, and commercial packs that clearly define scope, design routes, and access requirements. We prepare transparent pricing breakdowns, clarify assumptions and exclusions, and shape submissions so clients can easily compare, evaluate, and award with confidence.",
     },
   ];
 
@@ -111,7 +111,7 @@ export default function Services() {
       <section className="doc-hero">
         <div className="container">
           <h1 className="doc-title">
-            <img src={logo} alt="GWx" style={{ height: '1.2em', verticalAlign: 'middle', marginTop: '-0.15em' }} /> Services
+            Services
           </h1>
 
           <div className="doc-lead">
@@ -219,24 +219,6 @@ export default function Services() {
                   About us
                 </button>
               </div>
-            </div>
-
-            {/* LOGO UNDER ENGAGEMENT (BRIGHTER) */}
-            <div
-              style={{
-                marginTop: 14,
-                padding: 14,
-              }}
-            >
-              <img
-                src={LOGO}
-                alt="GWx logo"
-                style={{
-                  width: "100%",
-                  height: "auto",
-                  display: "block",
-                }}
-              />
             </div>
           </div>
         </div>

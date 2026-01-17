@@ -1,10 +1,9 @@
 // src/App.jsx
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import emailjs from "@emailjs/browser";
 import About from "./About";
-import Services from "./services"; // matches services.jsx
-import { wrapGWx } from "./utils/animateGWx";
+import Services from "./services";
 import logo from "/GWXLOGO/logo-02-png.png";
 
 /* =========================
@@ -94,8 +93,12 @@ function Home() {
   const [heroTagsReady, setHeroTagsReady] = useState(false);
   const [aboutInView, setAboutInView] = useState(false);
   const [message, setMessage] = useState("");
+  const [email, setEmail] = useState("");
+  const [mobile, setMobile] = useState("");
   const [isSending, setIsSending] = useState(false);
   const [emailJsReady, setEmailJsReady] = useState(false);
+  const [formError, setFormError] = useState("");
+  const [formSuccess, setFormSuccess] = useState("");
 
   // Initialize EmailJS only if user has consented
   useEffect(() => {
@@ -117,14 +120,21 @@ function Home() {
 
   const handleSendEmail = async (e) => {
     e.preventDefault();
+    setFormError("");
+    setFormSuccess("");
     
     if (!message.trim()) {
-      alert("Please write a message");
+      setFormError("Please write a message");
+      return;
+    }
+
+    if (!email.trim() && !mobile.trim()) {
+      setFormError("Please provide at least one contact method (Email or Mobile)");
       return;
     }
 
     if (!emailJsReady) {
-      alert("Please accept cookies to enable the contact form.");
+      setFormError("Please accept cookies to enable the contact form.");
       return;
     }
 
@@ -137,26 +147,22 @@ function Home() {
         {
           to_email: "info@gwxconsultants.co.uk",
           from_name: "GWx Website",
+          user_email: email,
+          user_mobile: mobile,
           message: message,
         }
       );
-      alert("Message sent successfully!");
+      setFormSuccess("Message sent successfully!");
       setMessage("");
+      setEmail("");
+      setMobile("");
+      setTimeout(() => setFormSuccess(""), 5000);
     } catch (error) {
       console.error("Email error:", error);
-      alert("Failed to send message. Please try again.");
+      setFormError("Failed to send message. Please try again.");
     } finally {
       setIsSending(false);
     }
-  };
-
-  // HashRouter-safe scroll helper
-  const safeScroll = (id) => {
-    if (!window.location.hash.startsWith("#/")) window.location.hash = "#/";
-    setTimeout(() => {
-      const el = document.getElementById(id);
-      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 60);
   };
 
   useEffect(() => {
@@ -212,10 +218,30 @@ function Home() {
       ([entry]) => {
         if (entry.isIntersecting) el.classList.add("in-view");
       },
-      { threshold: 0.14, rootMargin: "0px 0px -10% 0px" }
+      { threshold: 0.1, rootMargin: "0px 0px -15% 0px" }
     );
 
     io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  // Smooth scroll-in for all section panels
+  useEffect(() => {
+    const sections = document.querySelectorAll(".section-panel");
+    if (!sections.length) return;
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("in-view");
+          }
+        });
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -10% 0px" }
+    );
+
+    sections.forEach(section => io.observe(section));
     return () => io.disconnect();
   }, []);
 
@@ -252,9 +278,6 @@ function Home() {
   }, []);
 
   const HERO_BG = import.meta.env.BASE_URL + "newhero.png";
-
-  // ✅ GWx2 image for subtle use near contact
-  const GWX2 = import.meta.env.BASE_URL + "GWx2.png";
   const LOGOANI = import.meta.env.BASE_URL + "logoani.webm";
 
   const aboutPara1 =
@@ -484,7 +507,13 @@ function Home() {
                   <div className="contact-line">
                     <div className="contact-k">Email</div>
                     <div className="contact-v">
-                      <a href="mailto:info@gwxconsultants.co.uk">info@gwxconsultants.co.uk</a>
+                      <a href="mailto:info@gwxconsultants.co.uk" style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                        info@gwxconsultants.co.uk
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                          <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                      </a>
                     </div>
                   </div>
 
@@ -510,7 +539,58 @@ function Home() {
 
             <div className="col-lg-8">
               <form className="form-card h-100" onSubmit={handleSendEmail}>
-                <div className="mb-2 h-100 d-flex flex-column">
+                {formError && (
+                  <div style={{
+                    padding: "12px 16px",
+                    marginBottom: "16px",
+                    backgroundColor: "rgba(231, 76, 60, 0.1)",
+                    border: "1px solid rgba(231, 76, 60, 0.3)",
+                    borderRadius: "var(--radius)",
+                    color: "#e74c3c",
+                    fontSize: "14px",
+                    animation: "slideDown 0.3s ease"
+                  }}>
+                    {formError}
+                  </div>
+                )}
+                {formSuccess && (
+                  <div style={{
+                    padding: "12px 16px",
+                    marginBottom: "16px",
+                    backgroundColor: "rgba(46, 204, 113, 0.1)",
+                    border: "1px solid rgba(46, 204, 113, 0.3)",
+                    borderRadius: "var(--radius)",
+                    color: "#2ecc71",
+                    fontSize: "14px",
+                    animation: "slideDown 0.3s ease"
+                  }}>
+                    {formSuccess}
+                  </div>
+                )}
+                <div className="mb-2">
+                  <label className="form-label">Email <span style={{ color: "#e74c3c" }}>*</span></label>
+                  <input 
+                    type="email" 
+                    className="form-control" 
+                    placeholder="your.email@example.com" 
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+                <div className="mb-2">
+                  <label className="form-label">Mobile <span style={{ color: "#e74c3c" }}>*</span></label>
+                  <input 
+                    type="tel" 
+                    className="form-control" 
+                    placeholder="Your mobile number" 
+                    value={mobile}
+                    onChange={(e) => setMobile(e.target.value)}
+                  />
+                </div>
+                <div className="mb-2" style={{ fontSize: "12px", color: "var(--subtle)", marginTop: "-4px" }}>
+                  * At least one contact method required
+                </div>
+                <div className="mb-2 flex-grow-1 d-flex flex-column">
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
                     <label className="form-label" style={{ margin: 0 }}>Message</label>
                     <button type="submit" className="btn btn-outline-light btn-sm" disabled={isSending}>
@@ -519,7 +599,7 @@ function Home() {
                   </div>
                   <textarea 
                     className="form-control flex-grow-1" 
-                    placeholder="Write a message to us here, remember to include contact details!" 
+                    placeholder="Write your message here..." 
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                   />
@@ -539,11 +619,6 @@ function Home() {
 function AppShell() {
   const navigate = useNavigate();
   const location = useLocation();
-  const rootRef = useRef(null);
-
-  useEffect(() => {
-    wrapGWx(rootRef.current);
-  }, [location.pathname]);
 
   // nav: always visible
   useEffect(() => {
@@ -608,9 +683,9 @@ function AppShell() {
   };
 
   return (
-    <div className="site-card" ref={rootRef}>
+    <div className="site-card">
       <header>
-        <div className="nav-panel">
+        <div className={`nav-panel ${location.pathname !== "/" ? "logo-visible" : ""}`}>
           <nav className="navbar">
             <div className="nav-inline">
               <img 

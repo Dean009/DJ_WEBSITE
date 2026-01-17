@@ -153,10 +153,15 @@ a{ color:inherit; text-decoration:none; }
   transition: transform 300ms ease;
   transform: translateX(calc(var(--hero-progress, 0) * 95px));
 }
+/* Force navbar shift when logo is visible on other pages */
+.nav-panel.logo-visible .navbar-nav{
+  transform: translateX(95px);
+}
 .navbar-nav li{ display:inline-flex !important; margin:0 !important; padding:0 !important; }
 .navbar-nav a{
   display:inline-block !important;
   font-size:14px !important;
+  font-weight: bold;
   text-transform:uppercase;
   letter-spacing:1px;
   color:var(--subtle) !important;
@@ -201,6 +206,20 @@ a{ color:inherit; text-decoration:none; }
   }
   .footer-copyright{
     font-size: 8px !important;
+  }
+  
+  /* Hide logo on mobile - not enough space */
+  .navbar-logo{
+    display: none !important;
+  }
+  
+  /* Keep navbar centered on mobile since logo is hidden */
+  .navbar-nav{
+    transform: translateX(0) !important;
+  }
+  
+  .nav-panel.logo-visible .navbar-nav{
+    transform: translateX(0) !important;
   }
 }
 
@@ -262,9 +281,7 @@ a{ color:inherit; text-decoration:none; }
   margin:.25rem 0;
 
   will-change: transform;
-  transform:
-    translateY(calc(var(--hero-progress) * -4vh))
-    scale(calc(1 - (var(--hero-progress) * 0.55)));
+  transform: scale(calc(1 - (var(--hero-progress) * 0.55)));
   transform-origin: center top;
 }
 
@@ -308,6 +325,15 @@ a{ color:inherit; text-decoration:none; }
   border-top:1px solid var(--border2);
   border-bottom:1px solid var(--border2);
   padding: var(--section-pad) 0;
+  opacity: 0;
+  transform: translateY(60px);
+  transition: opacity 800ms cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+              transform 800ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.section-panel.in-view{
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* Alternating section backgrounds */
@@ -447,21 +473,21 @@ a{ color:inherit; text-decoration:none; }
 /* About intro text animations */
 .about-intro .overview-lead{
   opacity: 0;
-  transform: translateY(10px);
+  transform: translateY(40px);
 }
 .about-intro.in-view .overview-lead{
   opacity: 1;
   transform: translateY(0);
-  transition: opacity 325ms ease, transform 325ms cubic-bezier(.2,.9,.2,1);
+  transition: opacity 600ms ease, transform 600ms cubic-bezier(.2,.9,.2,1);
 }
 .about-intro.in-view .overview-lead:nth-of-type(1){
-  transition-delay: 0ms;
+  transition-delay: 150ms;
 }
 .about-intro.in-view .overview-lead:nth-of-type(2){
-  transition-delay: 130ms;
+  transition-delay: 250ms;
 }
 .about-intro.in-view .overview-lead:nth-of-type(3){
-  transition-delay: 260ms;
+  transition-delay: 350ms;
 }
 
 /* Keep most word animations disabled for about-intro */
@@ -489,13 +515,13 @@ a{ color:inherit; text-decoration:none; }
 /* Overview section text animations */
 #overview .overview-lead{
   opacity: 0;
-  transform: translateY(10px);
+  transform: translateY(40px);
 }
 #overview.in-view .overview-lead{
   opacity: 1;
   transform: translateY(0);
-  transition: opacity 325ms ease, transform 325ms cubic-bezier(.2,.9,.2,1);
-  transition-delay: 0ms;
+  transition: opacity 600ms ease, transform 600ms cubic-bezier(.2,.9,.2,1);
+  transition-delay: 100ms;
 }
 
 @keyframes fadeInUp {
@@ -944,6 +970,14 @@ a{ color:inherit; text-decoration:none; }
   /* Links third */
   .doc-hero .container > div:last-of-type{
     order: 3;
+  }
+  
+  /* Add gap between buttons and bio section on mobile */
+  .about-buttons{
+    margin-bottom: 3rem !important;
+    display: flex !important;
+    justify-content: center !important;
+    flex-wrap: wrap !important;
   }
 }
 
@@ -1450,9 +1484,9 @@ a{ color:inherit; text-decoration:none; }
   width: 100%;
   height: auto;
 
-  /* slightly muted by default */
-  filter: grayscale(1) contrast(1.05);
-  opacity: 0.88;
+  /* colored by default */
+  filter: grayscale(0) contrast(1.05);
+  opacity: 1;
 
   transition:
     transform 420ms cubic-bezier(.2,.9,.2,1),
@@ -1460,12 +1494,12 @@ a{ color:inherit; text-decoration:none; }
     opacity 420ms ease;
 }
 
-/* Hover interaction */
+/* Hover interaction - go grayscale on hover */
 .svc-band:hover .svc-band-img,
 .image-band:hover img{
   transform: scale(1.015);
-  filter: grayscale(0.6) contrast(1.08);
-  opacity: 1;
+  filter: grayscale(1) contrast(1.08);
+  opacity: 0.88;
 }
 
 /* Logo specific – extra subtle */
@@ -1510,9 +1544,9 @@ a{ color:inherit; text-decoration:none; }
   width:100%;
   height:auto;
 
-  /* Start slightly "muted" but VISIBLE */
-  filter: grayscale(1) contrast(1.05);
-  opacity: 0.88;
+  /* Start colored and fully visible */
+  filter: grayscale(0) contrast(1.05);
+  opacity: 1;
 
   /* Smooth interaction */
   transition:
@@ -1521,12 +1555,12 @@ a{ color:inherit; text-decoration:none; }
     opacity 420ms ease;
 }
 
-/* Subtle hover (desktop) */
+/* Hover turns grayscale (desktop) */
 .svc-band:hover .svc-band-img,
 .image-band:hover img{
   transform: scale(1.015);
-  filter: grayscale(0.6) contrast(1.08);
-  opacity: 1;
+  filter: grayscale(1) contrast(1.08);
+  opacity: 0.88;
 }
 
 /* Logo specific – extra subtle */
@@ -1706,11 +1740,17 @@ a{ color:inherit; text-decoration:none; }
     order: 3;
     max-height: 180px;
     width: 100%;
+    margin-bottom: 2rem;
   }
   
   #contact .contact-sideimg img,
   #contact .contact-sideimg video{
     height: 180px;
+  }
+  
+  /* Add extra bottom padding to contact section on mobile */
+  #contact{
+    padding-bottom: calc(var(--section-pad) + 2rem) !important;
   }
 }
 /* ================= COOKIE CONSENT BANNER ================= */
@@ -1729,6 +1769,17 @@ a{ color:inherit; text-decoration:none; }
   from {
     opacity: 0;
     transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
   }
   to {
     opacity: 1;
