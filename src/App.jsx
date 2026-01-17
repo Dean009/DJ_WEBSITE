@@ -13,7 +13,7 @@ function CookieConsent({ onAccept, onDecline }) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const consent = localStorage.getItem('cookieConsent');
+    const consent = sessionStorage.getItem('cookieConsent');
     if (!consent) {
       // Delay appearance slightly for better UX
       const timer = setTimeout(() => setIsVisible(true), 800);
@@ -22,13 +22,13 @@ function CookieConsent({ onAccept, onDecline }) {
   }, []);
 
   const handleAccept = () => {
-    localStorage.setItem('cookieConsent', 'accepted');
+    sessionStorage.setItem('cookieConsent', 'accepted');
     setIsVisible(false);
     onAccept();
   };
 
   const handleDecline = () => {
-    localStorage.setItem('cookieConsent', 'declined');
+    sessionStorage.setItem('cookieConsent', 'declined');
     setIsVisible(false);
     onDecline();
   };
