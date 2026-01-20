@@ -142,8 +142,8 @@ function Home() {
 
     try {
       await emailjs.send(
-        "YOUR_SERVICE_ID_HERE", // Replace with your service ID
-        "YOUR_TEMPLATE_ID_HERE", // Replace with your template ID
+        "YOUR_SERVICE_ID_HERE",
+        "YOUR_TEMPLATE_ID_HERE",
         {
           to_email: "info@gwxconsultants.co.uk",
           from_name: "GWx Website",
@@ -209,7 +209,7 @@ function Home() {
     return () => io.disconnect();
   }, []);
 
-  // About-intro rise/fade trigger (uses your CSS #about-intro.in-view)
+  // About-intro fade trigger
   useEffect(() => {
     const el = document.getElementById("about-intro");
     if (!el) return;

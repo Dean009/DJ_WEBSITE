@@ -15,15 +15,13 @@
   /* 0 = full hero, 1 = collapsed */
   --hero-progress: 0;
 
-  /* =========================================================
-     TYPE SCALE (unifies sizing without breaking Capabilities)
-     ========================================================= */
+  /* Type scale */
   --type-body: clamp(16px, 1.15vw + 12px, 18px);
   --type-small: clamp(14px, 0.85vw + 11px, 15px);
   --type-kicker: 13px;
 }
 
-/* ✅ CRITICAL: allow scroll */
+/* Allow page scrolling */
 html, body{
   height: auto !important;
   min-height: 100% !important;
@@ -35,11 +33,11 @@ html, body{
   font-family:'IBM Plex Sans',system-ui,-apple-system,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif;
   scroll-behavior:smooth;
 
-  /* ✅ unified default text size */
+  /* Default text size */
   font-size: var(--type-body);
 }
 
-/* ✅ CRITICAL: allow page to extend beyond viewport */
+/* Root element overflow settings */
 #root{
   min-height: 100vh !important;
   height: auto !important;
@@ -67,7 +65,7 @@ a{ color:inherit; text-decoration:none; }
 
 .row{ --bs-gutter-x: 1rem; }
 
-/* ✅ CRITICAL: do not trap scroll */
+/* Site card layout */
 .site-card{
   min-height: 100vh;
   height: auto;
@@ -241,7 +239,7 @@ a{ color:inherit; text-decoration:none; }
   justify-content:center;
   position: relative;
 
-  /* ✅ FIX: do NOT trap scroll */
+  /* Allow scrolling */
   overflow: visible;
 }
 
@@ -357,7 +355,7 @@ a{ color:inherit; text-decoration:none; }
   background: #e4e4e4;
 }
 
-/* About page: light background for bio blocks */
+/* Light background for bio blocks */
 .bio-block{
   background: #e4e4e4;
   border-color: rgba(15,17,21,0.12);
@@ -576,7 +574,7 @@ a{ color:inherit; text-decoration:none; }
   max-width:78ch;
 }
 
-/* Overview section: full width text on desktop */
+/* Full width text on desktop */
 @media(min-width: 993px){
   #overview .overview-lead{
     max-width: none;
@@ -853,7 +851,7 @@ a{ color:inherit; text-decoration:none; }
   box-shadow: none !important;
 }
 
-/* Accordion styling (for your Capabilities component) */
+/* Accordion styling */
 .cap-accordion{ display:grid; gap:10px; }
 .cap-acc-item{ border:1px solid var(--border2); border-radius: var(--radius); overflow:hidden; }
 .cap-acc-btn{
@@ -909,7 +907,7 @@ a{ color:inherit; text-decoration:none; }
   font-size: var(--type-small);
 }
 
-/* ===== About page styles (your About.jsx uses these classes) ===== */
+/* Document page styles */
 .doc-page{ padding-top: 60px; }
 .doc-hero{ 
   padding: calc(var(--section-pad) * 1.6) 0 0;
@@ -937,7 +935,7 @@ a{ color:inherit; text-decoration:none; }
   max-width: 80ch;
 }
 
-/* Services page: full width text on desktop */
+/* Services page full width */
 @media(min-width: 993px){
   .services-page .doc-lead p{
     max-width: none;
@@ -989,7 +987,7 @@ a{ color:inherit; text-decoration:none; }
   .overview-split{ grid-template-columns:1fr; }
   .bio-grid{ grid-template-columns: 1fr; }
   
-  /* About page: reorder hero section on mobile */
+  /* Stack hero section vertically */
   .about-hero-grid{
     display: flex !important;
     flex-direction: column !important;
@@ -1012,7 +1010,7 @@ a{ color:inherit; text-decoration:none; }
     order: 3;
   }
   
-  /* Add gap between buttons and bio section on mobile */
+  /* Button spacing */
   .about-buttons{
     margin-bottom: 3rem !important;
     display: flex !important;
@@ -1021,7 +1019,7 @@ a{ color:inherit; text-decoration:none; }
   }
 }
 
-/* Desktop only: Add more bottom margin to buttons on About page */
+/* Desktop button spacing */
 @media(min-width:993px){
   .about-buttons{
     margin-bottom: 3rem !important;
@@ -1037,10 +1035,7 @@ a{ color:inherit; text-decoration:none; }
   .wordflow .wf-word{ filter:none; }
 }
 
-/* =========================================================
-   OVERVIEW FACTS – MATCH TICKS + SIT QUIETLY TO THE SIDE
-   (append-only; keeps your current layout working)
-   ========================================================= */
+/* Overview facts layout */
 
 .overview-split{
   gap: 22px;
@@ -1080,17 +1075,13 @@ a{ color:inherit; text-decoration:none; }
   }
 }
 
-/* =========================================================
-   FIX: the "gap" is your #about-intro being hidden (opacity:0)
-   If the observer doesn’t add .in-view, it becomes invisible
-   but still occupies height. Keep it visible.
-   ========================================================= */
+
 #about-intro{
   opacity: 1 !important;
   transform: none !important;
 }
 
-/* your gap tweaks can stay (they’re harmless) */
+/* Hero section spacing */
 .hero + .section-panel{
   padding-top: calc(var(--section-pad) * 0.45);
   border-top: none;
@@ -1098,14 +1089,10 @@ a{ color:inherit; text-decoration:none; }
 #hero + #about-intro{
   padding-top: calc(var(--section-pad) * 0.25) !important;
 }
-/* src/index.css  (APPEND THESE AT THE VERY END — do not delete existing CSS) */
 
-/* =========================================================
-   SERVICES PAGE – grouped bands (append-only, safe)
-   ========================================================= */
+/* Services page layout */
 
 .services-page{
-  /* uses your existing doc-body spacing */
 }
 
 .services-grid{
@@ -1175,7 +1162,7 @@ a{ color:inherit; text-decoration:none; }
   border-top: 1px solid rgba(177,180,187,0.10);
 }
 
-/* reveal like your overview sections */
+/* Section reveal animation */
 #services{
   opacity: 0;
   transform: translateY(22px);
@@ -1191,10 +1178,8 @@ a{ color:inherit; text-decoration:none; }
   .services-band-head{ padding: 12px; }
   .services-list{ padding: 10px 12px 12px; }
 }
-/* =========================================================
-   SERVICES PAGE – IMAGE BREAKUP + QUIET WATERMARK (v2-safe)
-   Append-only (won’t affect Home/About layout)
-   ========================================================= */
+
+/* Service banner styling */
 
 .svc-banner{
   margin-top: 14px;
@@ -1384,11 +1369,8 @@ a{ color:inherit; text-decoration:none; }
     background-size: clamp(240px, 56vw, 520px);
   }
 }
-/* =========================================================
-   SERVICES – PREVENT ORPHAN CARDS (FULL-WIDTH LAST ITEM)
-   ========================================================= */
+/* Service card grid */
 
-/* keep your existing 2-column grid */
 .svc-grid{
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1399,9 +1381,7 @@ a{ color:inherit; text-decoration:none; }
 .svc-grid > .svc-card:last-child:nth-child(odd){
   grid-column: 1 / -1;
 }
-/* =========================================================
-   SERVICES – POP-IN + GWx WORD POP (append-only)
-   ========================================================= */
+/* Service band styling */
 
 .svc-band{
   border: 1px solid var(--border2);
@@ -1451,13 +1431,9 @@ a{ color:inherit; text-decoration:none; }
   font-size: var(--type-body);
 }
 
-/* IMPORTANT:
-   Your AnimatedText renders .wordflow/.wf-word but needs a "play" trigger.
-   We keep JS simple by toggling play via CSS when card becomes in-view.
-*/
+/* Animated text trigger */
 .svc-card.in-view .svc-title-anim.wordflow,
 .svc-card.in-view .svc-desc-anim.wordflow{
-  /* add the "play" behaviour without changing markup */
 }
 .svc-card.in-view .svc-title-anim.wordflow .wf-word,
 .svc-card.in-view .svc-desc-anim.wordflow .wf-word{
@@ -1477,7 +1453,7 @@ a{ color:inherit; text-decoration:none; }
   filter: blur(1px);
 }
 
-/* keep your orphan fix (full-width last card when odd) */
+/* Full-width last card when odd */
 .svc-grid{
   display:grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1492,10 +1468,7 @@ a{ color:inherit; text-decoration:none; }
   .svc-grid{ grid-template-columns: 1fr; }
   .svc-grid > .svc-card:last-child:nth-child(odd){ grid-column: auto; }
 }
-/* =========================================================
-   IMAGE MOTION – LOAD + HOVER (SERVICES / BANDS / LOGO)
-   Subtle, technical, confidence-led
-   ========================================================= */
+/* Image animations */
 
 /* Base image behaviour */
 .svc-band,
@@ -1563,12 +1536,9 @@ a{ color:inherit; text-decoration:none; }
     opacity: inherit;
   }
 }
-/* =========================================================
-   IMAGE MOTION – SAFE LOAD + HOVER (NO in-view DEPENDENCY)
-   Will never block image rendering.
-   ========================================================= */
+/* Image display and hover effects */
 
-/* Always show wrappers (never hide content by default) */
+/* Wrapper visibility */
 .svc-band,
 .image-band,
 .logo-mark{
@@ -1641,9 +1611,7 @@ a{ color:inherit; text-decoration:none; }
     opacity 700ms ease;
 }
 
-/* =========================================================
-   SERVICES PAGE — FIX VISIBILITY + TILE GRID (append-only)
-   ========================================================= */
+/* Services page grid layout */
 
 .services-page .svc-grid{
   display:grid;
@@ -1674,12 +1642,12 @@ a{ color:inherit; text-decoration:none; }
   line-height: 1.55;
 }
 
-/* last tile spans full width when you end up with 3/2/1 */
+/* Last tile full width */
 .services-page .svc-span-full{
   grid-column: 1 / -1;
 }
 
-/* image bands behave nicely */
+/* Image bands styling */
 .services-page .image-band img,
 .services-page .svc-band-img{
   width: 100%;
@@ -1689,8 +1657,7 @@ a{ color:inherit; text-decoration:none; }
   border: 1px solid var(--border2);
 }
 
-/* ✅ IMPORTANT: your ticks are normally hidden until .overview-scene.in-view.
-   On Services we want them visible without changing home behaviour. */
+/* Services page checkmarks visibility */
 .services-page .check-item{
   opacity: 1 !important;
   transform: none !important;
@@ -1710,10 +1677,7 @@ a{ color:inherit; text-decoration:none; }
   .services-page .svc-span-full{ grid-column: auto; }
 }
 
-/* =========================================================
-   HOME – CONTACT SUPPORT IMAGE (subtle, non-dominant)
-   Append-only, safe
-   ========================================================= */
+/* Contact section image */
 
 .contact-sideimg{
   height: 280px;
@@ -1732,7 +1696,6 @@ a{ color:inherit; text-decoration:none; }
   object-fit: cover;
   display: block;
 
-  /* subtle + technical */
   filter: grayscale(1) contrast(1.05);
   opacity: 0.75;
 }

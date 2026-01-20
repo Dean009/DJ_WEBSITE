@@ -29,7 +29,7 @@ function AnimatedText({ text, trigger, baseDelay = 0, step = 55 }) {
 export default function Services() {
   const [play, setPlay] = useState(false);
 
-  // Trigger animations + make svc-cards visible (your CSS expects .in-view)
+  // Trigger animations and visibility
   useEffect(() => {
     const t = setTimeout(() => setPlay(true), 120);
     return () => clearTimeout(t);
