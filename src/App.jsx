@@ -523,7 +523,7 @@ function Home() {
                   </div>
                 </div>
 
-                <div className="contact-sideimg flex-grow-1">
+                <div className="contact-sideimg">
                   <video 
                     src={LOGOANI}
                     autoPlay 
