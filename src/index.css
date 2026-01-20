@@ -976,13 +976,21 @@ a{ color:inherit; text-decoration:none; }
 }
 .bio-text p:last-child{ margin-bottom: 0; }
 
+/* About hero grid */
+.about-hero-grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: center;
+}
+
 /* responsive */
 @media(max-width:992px){
   .overview-split{ grid-template-columns:1fr; }
   .bio-grid{ grid-template-columns: 1fr; }
   
   /* About page: reorder hero section on mobile */
-  .doc-hero .container > div:first-of-type{
+  .about-hero-grid{
     display: flex !important;
     flex-direction: column !important;
   }
