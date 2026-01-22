@@ -254,8 +254,8 @@ a{ color:inherit; text-decoration:none; }
   background-repeat:no-repeat;
 
   /* fade bg as you scroll */
-  opacity: calc(0.35 * (1 - var(--hero-progress)));
-  filter:grayscale(1) contrast(1.05);
+  opacity: calc(1 * (1 - var(--hero-progress)));
+  filter: none;
 }
 .hero-bg::after{
   content:"";
@@ -305,7 +305,7 @@ a{ color:inherit; text-decoration:none; }
   font-size:18px;
   letter-spacing:3.2px;
   text-transform:uppercase;
-  color:var(--subtle);
+  color:var(--text);
 }
 
 .hero-nav-links a{
