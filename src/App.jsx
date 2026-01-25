@@ -1,7 +1,6 @@
 // src/App.jsx
 import React, { useEffect, useMemo, useState } from "react";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
-import emailjs from "@emailjs/browser";
 import About from "./About";
 import Services from "./services";
 import logo from "/GWXLOGO/logo-02-png.png";
@@ -96,73 +95,34 @@ function Home() {
   const [email, setEmail] = useState("");
   const [mobile, setMobile] = useState("");
   const [isSending, setIsSending] = useState(false);
-  const [emailJsReady, setEmailJsReady] = useState(false);
   const [formError, setFormError] = useState("");
   const [formSuccess, setFormSuccess] = useState("");
 
-  // Initialize EmailJS only if user has consented
-  useEffect(() => {
-    const consent = localStorage.getItem('cookieConsent');
-    if (consent === 'accepted') {
-      emailjs.init("YOUR_PUBLIC_KEY_HERE");
-      setEmailJsReady(true);
-    }
-  }, []);
-
   const handleCookieAccept = () => {
-    emailjs.init("YOUR_PUBLIC_KEY_HERE");
-    setEmailJsReady(true);
+    // No longer needed for FormSubmit
   };
 
   const handleCookieDecline = () => {
-    setEmailJsReady(false);
+    // No longer needed for FormSubmit
   };
 
-  const handleSendEmail = async (e) => {
-    e.preventDefault();
+  const handleSendEmail = (e) => {
     setFormError("");
     setFormSuccess("");
     
     if (!message.trim()) {
+      e.preventDefault();
       setFormError("Please write a message");
       return;
     }
 
     if (!email.trim() && !mobile.trim()) {
+      e.preventDefault();
       setFormError("Please provide at least one contact method (Email or Mobile)");
       return;
     }
 
-    if (!emailJsReady) {
-      setFormError("Please accept cookies to enable the contact form.");
-      return;
-    }
-
     setIsSending(true);
-
-    try {
-      await emailjs.send(
-        "YOUR_SERVICE_ID_HERE",
-        "YOUR_TEMPLATE_ID_HERE",
-        {
-          to_email: "info@gwxconsultants.co.uk",
-          from_name: "GWx Website",
-          user_email: email,
-          user_mobile: mobile,
-          message: message,
-        }
-      );
-      setFormSuccess("Message sent successfully!");
-      setMessage("");
-      setEmail("");
-      setMobile("");
-      setTimeout(() => setFormSuccess(""), 5000);
-    } catch (error) {
-      console.error("Email error:", error);
-      setFormError("Failed to send message. Please try again.");
-    } finally {
-      setIsSending(false);
-    }
   };
 
   useEffect(() => {
@@ -538,7 +498,7 @@ function Home() {
             </div>
 
             <div className="col-lg-8">
-              <form className="form-card h-100" onSubmit={handleSendEmail}>
+              <form className="form-card h-100" action="https://formsubmit.co/info@gwxconsultants.co.uk" method="POST" onSubmit={handleSendEmail}>
                 {formError && (
                   <div style={{
                     padding: "12px 16px",
@@ -571,16 +531,19 @@ function Home() {
                   <label className="form-label">Email <span style={{ color: "#e74c3c" }}>*</span></label>
                   <input 
                     type="email" 
+                    name="email"
                     className="form-control" 
                     placeholder="your.email@example.com" 
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    required
                   />
                 </div>
                 <div className="mb-2">
                   <label className="form-label">Contact number <span style={{ color: "#e74c3c" }}>*</span></label>
                   <input 
                     type="tel" 
+                    name="mobile"
                     className="form-control" 
                     placeholder="Your contact number" 
                     value={mobile}
@@ -598,10 +561,12 @@ function Home() {
                     </button>
                   </div>
                   <textarea 
+                    name="message"
                     className="form-control flex-grow-1" 
                     placeholder="Write your message here..." 
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
+                    required
                   />
                 </div>
               </form>
