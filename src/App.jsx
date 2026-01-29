@@ -1,6 +1,7 @@
 // src/App.jsx
 import React, { useEffect, useMemo, useState } from "react";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
+import emailjs from "@emailjs/browser";
 import About from "./About";
 import Services from "./services";
 import logo from "/GWXLOGO/logo-02-png.png";
@@ -91,38 +92,89 @@ function Home() {
   const [heroTitleReady, setHeroTitleReady] = useState(false);
   const [heroTagsReady, setHeroTagsReady] = useState(false);
   const [aboutInView, setAboutInView] = useState(false);
-  const [message, setMessage] = useState("");
+  const [name, setName] = useState("");
+  const [company, setCompany] = useState("");
   const [email, setEmail] = useState("");
   const [mobile, setMobile] = useState("");
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
   const [isSending, setIsSending] = useState(false);
   const [formError, setFormError] = useState("");
   const [formSuccess, setFormSuccess] = useState("");
 
   const handleCookieAccept = () => {
-    // No longer needed for FormSubmit
+    // EmailJS initialized - cookies accepted
   };
 
   const handleCookieDecline = () => {
-    // No longer needed for FormSubmit
+    // User declined - disable EmailJS functionality
+    setFormError("Contact form disabled. Please accept cookies to use the contact form.");
   };
 
   const handleSendEmail = (e) => {
+    e.preventDefault();
     setFormError("");
     setFormSuccess("");
+
+    // Check if cookies were accepted
+    const consent = sessionStorage.getItem('cookieConsent');
+    if (consent !== 'accepted') {
+      setFormError("Please accept cookies to use the contact form.");
+      return;
+    }
     
+    if (!name.trim()) {
+      setFormError("Please provide your name");
+      return;
+    }
+
+    if (!email.trim()) {
+      setFormError("Please provide your email address");
+      return;
+    }
+
     if (!message.trim()) {
-      e.preventDefault();
       setFormError("Please write a message");
       return;
     }
 
-    if (!email.trim() && !mobile.trim()) {
-      e.preventDefault();
-      setFormError("Please provide at least one contact method (Email or Mobile)");
-      return;
-    }
-
     setIsSending(true);
+
+    // EmailJS template parameters
+    const templateParams = {
+      from_name: name,
+      from_company: company || "Not provided",
+      from_email: email,
+      from_mobile: mobile || "Not provided",
+      subject: subject || "New enquiry from GWx website",
+      message: message,
+      to_email: "gwxforward@gmail.com"
+    };
+
+    // Send email using EmailJS
+    emailjs.send(
+      'service_s50s2ql',  // Your EmailJS service ID
+      'template_2rx79uc', // Your EmailJS template ID
+      templateParams,
+      '7mp_7m609ZnDv9JE8'   // Your EmailJS public key
+    )
+    .then((response) => {
+      console.log('SUCCESS!', response.status, response.text);
+      setFormSuccess("Message sent successfully! We'll get back to you soon.");
+      // Clear form
+      setName("");
+      setCompany("");
+      setEmail("");
+      setMobile("");
+      setSubject("");
+      setMessage("");
+      setIsSending(false);
+    })
+    .catch((error) => {
+      console.error('FAILED...', error);
+      setFormError("Failed to send message. Please try again or email us directly at info@gwxconsultants.co.uk");
+      setIsSending(false);
+    });
   };
 
   useEffect(() => {
@@ -498,7 +550,7 @@ function Home() {
             </div>
 
             <div className="col-lg-8">
-              <form className="form-card h-100" action="https://formsubmit.co/info@gwxconsultants.co.uk" method="POST" onSubmit={handleSendEmail}>
+              <form className="form-card h-100" onSubmit={handleSendEmail}>
                 {formError && (
                   <div style={{
                     padding: "12px 16px",
@@ -528,10 +580,30 @@ function Home() {
                   </div>
                 )}
                 <div className="mb-2">
+                  <label className="form-label">Name <span style={{ color: "#e74c3c" }}>*</span></label>
+                  <input 
+                    type="text" 
+                    className="form-control" 
+                    placeholder="Your name" 
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="mb-2">
+                  <label className="form-label">Company</label>
+                  <input 
+                    type="text" 
+                    className="form-control" 
+                    placeholder="Your company (optional)" 
+                    value={company}
+                    onChange={(e) => setCompany(e.target.value)}
+                  />
+                </div>
+                <div className="mb-2">
                   <label className="form-label">Email <span style={{ color: "#e74c3c" }}>*</span></label>
                   <input 
                     type="email" 
-                    name="email"
                     className="form-control" 
                     placeholder="your.email@example.com" 
                     value={email}
@@ -540,33 +612,39 @@ function Home() {
                   />
                 </div>
                 <div className="mb-2">
-                  <label className="form-label">Contact number <span style={{ color: "#e74c3c" }}>*</span></label>
+                  <label className="form-label">Contact number</label>
                   <input 
                     type="tel" 
-                    name="mobile"
                     className="form-control" 
-                    placeholder="Your contact number" 
+                    placeholder="Your contact number (optional)" 
                     value={mobile}
                     onChange={(e) => setMobile(e.target.value)}
                   />
                 </div>
-                <div className="mb-2" style={{ fontSize: "12px", color: "var(--subtle)", marginTop: "-4px" }}>
-                  * At least one contact method required
+                <div className="mb-2">
+                  <label className="form-label">Subject</label>
+                  <input 
+                    type="text" 
+                    className="form-control" 
+                    placeholder="Subject (optional)" 
+                    value={subject}
+                    onChange={(e) => setSubject(e.target.value)}
+                  />
                 </div>
                 <div className="mb-2 flex-grow-1 d-flex flex-column">
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
-                    <label className="form-label" style={{ margin: 0 }}>Message</label>
+                    <label className="form-label" style={{ margin: 0 }}>Message <span style={{ color: "#e74c3c" }}>*</span></label>
                     <button type="submit" className="btn btn-outline-light btn-sm" disabled={isSending}>
                       {isSending ? "Sending..." : "Send"}
                     </button>
                   </div>
                   <textarea 
-                    name="message"
                     className="form-control flex-grow-1" 
                     placeholder="Write your message here..." 
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     required
+                    rows="6"
                   />
                 </div>
               </form>
