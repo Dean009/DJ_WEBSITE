@@ -1,7 +1,7 @@
 # EmailJS Setup Instructions
 
 ## Overview
-The contact form is now configured to use EmailJS to forward messages to **gwxforward@gmail.com**.
+The contact form is now configured to use EmailJS to forward messages to **info@gwxconsultancy.co.uk**.
 
 ## Setup Steps
 
@@ -14,8 +14,10 @@ The contact form is now configured to use EmailJS to forward messages to **gwxfo
 1. In EmailJS dashboard, go to **Email Services**
 2. Click **Add New Service**
 3. Choose **Gmail** as the service
-4. Connect your **gwxforward@gmail.com** account
+4. Connect your **intermediate Gmail account** (e.g., gwxforward@gmail.com)
 5. Note down the **Service ID** (e.g., `service_xyz123`)
+
+**Note:** EmailJS uses this Gmail account to send emails. The actual recipient (info@gwxconsultancy.co.uk) is set in the template below.
 
 ### 3. Create Email Template
 1. Go to **Email Templates**
@@ -45,7 +47,7 @@ Message:
 This message was sent via the GWx Consultants website contact form.
 ```
 
-4. Set the **To Email** field to: `gwxforward@gmail.com`
+4. Set the **To Email** field to: `info@gwxconsultancy.co.uk`
 5. Set the **From Name** to: `{{from_name}}`
 6. Set the **Reply To** to: `{{from_email}}`
 7. Save the template and note the **Template ID** (e.g., `template_abc456`)
@@ -89,7 +91,7 @@ emailjs.send(
    - Contact number (optional)
    - Subject (optional)
 5. Click **Send**
-6. Check **gwxforward@gmail.com** for the email
+6. Check **info@gwxconsultancy.co.uk** for the email
 
 ## Form Fields Included
 - ✅ Name (required)
@@ -99,7 +101,7 @@ emailjs.send(
 - ✅ Subject (optional)
 - ✅ Message (required)
 
-All fields will be sent to **gwxforward@gmail.com** via EmailJS.
+All fields will be sent to **info@gwxconsultancy.co.uk** via EmailJS.
 
 ## Cookie Consent
 The form requires cookie consent to function. If users decline cookies, the form will display an error message and won't send emails.
@@ -112,13 +114,13 @@ The form requires cookie consent to function. If users decline cookies, the form
 
 ### "Failed to send message"
 - Check that all three IDs (Service ID, Template ID, Public Key) are correct
-- Verify that gwxforward@gmail.com is connected to the EmailJS service
+- Verify that your intermediate Gmail account is connected to the EmailJS service
 - Check browser console for specific error messages
 - Ensure you haven't exceeded the free tier limit (200 emails/month)
 
-### Emails not arriving at gwxforward@gmail.com
+### Emails not arriving at info@gwxconsultancy.co.uk
 - Check spam/junk folder
-- Verify the "To Email" in the EmailJS template is set to gwxforward@gmail.com
+- Verify the "To Email" in the EmailJS template is set to info@gwxconsultancy.co.uk
 - Check EmailJS dashboard for delivery logs
 
 ## Security Note

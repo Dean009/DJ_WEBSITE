@@ -172,7 +172,7 @@ function Home() {
     })
     .catch((error) => {
       console.error('FAILED...', error);
-      setFormError("Failed to send message. Please try again or email us directly at info@gwxconsultants.co.uk");
+      setFormError("Failed to send message. Please try again or email us directly at info@gwxconsultancy.co.uk");
       setIsSending(false);
     });
   };
@@ -519,8 +519,8 @@ function Home() {
                   <div className="contact-line">
                     <div className="contact-k">Email</div>
                     <div className="contact-v">
-                      <a href="mailto:info@gwxconsultants.co.uk" style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
-                        info@gwxconsultants.co.uk
+                      <a href="mailto:info@gwxconsultancy.co.uk" style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                        info@gwxconsultancy.co.uk
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
                           <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                           <polyline points="22,6 12,13 2,6"></polyline>
