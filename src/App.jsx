@@ -147,8 +147,7 @@ function Home() {
       from_email: email,
       from_mobile: mobile || "Not provided",
       subject: subject || "New enquiry from GWx website",
-      message: message,
-      to_email: "gwxforward@gmail.com"
+      message: message
     };
 
     // Send email using EmailJS
